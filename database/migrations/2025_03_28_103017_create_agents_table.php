@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('agents', function (Blueprint $table) {
+            
             $table->id();
 
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id'); // Foreign Key
             $table->foreign('user_id')->references('id')->on('users');
 
             $table->string('address');
