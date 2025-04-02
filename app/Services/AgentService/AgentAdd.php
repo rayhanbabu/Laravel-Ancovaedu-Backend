@@ -8,6 +8,7 @@ use App\Models\Agent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Exception;
 
 class AgentAdd
 {
@@ -30,12 +31,10 @@ class AgentAdd
             ]);
 
             if ($validator->fails()) {
-                return [
-                    'status' => 'error',
-                    'message' => 'Validation failed',
-                    'errors' => $validator->errors(),
-                    'code' => 422,
-                ];
+                 return response()->json([
+                     'message' => 'Validation failed',
+                     'errors' => $validator->errors(),
+                 ], 422);
             }
 
             $user_auth = user();
@@ -85,19 +84,16 @@ class AgentAdd
             $agent->save();
             DB::commit();
 
-            return [
-                'status' => 'success',
+            return response()->json([
                 'message' => 'Agent added successfully',
-                'code' => 200,
-            ];
+            ], 200);
+
         } catch (\Exception $e) {
             DB::rollback();
-            return [
-                'status' => 'error',
-                'message' => 'Failed to add agent',
-                'error' => $e->getMessage(),
-                'code' => 500,
-            ];
+             return response()->json([
+                 'message' => 'Failed to Add ',
+                 'error' => $e->getMessage(),
+             ], 500);
         }
     }
 

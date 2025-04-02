@@ -20,3 +20,4 @@ use Illuminate\Support\Facades\Route;
     require __DIR__.'/auth.php';
     require __DIR__.'/supperadmin.php';
     require __DIR__.'/agent.php';
+    require __DIR__.'/manager.php';

@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Services\AgentService;
+namespace App\Services\ManagerService;
 
-use App\Models\Agent;
-use App\Http\Resources\AgentResource;
+use App\Models\User;
+use App\Models\User_role;
+use App\Http\Resources\ManagerResource;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Exception;
 
-class AgentList
+class ManagerList
 {
     public function handle(Request $request)
     {
-        $query = Agent::query();
-        $query->select('agents.*')->with('user:id,name,email,phone,username,profile_picture,status');
+        $query = User_role::query();
+        $query->where('role_type', 'Manager');
+        $query->select('user_roles.*')->with('user:id,name,email,phone,username,profile_picture,status');
 
         // Search
         if ($request->has('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('address', 'like', "%$search%")
-                    ->orWhere('upazila', 'like', "%$search%")
+                $q->where('role_type', 'like', "%$search%")
                     ->orWhereHas('user', function ($q) use ($search) {
                         $q->where('name', 'like', "%$search%")
                             ->orWhere('email', 'like', "%$search%")
@@ -29,7 +29,6 @@ class AgentList
             });
         }
 
-        // Filter by status
         if ($request->has('status')) {
             $query->whereHas('user', function ($q) use ($request) {
                 $q->where('status', $request->status);
@@ -55,7 +54,7 @@ class AgentList
         $result = $query->paginate($perPage, ['*'], 'page', $page);
 
         return response()->json([
-            'data' => AgentResource::collection($result),
+            'data' => ManagerResource::collection($result),
             'pagination' => [
                 'total' => $result->total(),
                 'per_page' => $result->perPage(),

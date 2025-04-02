@@ -4,20 +4,27 @@ namespace App\Services\AgentService;
 use App\Models\Agent;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Exception;
 
 class AgentUpdate
 {
     public function handle($request, $id)
     {
         $validator = validator($request->all(), [
-            'address' => 'required',
-            'district' => 'required',
-            'upazila' => 'required',
+                 'name' => 'required',
+                 'email' => 'required|unique:users,email,' . $role->user_id,
+                 'phone' => 'required|unique:users,phone,' . $role->user_id,
+                 'username' => 'required|unique:users,username,' . $role->user_id,
+                 'nid_front_image' => 'image|mimes:jpeg,png,jpg|max:600',
+                 'nid_back_image' => 'image|mimes:jpeg,png,jpg|max:600',
+                 'profile_picture' => 'image|mimes:jpeg,png,jpg|max:600',
+                 'address' => 'required',
+                 'district' => 'required',
+                 'upazila' => 'required',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
-                'status' => 'error',
                 'message' => 'Validation failed',
                 'errors' => $validator->errors(),
             ], 422);
@@ -67,7 +74,6 @@ class AgentUpdate
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json([
-                'status' => 'error',
                 'message' => 'Failed to update agent',
                 'error' => $e->getMessage(),
             ], 500);
