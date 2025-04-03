@@ -10,11 +10,16 @@ class AgentUpdate
 {
     public function handle($request, $id)
     {
+
+        DB::beginTransaction();
+        try {
+            $agent = Agent::findOrFail($id);
+
         $validator = validator($request->all(), [
                  'name' => 'required',
-                 'email' => 'required|unique:users,email,' . $role->user_id,
-                 'phone' => 'required|unique:users,phone,' . $role->user_id,
-                 'username' => 'required|unique:users,username,' . $role->user_id,
+                 'email' => 'required|unique:users,email,' . $agent->user_id,
+                 'phone' => 'required|unique:users,phone,' . $agent->user_id,
+                 'username' => 'required|unique:users,username,' . $agent->user_id,
                  'nid_front_image' => 'image|mimes:jpeg,png,jpg|max:600',
                  'nid_back_image' => 'image|mimes:jpeg,png,jpg|max:600',
                  'profile_picture' => 'image|mimes:jpeg,png,jpg|max:600',
@@ -30,9 +35,7 @@ class AgentUpdate
             ], 422);
         }
 
-        DB::beginTransaction();
-        try {
-            $agent = Agent::findOrFail($id);
+      
             $agent->user->name = $request->name;
             $agent->user->email = $request->email;
             $agent->user->phone = $request->phone;
