@@ -18,7 +18,7 @@ class SchoolAdminResource extends JsonResource
             'id' => $this->id,
             'profile_picture' => $this->user->profile_picture,
             'agent_name' => $this->agent?$this->agent->name: null,
-            'agent_username' => $this->agent->username,
+            'agent_username' => $this->agent?$this->agent->username: null,
             'email' => $this->user->email,
             'phone' => $this->user->phone,
             'username' => $this->user->username,
