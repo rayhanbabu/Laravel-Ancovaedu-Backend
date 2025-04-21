@@ -9,10 +9,10 @@ use App\Models\User_role;
        die();
   }
 
-   function user(){
-        $user=User::with('user_role')->find(Auth::id());
-         return $user;
-   }
+    function user(){
+         $user=User::with('user_role')->find(Auth::id());
+          return $user;
+     }
 
    function rayhan(){
        return 'Md Rayhan Babu';
