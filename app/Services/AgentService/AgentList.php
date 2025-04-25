@@ -10,8 +10,10 @@ use Illuminate\Support\Facades\Exception;
 class AgentList
 {
     public function handle(Request $request)
+    
     {
         $query = Agent::query();
+    
         $query->select('agents.*')->with('user:id,name,email,phone,username,profile_picture,status');
 
         // Search

@@ -3,7 +3,6 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,10 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-   
-
     require __DIR__.'/auth.php';
     require __DIR__.'/supperadmin.php';
     require __DIR__.'/agent.php';
     require __DIR__.'/manager.php';
     require __DIR__.'/schooladmin.php';
+    require __DIR__.'/setting.php';
+    require __DIR__.'/student.php';
+
+
+

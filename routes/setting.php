@@ -1,0 +1,75 @@
+<?php 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SchoolPanel\Setting\SessionController;
+use App\Http\Controllers\SchoolPanel\Setting\LevelController;
+use App\Http\Controllers\SchoolPanel\Setting\FacultyController;
+use App\Http\Controllers\SchoolPanel\Setting\ProgramyearController;
+use App\Http\Controllers\SchoolPanel\Setting\DepartmentController;
+use App\Http\Controllers\SchoolPanel\Setting\SectionController;
+use App\Http\Controllers\SchoolPanel\Setting\ReligionController;
+use App\Http\Controllers\SchoolPanel\Setting\ExamController;
+use App\Http\Controllers\SchoolPanel\Setting\SubjectController;
+
+      Route::middleware('auth:sanctum')->group(function () {
+
+            Route::middleware('Supperadmin')->group(function () {
+
+                 // religion
+                 Route::get('/{school_username}/religion', [ReligionController::class, 'religion']);
+                 Route::post('/{school_username}/religion-add', [ReligionController::class, 'religion_add']);
+                 Route::post('/{school_username}/religion-update/{id}', [ReligionController::class, 'religion_update']);
+                 Route::delete('/{school_username}/religion-delete/{id}', [ReligionController::class, 'religion_delete']);
+
+                 // Session
+                 Route::get('/{school_username}/session', [SessionController::class, 'session']);
+                 Route::post('/{school_username}/session-add', [SessionController::class, 'session_add']);
+                 Route::post('/{school_username}/session-update/{id}', [SessionController::class, 'session_update']);
+                 Route::delete('/{school_username}/session-delete/{id}', [SessionController::class, 'session_delete']);
+
+                 // programyear
+                 Route::get('/{school_username}/programyear', [ProgramyearController::class, 'programyear']);
+                 Route::post('/{school_username}/programyear-add', [ProgramyearController::class, 'programyear_add']);
+                 Route::post('/{school_username}/programyear-update/{id}', [ProgramyearController::class, 'programyear_update']);
+                 Route::delete('/{school_username}/programyear-delete/{id}', [ProgramyearController::class, 'programyear_delete']);
+    
+                 // level
+                 Route::get('/{school_username}/level', [LevelController::class, 'level']);
+                 Route::post('/{school_username}/level-add', [LevelController::class, 'level_add']);
+                 Route::post('/{school_username}/level-update/{id}', [LevelController::class, 'level_update']);
+                 Route::delete('/{school_username}/level-delete/{id}', [LevelController::class, 'level_delete']);
+
+                 // faculty
+                 Route::get('/{school_username}/faculty/{level_id}', [FacultyController::class, 'faculty']);
+                 Route::post('/{school_username}/faculty-add', [FacultyController::class, 'faculty_add']);
+                 Route::post('/{school_username}/faculty-update/{id}', [FacultyController::class, 'faculty_update']);
+                 Route::delete('/{school_username}/faculty-delete/{id}', [FacultyController::class, 'faculty_delete']);
+
+                 // department
+                 Route::get('/{school_username}/department/{faculty_id}', [DepartmentController::class, 'department']);
+                 Route::post('/{school_username}/department-add', [DepartmentController::class, 'department_add']);
+                 Route::post('/{school_username}/department-update/{id}', [DepartmentController::class, 'department_update']);
+                 Route::delete('/{school_username}/department-delete/{id}', [DepartmentController::class, 'department_delete']);
+
+                  // section 
+                  Route::get('/{school_username}/section/{department_id}', [SectionController::class, 'section']);
+                  Route::post('/{school_username}/section-add', [SectionController::class, 'section_add']);
+                  Route::post('/{school_username}/section-update/{id}', [SectionController::class, 'section_update']);
+                  Route::delete('/{school_username}/section-delete/{id}', [SectionController::class, 'section_delete']);
+
+                  // exam 
+                  Route::get('/{school_username}/exam', [ExamController::class, 'exam']);
+                  Route::post('/{school_username}/exam-add', [ExamController::class, 'exam_add']);
+                  Route::post('/{school_username}/exam-update/{id}', [ExamController::class, 'exam_update']);
+                  Route::delete('/{school_username}/exam-delete/{id}', [ExamController::class, 'exam_delete']);
+
+
+                  // subject 
+                  Route::get('/{school_username}/subject', [SubjectController::class, 'subject']);
+                  Route::post('/{school_username}/subject-add', [SubjectController::class, 'subject_add']);
+                  Route::post('/{school_username}/subject-update/{id}', [SubjectController::class, 'subject_update']);
+                  Route::delete('/{school_username}/subject-delete/{id}', [SubjectController::class, 'subject_delete']); 
+
+           });
+     });
+
+?>
