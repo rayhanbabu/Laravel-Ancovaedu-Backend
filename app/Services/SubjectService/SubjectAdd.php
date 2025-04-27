@@ -38,7 +38,6 @@ class SubjectAdd
 
     
             $user_auth =user();
-        
             $model = new Subject();
             $model->school_username = $school_username;
             $model->subject_name = $request->subject_name;

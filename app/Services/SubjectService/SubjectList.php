@@ -40,17 +40,17 @@ public function handle(Request $request,$school_username)
             $query->where('id', $request->viewById);
         }
 
-        // Sorting
+         // Sorting
         $sortField = $request->get('sortField', 'id');
         $sortDirection = $request->get('sortDirection', 'asc');
         $query->orderBy($sortField, $sortDirection);
 
-        // Pagination
+         // Pagination
         $perPage = (int) $request->input('perPage', 20);
         $page = (int) $request->input('page', 1);
         $perPage = ($perPage > 100) ? 100 : $perPage; // Max 100 per page
 
-        // Apply pagination
+         // Apply pagination
         $result = $query->paginate($perPage, ['*'], 'page', $page);
 
         return response()->json([
