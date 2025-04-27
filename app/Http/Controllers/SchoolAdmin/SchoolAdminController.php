@@ -37,27 +37,27 @@ class SchoolAdminController extends Controller
     }
 
   
-     public function SchoolAdmin_add(Request $request)
+     public function schooladmin_add(Request $request)
      {
          return $this->SchoolAdminAdd->handle($request);
      }
 
-     public function SchoolAdmin(Request $request){
+     public function schooladmin(Request $request){
            return $this->SchoolAdminList->handle($request);
      }
 
-      public function SchoolAdmin_update(Request $request, $id)
+      public function schooladmin_update(Request $request, $id)
       {
           return $this->SchoolAdminUpdate->handle($request, $id);
       }
    
-      public function SchoolAdmin_status(Request $request)
+      public function schooladmin_status(Request $request)
        {
            return $this->SchoolAdminStatus->handle($request);
        }
    
 
-       public function SchoolAdmin_delete(Request $request, $id)
+       public function schooladmin_delete(Request $request, $id)
        {
            return $this->SchoolAdminDelete->handle($request, $id);
        }
