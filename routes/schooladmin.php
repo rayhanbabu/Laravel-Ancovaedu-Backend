@@ -1,6 +1,6 @@
 <?php 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\schoolAdmin\SchoolAdminController;
+use App\Http\Controllers\SchoolAdmin\SchoolAdminController;
 
   Route::middleware('auth:sanctum')->group(function () {
       Route::middleware('Supperadmin')->group(function () {
