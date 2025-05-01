@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Route;
     require __DIR__.'/schooladmin.php';
     require __DIR__.'/setting.php';
     require __DIR__.'/student.php';
+    require __DIR__.'/studentaccount.php';
+
 
 
 
