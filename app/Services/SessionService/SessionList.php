@@ -2,7 +2,7 @@
 
 namespace App\Services\SessionService;
 
-use App\Models\Session;
+use App\Models\Sessionyear;
 use Illuminate\Http\Request;
 
 class SessionList
@@ -11,21 +11,21 @@ class SessionList
 public function handle(Request $request,$school_username)
     
     {
-        $query = Session::query();
+        $query = Sessionyear::query();
         $query->where('school_username', $school_username);
     
         // Search
         if ($request->has('search')) {
              $search = $request->search;
              $query->where(function ($q) use ($search) {
-                $q->where('session_name', 'like', "%$search%")
-                    ->orWhere('session_status', 'like', "%$search%");
+                $q->where('sessionyear_name', 'like', "%$search%")
+                    ->orWhere('sessionyear_status', 'like', "%$search%");
              });
          }
 
         // Filter by status
         if ($request->has('status')) {
-                $query->where('session_status', $request->status);
+                $query->where('sessionyear_status', $request->status);
         }
 
         // View By Id

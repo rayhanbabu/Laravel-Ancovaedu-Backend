@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('school_username'); // Foreign Key
             $table->foreign('school_username')->references('username')->on('users');
 
-            $table->unsignedBigInteger('session_id'); // Foreign Key
-            $table->foreign('session_id')->references('id')->on('sessions');
+            $table->unsignedBigInteger('sessionyear_id'); // Foreign Key
+            $table->foreign('sessionyear_id')->references('id')->on('sessionyears');
 
             $table->unsignedBigInteger('programyear_id'); // Foreign Key
             $table->foreign('programyear_id')->references('id')->on('programyears');
@@ -40,9 +40,7 @@ return new class extends Migration
             $table->string('desc');
 
             $table->date('date')->nullable();
-            $table->integer('year');
-            $table->integer('month');
-            $table->integer('day');
+          
 
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->foreignId('updated_by')->nullable()->constrained('users')->onDelete('set null');

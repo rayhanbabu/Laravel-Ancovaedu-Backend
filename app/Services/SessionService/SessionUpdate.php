@@ -1,7 +1,7 @@
 <?php
 namespace App\Services\SessionService;
 
-use App\Models\Session;
+use App\Models\Sessionyear;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Exception;
@@ -15,10 +15,10 @@ class SessionUpdate
         try {
 
             $user_auth =user();
-            $model = Session::findOrFail($id);
+            $model = Sessionyear::findOrFail($id);
 
             $validator = validator($request->all(), [
-                'session_name' => 'required|unique:sessions,session_name,' . $id . 'NULL,id,school_username,' . $school_username,
+                'sessionyear_name' => 'required|unique:sessionyears,sessionyear_name,' . $id . 'NULL,id,school_username,' . $school_username,
             ]);
             
 
@@ -29,8 +29,8 @@ class SessionUpdate
               ], 422);
           }
 
-          $model->session_name = $request->session_name;
-          $model->session_status = $request->status;
+          $model->sessionyear_name = $request->sessionyear_name;
+          $model->sessionyear_status = $request->status;
           $model->updated_by = $user_auth->id; 
           
             $model->save();

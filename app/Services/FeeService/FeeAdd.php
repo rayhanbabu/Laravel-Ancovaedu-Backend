@@ -21,7 +21,7 @@ class FeeAdd
               $validator = validator($request->all(), [     
                  'desc' => 'required',
                  'amount' => 'required|integer',
-                 'session_id' => 'required|integer|exists:sessions,id',
+                 'sessionyear_id' => 'required|integer|exists:sessionyears,id',
                  'programyear_id' => 'required|integer|exists:programyears,id',
                  'level_id' => 'required|integer|exists:levels,id',
                  'faculty_id' => 'required|integer|exists:faculties,id',
@@ -41,7 +41,7 @@ class FeeAdd
         
             $fee = new Fee();
             $fee->school_username = $request->school_username;
-            $fee->session_id = $request->session_id;
+            $fee->sessionyear_id = $request->sessionyear_id;
             $fee->programyear_id = $request->programyear_id;
             $fee->level_id = $request->level_id;
             $fee->faculty_id = $request->faculty_id;

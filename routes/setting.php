@@ -1,6 +1,6 @@
 <?php 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SchoolPanel\Setting\SessionController;
+use App\Http\Controllers\SchoolPanel\Setting\SessionyearController;
 use App\Http\Controllers\SchoolPanel\Setting\LevelController;
 use App\Http\Controllers\SchoolPanel\Setting\FacultyController;
 use App\Http\Controllers\SchoolPanel\Setting\ProgramyearController;
@@ -21,10 +21,10 @@ use App\Http\Controllers\SchoolPanel\Setting\SubjectController;
                  Route::delete('/{school_username}/religion-delete/{id}', [ReligionController::class, 'religion_delete']);
 
                  // Session
-                 Route::get('/{school_username}/session', [SessionController::class, 'session']);
-                 Route::post('/{school_username}/session-add', [SessionController::class, 'session_add']);
-                 Route::post('/{school_username}/session-update/{id}', [SessionController::class, 'session_update']);
-                 Route::delete('/{school_username}/session-delete/{id}', [SessionController::class, 'session_delete']);
+                 Route::get('/{school_username}/sessionyear', [SessionyearController::class, 'sessionyear']);
+                 Route::post('/{school_username}/session-add', [SessionyearController::class, 'session_add']);
+                 Route::post('/{school_username}/session-update/{id}', [SessionyearController::class, 'session_update']);
+                 Route::delete('/{school_username}/session-delete/{id}', [SessionyearController::class, 'session_delete']);
 
                  // programyear
                  Route::get('/{school_username}/programyear', [ProgramyearController::class, 'programyear']);

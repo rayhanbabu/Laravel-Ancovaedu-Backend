@@ -13,7 +13,7 @@ use App\Services\SessionService\SessionList;
 use App\Services\SessionService\SessionUpdate;
 use App\Services\SessionService\SessionDelete;
 
-class SessionController extends Controller
+class SessionyearController extends Controller
 {
 
     protected $SessionAdd;
@@ -31,25 +31,25 @@ class SessionController extends Controller
     }
 
   
-     public function session_add(Request $request,$school_username)
-     {
-          return $this->SessionAdd->handle($request,$school_username);
-     }
-
-     public function session(Request $request,$school_username){
-           return $this->SessionList->handle($request,$school_username);
-     }
-
-      public function session_update(Request $request,$school_username, $id)
+      public function session_add(Request $request,$school_username)
       {
-          return $this->SessionUpdate->handle($request,$school_username,$id);
+           return $this->SessionAdd->handle($request,$school_username);
       }
+
+       public function sessionyear(Request $request,$school_username){
+            return $this->SessionList->handle($request,$school_username);
+       }
+
+       public function session_update(Request $request,$school_username, $id)
+        {
+           return $this->SessionUpdate->handle($request,$school_username,$id);
+        }
    
  
        public function session_delete(Request $request,$school_username, $id)
-       {
+         {
            return $this->SessionDelete->handle($request ,$school_username , $id);
-       }
+         }
 
 
 

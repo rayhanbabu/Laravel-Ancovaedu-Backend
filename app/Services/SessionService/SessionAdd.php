@@ -2,7 +2,7 @@
 
 namespace App\Services\SessionService;
 
-use App\Models\Session;
+use App\Models\Sessionyear;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -16,7 +16,7 @@ class SessionAdd
         DB::beginTransaction();
         try {
             $validator = validator($request->all(), [
-                'session_name' => 'required|unique:sessions,session_name,NULL,id,school_username,' . $school_username,
+                'sessionyear_name' => 'required|unique:sessionyears,sessionyear_name,NULL,id,school_username,' . $school_username,
             ]);
 
             if ($validator->fails()) {
@@ -29,9 +29,9 @@ class SessionAdd
     
             $user_auth =user();
         
-            $model = new Session();
-            $model->session_name = $request->session_name;
-            $model->session_status = $request->status;
+            $model = new Sessionyear();
+            $model->sessionyear_name = $request->sessionyear_name;
+            $model->sessionyear_status = $request->status;
             $model->created_by = $user_auth->id; 
             $model->school_username = $school_username;
             $model->save();

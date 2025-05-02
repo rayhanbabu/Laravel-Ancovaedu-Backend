@@ -1,7 +1,7 @@
 <?php
 namespace App\Services\SessionService;
 
-use App\Models\Session;
+use App\Models\Sessionyear;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -12,7 +12,7 @@ class SessionDelete
     {
         DB::beginTransaction();
         try {
-            $model = Session::findOrFail($id); 
+            $model = Sessionyear::findOrFail($id); 
             // Delete agent and user
             $model->delete();
 
