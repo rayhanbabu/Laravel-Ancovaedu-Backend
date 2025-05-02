@@ -13,7 +13,7 @@ public function handle(Request $request,$school_username)
     {
         $query = Subject::query();
         $query->where('school_username', $school_username)
-        ->where('session_id', $request->session_id)
+        ->where('sessionyear_id', $request->sessionyear_id)
         ->where('programyear_id', $request->programyear_id)
         ->where('level_id', $request->level_id)
         ->where('faculty_id', $request->faculty_id)

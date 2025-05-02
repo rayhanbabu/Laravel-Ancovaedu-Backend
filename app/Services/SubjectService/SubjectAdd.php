@@ -17,7 +17,7 @@ class SubjectAdd
         try {
             $validator = validator($request->all(), [
                 'subject_name' => 'required',
-                'session_id' => 'required|integer|exists:sessions,id',
+                'sessionyear_id' => 'required|integer|exists:sessionyears,id',
                 'programyear_id' => 'required|integer|exists:programyears,id',
                 'level_id' => 'required|integer|exists:levels,id',
                 'faculty_id' => 'required|integer|exists:faculties,id',
@@ -41,7 +41,7 @@ class SubjectAdd
             $model = new Subject();
             $model->school_username = $school_username;
             $model->subject_name = $request->subject_name;
-            $model->session_id = $request->session_id;
+            $model->sessionyear_id = $request->sessionyear_id;
             $model->programyear_id = $request->programyear_id;
             $model->level_id = $request->level_id;
             $model->faculty_id = $request->faculty_id;
