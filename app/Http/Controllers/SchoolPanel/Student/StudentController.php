@@ -68,14 +68,32 @@ class StudentController extends Controller
        public function student_import(Request $request,$school_username){
 
             $user_auth=user();
-            $session_id=$request->input('session_id');
+            $sessionyear_id=$request->input('sessionyear_id');
             $programyear_id=$request->input('programyear_id');
             $level_id=$request->input('level_id');
             $faculty_id=$request->input('faculty_id');
             $department_id=$request->input('department_id');
             $section_id=$request->input('section_id');
+
+
+            $validator = validator($request->all(), [  
+                'sessionyear_id' => 'required|integer|exists:sessionyears,id',
+                'programyear_id' => 'required|integer|exists:programyears,id',
+                'level_id' => 'required|integer|exists:levels,id',
+                'faculty_id' => 'required|integer|exists:faculties,id',
+                'department_id' => 'required|integer|exists:departments,id',
+                'section_id' => 'required|integer|exists:sections,id',    
+                'file' => 'required|mimes:xlsx,xls,csv|max:2048',          
+           ]);
+
+           if($validator->fails()) {
+               return response()->json([
+                    'message' => 'Validation failed',
+                    'errors' => $validator->errors(),
+                ], 422);
+            }
        
-             Excel::Import(new StudentImport($school_username,$session_id,$programyear_id,$level_id,$faculty_id,$department_id,$section_id,$user_auth),request()->file('file'));
+             Excel::Import(new StudentImport($school_username,$sessionyear_id,$programyear_id,$level_id,$faculty_id,$department_id,$section_id,$user_auth),request()->file('file'));
                 return response()->json([
                      'message' => 'Student imported successfully',
                ],200);

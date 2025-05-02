@@ -32,7 +32,7 @@ class StudentAdd
                  'religion_id' => 'required|integer|exists:religions,id',
                  'gender' => 'required',
                  'roll' => 'required|integer',
-                 'session_id' => 'required|integer|exists:sessions,id',
+                 'sessionyear_id' => 'required|integer|exists:sessionyears,id',
                  'programyear_id' => 'required|integer|exists:programyears,id',
                  'level_id' => 'required|integer|exists:levels,id',
                  'faculty_id' => 'required|integer|exists:faculties,id',
@@ -104,7 +104,7 @@ class StudentAdd
             $enroll->student_id = $student->id;
             $enroll->user_id = $user->id;
             $enroll->school_username = $request->school_username;
-            $enroll->session_id = $request->session_id;
+            $enroll->sessionyear_id = $request->sessionyear_id;
             $enroll->programyear_id = $request->programyear_id;
             $enroll->level_id = $request->level_id;
             $enroll->faculty_id = $request->faculty_id;
@@ -112,7 +112,7 @@ class StudentAdd
             $enroll->section_id = $request->section_id;
             $enroll->roll = $request->roll;
             $enroll->created_by = $user_auth->id;
-            $enroll->created_type = "Insert";
+            $enroll->created_type = "Student";
             $enroll->save();
 
 

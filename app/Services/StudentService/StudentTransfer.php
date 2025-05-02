@@ -18,13 +18,13 @@ class StudentTransfer
 
             // Validation rules
             $rules = [
-                'session_id'        => 'required|integer|exists:sessions,id',
+                'sessionyear_id'    => 'required|integer|exists:sessionyears,id',
                 'programyear_id'    => 'required|integer|exists:programyears,id',
                 'level_id'          => 'required|integer|exists:levels,id',
                 'faculty_id'        => 'required|integer|exists:faculties,id',
                 'department_id'     => 'required|integer|exists:departments,id',
                 'section_id'        => 'required|integer|exists:sections,id',
-                'to_session_id'     => 'required|integer|exists:sessions,id',
+                'to_sessionyear_id' => 'required|integer|exists:sessionyears,id',
                 'to_programyear_id' => 'required|integer|exists:programyears,id',
                 'to_level_id'       => 'required|integer|exists:levels,id',
                 'to_faculty_id'     => 'required|integer|exists:faculties,id',
@@ -44,7 +44,7 @@ class StudentTransfer
             // Fetch enrolled students based on given criteria
             $enrollments = Enroll::where([
                     ['school_username', $school_username],
-                    ['session_id', $request->session_id],
+                    ['sessionyear_id', $request->sessionyear_id],
                     ['programyear_id', $request->programyear_id],
                     ['level_id', $request->level_id],
                     ['faculty_id', $request->faculty_id],
@@ -64,7 +64,7 @@ class StudentTransfer
                 $exists = Enroll::where([
                         ['school_username', $school_username],
                         ['student_id', $enrollment->student_id],
-                        ['session_id', $request->to_session_id],
+                        ['sessionyear_id', $request->to_sessionyear_id],
                         ['programyear_id', $request->to_programyear_id],
                         ['level_id', $request->to_level_id],
                         ['faculty_id', $request->to_faculty_id],
@@ -78,13 +78,13 @@ class StudentTransfer
                     // ], 400);
                 }else{
                 // Create new enrollment for target session
-                Enroll::create([
+                 Enroll::create([
                     'user_id'         => $enrollment->user_id,
                     'student_id'      => $enrollment->student_id,
                     'school_username' => $enrollment->school_username,
                     'roll'            => $enrollment->roll,
 
-                    'session_id'        => $request->to_session_id,
+                    'sessionyear_id'    => $request->to_sessionyear_id,
                     'programyear_id'    => $request->to_programyear_id,
                     'level_id'          => $request->to_level_id,
                     'faculty_id'        => $request->to_faculty_id,

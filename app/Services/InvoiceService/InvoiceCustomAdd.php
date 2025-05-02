@@ -18,7 +18,7 @@ class InvoiceCustomAdd
             $school_username = $request->school_username;
            
             $validator = validator($request->all(), [
-                 'session_id' => 'required|integer|exists:sessions,id',
+                 'sessionyear_id' => 'required|integer|exists:sessionyears,id',
                  'programyear_id' => 'required|integer|exists:programyears,id',
                  'level_id' => 'required|integer|exists:levels,id',
                  'faculty_id' => 'required|integer|exists:faculties,id',
@@ -40,7 +40,7 @@ class InvoiceCustomAdd
 
                         $invoice = new Invoice();
                         $invoice->school_username = $school_username;
-                        $invoice->session_id = $request->session_id;
+                        $invoice->sessionyear_id = $request->sessionyear_id;
                         $invoice->programyear_id = $request->programyear_id;
                         $invoice->level_id = $request->level_id;
                         $invoice->faculty_id = $request->faculty_id;

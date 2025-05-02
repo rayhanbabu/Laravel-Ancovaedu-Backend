@@ -23,8 +23,8 @@ return new class extends Migration
             $table->foreignId('fee_id')->nullable()->constrained('fees')->onDelete('set null');
            
 
-            $table->unsignedBigInteger('session_id'); // Foreign Key
-            $table->foreign('session_id')->references('id')->on('sessions');
+            $table->unsignedBigInteger('sessionyear_id'); // Foreign Key
+            $table->foreign('sessionyear_id')->references('id')->on('sessionyears');
 
             $table->unsignedBigInteger('programyear_id'); // Foreign Key
             $table->foreign('programyear_id')->references('id')->on('programyears');
@@ -53,9 +53,10 @@ return new class extends Migration
 
             $table->boolean('payment_status')->default(false);
 
-            $table->integer('partial_payment')->default(false);
+            $table->boolean('invoice_create_status')->default(false);
 
-           
+            $table->integer('partial_payment')->default(0);
+
 
 
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');

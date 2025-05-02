@@ -34,7 +34,7 @@ class StudentResource extends JsonResource
             'religion_name' => $this->religion->religion_name,
 
             'session_id' => $this->session_id,
-            'session_name' => $this->session->session_name,
+            'sessionyear_name' => $this->sessionyear->sessionyear_name,
             'programyear_id' => $this->programyear_id,
             'programyear_name' => $this->programyear->programyear_name,
             'level_id' => $this->level_id,

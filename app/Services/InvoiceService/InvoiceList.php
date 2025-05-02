@@ -19,7 +19,7 @@ class InvoiceList
 
           // Apply filters
        $filters = [
-         'session_id',
+         'sessionyear_id',
          'programyear_id',
          'level_id',
          'faculty_id',

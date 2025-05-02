@@ -18,7 +18,7 @@ public function handle(Request $request,$school_username)
             'user:id,name,email,phone,username,profile_picture,status',
             'student',
             'religion',
-            'session:id,session_name',
+            'sessionyear:id,sessionyear_name',
             'programyear:id,programyear_name',
             'level:id,level_name',
             'faculty:id,faculty_name',
@@ -30,12 +30,12 @@ public function handle(Request $request,$school_username)
 
         // Apply filters
     $filters = [
-        'session_id',
+        'sessionyear_id',
         'programyear_id',
         'level_id',
         'faculty_id',
         'department_id',
-        'section_id',
+        'sectionyear_id',
         'viewById' => 'id'
     ];
 

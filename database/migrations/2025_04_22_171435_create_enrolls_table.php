@@ -23,8 +23,8 @@ return new class extends Migration
             $table->unsignedBigInteger('student_id'); // Foreign Key
             $table->foreign('student_id')->references('id')->on('students');
 
-            $table->unsignedBigInteger('session_id'); // Foreign Key
-            $table->foreign('session_id')->references('id')->on('sessions');
+            $table->unsignedBigInteger('sessionyear_id'); // Foreign Key
+            $table->foreign('sessionyear_id')->references('id')->on('sessionyears');
 
             $table->unsignedBigInteger('programyear_id'); // Foreign Key
             $table->foreign('programyear_id')->references('id')->on('programyears');
@@ -46,6 +46,8 @@ return new class extends Migration
             $table->date('confirm_enroll_date')->nullable();
 
             $table->integer('roll')->default(0);
+
+            $table->enum ('created_type', ['Student', 'Enroll'])->default('Enroll');
 
             $table->foreignId('main_subject1')->nullable()->constrained('subjects')->onDelete('set null');
             $table->foreignId('main_subject2')->nullable()->constrained('subjects')->onDelete('set null');

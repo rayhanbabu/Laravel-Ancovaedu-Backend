@@ -19,7 +19,7 @@ class PaymentReport
     
         // Apply filters
           $filters = [
-              'session_id',
+              'sessionyear_id',
               'programyear_id',
               'level_id',
               'faculty_id',
@@ -46,7 +46,7 @@ class PaymentReport
             SUM(waiver_amount) as waiver_amount, 
             SUM(total_amount) as net_invoice_amount, 
             COUNT(*) as total_invoices,
-            MAX(session_id) as session_id, 
+            MAX(sessionyear_id) as sessionyear_id, 
             MAX(programyear_id) as programyear_id,
             MAX(level_id) as level_id,
             MAX(faculty_id) as faculty_id,

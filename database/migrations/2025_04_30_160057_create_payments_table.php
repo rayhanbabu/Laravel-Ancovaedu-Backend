@@ -21,8 +21,8 @@ return new class extends Migration
             $table->foreign('student_id')->references('id')->on('students');
 
 
-            $table->unsignedBigInteger('session_id'); // Foreign Key
-            $table->foreign('session_id')->references('id')->on('sessions');
+            $table->unsignedBigInteger('sessionyear_id'); // Foreign Key
+            $table->foreign('sessionyear_id')->references('id')->on('sessionyears');
 
             $table->unsignedBigInteger('programyear_id'); // Foreign Key
             $table->foreign('programyear_id')->references('id')->on('programyears');
@@ -57,7 +57,7 @@ return new class extends Migration
             $table->integer('month')->nullable();
             $table->integer('day')->nullable();
 
-            $table->string('collection_type')->nullable();
+            $table->enum ('collection_type', ['Full','Partial']);
 
         
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');

@@ -36,15 +36,13 @@ class InvoiceAdd
 
              $exists = Invoice::where([
                 ['school_username', $school_username],
-                ['session_id', $fee->session_id],
+                ['sessionyear_id', $fee->sessionyear_id],
                 ['programyear_id', $fee->programyear_id],
                 ['level_id', $fee->level_id],
                 ['faculty_id', $fee->faculty_id],
                 ['department_id', $fee->department_id],
                 ['section_id', $fee->section_id],
-                ['fee_id', $request->fee_id],
-                
-                                 
+                ['fee_id', $request->fee_id],                                                 
             ])->exists();
 
             if ($exists) {
@@ -55,7 +53,7 @@ class InvoiceAdd
 
                 $enrollments = Enroll::where([
                     ['school_username', $school_username],
-                    ['session_id', $fee->session_id],
+                    ['sessionyear_id', $fee->sessionyear_id],
                     ['programyear_id', $fee->programyear_id],
                     ['level_id', $fee->level_id],
                     ['faculty_id', $fee->faculty_id],
@@ -66,7 +64,7 @@ class InvoiceAdd
         foreach ($enrollments as $enrollment) {
                $Invoice = new Invoice();
                 $Invoice->school_username = $school_username;
-                $Invoice->session_id = $fee->session_id;
+                $Invoice->sessionyear_id = $fee->sessionyear_id;
                 $Invoice->student_id = $enrollment->student_id;
                 $Invoice->fee_id = $request->fee_id;
                 $Invoice->programyear_id = $fee->programyear_id;

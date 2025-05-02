@@ -23,7 +23,7 @@ class PaymentAdd
 
             $validator = validator($request->all(), [     
                   'amount' => 'required|integer',
-                  'session_id' => 'required|integer|exists:sessions,id',
+                  'sessionyear_id' => 'required|integer|exists:sessionyears,id',
                   'programyear_id' => 'required|integer|exists:programyears,id',
                   'level_id' => 'required|integer|exists:levels,id',
                   'faculty_id' => 'required|integer|exists:faculties,id',
@@ -110,7 +110,7 @@ class PaymentAdd
         
             $Payment = new Payment();
             $Payment->school_username = $request->school_username;
-            $Payment->session_id = $request->session_id;
+            $Payment->sessionyear_id = $request->sessionyear_id;
             $Payment->programyear_id = $request->programyear_id;
             $Payment->level_id = $request->level_id;
             $Payment->faculty_id = $request->faculty_id;

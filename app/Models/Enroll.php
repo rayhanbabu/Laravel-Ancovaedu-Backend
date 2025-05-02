@@ -14,7 +14,7 @@ class Enroll extends Model
         'school_username',
         'department_id',
         'level_id',
-        'session_id',
+        'sessionyear_id',
         'programyear_id',
         'section_id',
         'faculty_id',
@@ -35,9 +35,9 @@ class Enroll extends Model
     }
 
 
-    public function session()
+    public function sessionyear()
     {
-        return $this->belongsTo(Session::class, 'session_id');
+        return $this->belongsTo(Sessionyear::class, 'sessionyear_id');
     }
 
     public function programyear()

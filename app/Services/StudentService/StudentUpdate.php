@@ -26,7 +26,7 @@ class StudentUpdate
                  'religion_id' => 'required|integer|exists:religions,id',
                  'gender' => 'required',
                  'roll' => 'required|integer',
-                 'session_id' => 'required|integer|exists:sessions,id',
+                 'sessionyear_id' => 'required|integer|exists:sessionyears,id',
                  'programyear_id' => 'required|integer|exists:programyears,id',
                  'level_id' => 'required|integer|exists:levels,id',
                  'faculty_id' => 'required|integer|exists:faculties,id',

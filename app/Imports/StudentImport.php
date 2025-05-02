@@ -19,10 +19,10 @@ use App\Models\Enroll;
  class  StudentImport implements ToModel, WithBatchInserts, WithChunkReading, ShouldQueue
     {
 
-    public function __construct($school_username, $session_id, $programyear_id, $level_id, $faculty_id, $department_id, $section_id, $user_auth)
+    public function __construct($school_username, $sessionyear_id, $programyear_id, $level_id, $faculty_id, $department_id, $section_id, $user_auth)
        {
            $this->school_username = $school_username;
-           $this->session_id = $session_id;
+           $this->sessionyear_id = $sessionyear_id;
            $this->programyear_id = $programyear_id;
            $this->level_id = $level_id;
            $this->faculty_id = $faculty_id;
@@ -88,14 +88,14 @@ use App\Models\Enroll;
             $enroll->user_id          = $user->id;
             $enroll->roll             = $row[6];
             $enroll->school_username  = $this->school_username;
-            $enroll->session_id       = $this->session_id;
+            $enroll->sessionyear_id   = $this->sessionyear_id;
             $enroll->programyear_id   = $this->programyear_id;
             $enroll->level_id         = $this->level_id;
             $enroll->faculty_id       = $this->faculty_id;
             $enroll->department_id    = $this->department_id;
             $enroll->section_id       = $this->section_id;
             $enroll->created_by       = $this->user_id;
-            $enroll->created_type     = "Insert";
+            $enroll->created_type     = "Enroll";
             $enroll->save();
     
            
