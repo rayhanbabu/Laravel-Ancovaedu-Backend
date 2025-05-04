@@ -9,6 +9,7 @@ use App\Http\Controllers\SchoolPanel\Setting\SectionController;
 use App\Http\Controllers\SchoolPanel\Setting\ReligionController;
 use App\Http\Controllers\SchoolPanel\Setting\ExamController;
 use App\Http\Controllers\SchoolPanel\Setting\SubjectController;
+use App\Http\Controllers\SchoolPanel\Setting\DesignationController;
 
       Route::middleware('auth:sanctum')->group(function () {
 
@@ -68,6 +69,15 @@ use App\Http\Controllers\SchoolPanel\Setting\SubjectController;
                   Route::post('/{school_username}/subject-add', [SubjectController::class, 'subject_add']);
                   Route::post('/{school_username}/subject-update/{id}', [SubjectController::class, 'subject_update']);
                   Route::delete('/{school_username}/subject-delete/{id}', [SubjectController::class, 'subject_delete']); 
+
+
+               // designation
+               Route::get('/{school_username}/designation', [DesignationController::class, 'designation']);
+               Route::post('/{school_username}/designation-add', [DesignationController::class, 'designation_add']);
+               Route::post('/{school_username}/designation-update/{id}', [DesignationController::class, 'designation_update']);
+               Route::delete('/{school_username}/designation-delete/{id}', [DesignationController::class, 'designation_delete']);
+
+
 
            });
      });
