@@ -2,7 +2,7 @@
 namespace App\Services\AdmitCardService;
 
 use Illuminate\Http\Request;
-use App\Models\AdmitCard;
+use App\Models\Admitcard;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Exception;
@@ -50,7 +50,7 @@ class AdmitCardUpdate
 
 
              for ($i = 0; $i < count($subject_ids); $i++) {
-                $AdmitCard = new AdmitCard();
+                $AdmitCard = new Admitcard();
                 $AdmitCard->school_username = $request->school_username;
                 $AdmitCard->sessionyear_id = $request->sessionyear_id;
                 $AdmitCard->programyear_id = $request->programyear_id;

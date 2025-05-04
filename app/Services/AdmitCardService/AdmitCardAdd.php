@@ -2,7 +2,7 @@
 
 namespace App\Services\AdmitCardService;
 
-use App\Models\AdmitCard;
+use App\Models\Admitcard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -58,11 +58,11 @@ class AdmitCardAdd
                  // Check if an ID exists at this index
                  if (!empty($ids[$i])) {
                      // Update existing record
-                     $AdmitCard = AdmitCard::find($ids[$i]);
+                     $AdmitCard = Admitcard::find($ids[$i]);
                      if (!$AdmitCard) continue; // safety check
                  } else {
                      // Create new record
-                     $AdmitCard = new AdmitCard();
+                     $AdmitCard = new Admitcard();
                      $AdmitCard->created_by = $user_auth->id;
                  }
              

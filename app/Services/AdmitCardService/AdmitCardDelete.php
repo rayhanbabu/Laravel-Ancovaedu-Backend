@@ -1,7 +1,7 @@
 <?php
 namespace App\Services\AdmitCardService;
 
-use App\Models\AdmitCard;
+use App\Models\Admitcard;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -12,7 +12,7 @@ class AdmitCardDelete
     {
         DB::beginTransaction();
         try {
-             $AdmitCard = AdmitCard::findOrFail($id);
+             $AdmitCard = Admitcard::findOrFail($id);
              $AdmitCard->delete();
            
             DB::commit();

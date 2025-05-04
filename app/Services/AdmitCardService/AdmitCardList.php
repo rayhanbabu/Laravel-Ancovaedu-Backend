@@ -2,7 +2,7 @@
 
 namespace App\Services\AdmitCardService;
 
-use App\Models\AdmitCard;
+use App\Models\Admitcard;
 use Illuminate\Http\Request;
 use App\Http\Resources\AdmitCardResource;
 
@@ -11,7 +11,7 @@ class AdmitCardList
    
    public function handle(Request $request,$school_username)
      {
-        $query = AdmitCard::query();  
+        $query = Admitcard::query();  
         $query->with('subject:id,subject_name,subject_code'); // Eager load the subject relationship
         $query->where('school_username', $school_username);
 
