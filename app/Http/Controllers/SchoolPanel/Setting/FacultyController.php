@@ -36,8 +36,8 @@ class FacultyController extends Controller
           return $this->FacultyAdd->handle($request,$school_username);
      }
 
-     public function faculty(Request $request,$school_username,$level_id){
-           return $this->FacultyList->handle($request,$school_username,$level_id);
+     public function faculty(Request $request,$school_username){
+           return $this->FacultyList->handle($request,$school_username);
      }
 
       public function faculty_update(Request $request,$school_username, $id)

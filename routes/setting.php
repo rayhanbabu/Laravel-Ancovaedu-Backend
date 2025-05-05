@@ -10,6 +10,7 @@ use App\Http\Controllers\SchoolPanel\Setting\ReligionController;
 use App\Http\Controllers\SchoolPanel\Setting\ExamController;
 use App\Http\Controllers\SchoolPanel\Setting\SubjectController;
 use App\Http\Controllers\SchoolPanel\Setting\DesignationController;
+use App\Http\Controllers\SchoolPanel\Setting\MarkinfoController;
 
       Route::middleware('auth:sanctum')->group(function () {
 
@@ -40,19 +41,19 @@ use App\Http\Controllers\SchoolPanel\Setting\DesignationController;
                  Route::delete('/{school_username}/level-delete/{id}', [LevelController::class, 'level_delete']);
 
                  // faculty
-                 Route::get('/{school_username}/faculty/{level_id}', [FacultyController::class, 'faculty']);
+                 Route::get('/{school_username}/faculty', [FacultyController::class, 'faculty']);
                  Route::post('/{school_username}/faculty-add', [FacultyController::class, 'faculty_add']);
                  Route::post('/{school_username}/faculty-update/{id}', [FacultyController::class, 'faculty_update']);
                  Route::delete('/{school_username}/faculty-delete/{id}', [FacultyController::class, 'faculty_delete']);
 
                  // department
-                 Route::get('/{school_username}/department/{faculty_id}', [DepartmentController::class, 'department']);
+                 Route::get('/{school_username}/department', [DepartmentController::class, 'department']);
                  Route::post('/{school_username}/department-add', [DepartmentController::class, 'department_add']);
                  Route::post('/{school_username}/department-update/{id}', [DepartmentController::class, 'department_update']);
                  Route::delete('/{school_username}/department-delete/{id}', [DepartmentController::class, 'department_delete']);
 
                   // section 
-                  Route::get('/{school_username}/section/{department_id}', [SectionController::class, 'section']);
+                  Route::get('/{school_username}/section', [SectionController::class, 'section']);
                   Route::post('/{school_username}/section-add', [SectionController::class, 'section_add']);
                   Route::post('/{school_username}/section-update/{id}', [SectionController::class, 'section_update']);
                   Route::delete('/{school_username}/section-delete/{id}', [SectionController::class, 'section_delete']);
@@ -78,6 +79,11 @@ use App\Http\Controllers\SchoolPanel\Setting\DesignationController;
                Route::delete('/{school_username}/designation-delete/{id}', [DesignationController::class, 'designation_delete']);
 
 
+                 //marks Info
+                Route::get('/{school_username}/markinfo', [MarkinfoController::class, 'markinfo']);
+                Route::post('/{school_username}/markinfo-add', [MarkinfoController::class, 'markinfo_add']);
+                Route::post('/{school_username}/markinfo-update/{id}', [MarkinfoController::class, 'markinfo_update']);
+                Route::delete('/{school_username}/markinfo-delete/{id}', [MarkinfoController::class, 'markinfo_delete']);
 
            });
      });

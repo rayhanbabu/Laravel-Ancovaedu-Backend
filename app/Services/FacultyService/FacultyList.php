@@ -8,11 +8,11 @@ use Illuminate\Http\Request;
 class FacultyList
 {
    
-public function handle(Request $request,$school_username, $level_id)
+public function handle(Request $request,$school_username)
     {
         $query = Faculty::query();
         $query->where('school_username', $school_username);
-        $query->where('level_id', $level_id);
+       
         // Search
         if ($request->has('search')) {
              $search = $request->search;
@@ -25,6 +25,11 @@ public function handle(Request $request,$school_username, $level_id)
         // Filter by status
         if ($request->has('status')) {
                 $query->where('faculty_status', $request->status);
+        }
+
+        // Filter by level_id
+        if ($request->has('level_id')) {
+            $query->where('level_id', $request->level_id);
         }
 
         // View By Id
@@ -46,7 +51,11 @@ public function handle(Request $request,$school_username, $level_id)
         $result = $query->paginate($perPage, ['*'], 'page', $page);
 
         return response()->json([
-              'data' =>$result,
+            'data' => $result->items(),
+            'total' => $result->total(),
+            'current_page' => $result->currentPage(),
+            'last_page' => $result->lastPage(),
+            'per_page' => $result->perPage(),
                   
          ]);
     }

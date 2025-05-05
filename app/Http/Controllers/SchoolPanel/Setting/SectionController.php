@@ -36,8 +36,8 @@ class SectionController extends Controller
           return $this->SectionAdd->handle($request,$school_username);
      }
 
-     public function section(Request $request,$school_username,$department_id){
-           return $this->SectionList->handle($request,$school_username,$department_id);
+     public function section(Request $request,$school_username){
+           return $this->SectionList->handle($request,$school_username);
      }
 
       public function section_update(Request $request,$school_username, $id)

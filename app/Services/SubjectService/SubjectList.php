@@ -54,7 +54,11 @@ public function handle(Request $request,$school_username)
         $result = $query->paginate($perPage, ['*'], 'page', $page);
 
         return response()->json([
-              'data' =>$result,
+            'data' => $result->items(),
+            'total' => $result->total(),
+            'current_page' => $result->currentPage(),
+            'last_page' => $result->lastPage(),
+            'per_page' => $result->perPage(),
                   
          ]);
     }

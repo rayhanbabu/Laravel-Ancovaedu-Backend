@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Route;
     require __DIR__.'/studentaccount.php';
     require __DIR__.'/employee.php';
     require __DIR__.'/admitcard.php';
+    require __DIR__.'/attendance.php';
 
 
 

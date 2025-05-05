@@ -8,12 +8,12 @@ use Illuminate\Http\Request;
 class SectionList
 {
    
-public function handle(Request $request,$school_username, $department_id)
+public function handle(Request $request,$school_username)
     
     {
         $query = Section::query();
         $query->where('school_username', $school_username);
-        $query->where('department_id', $department_id);
+    
         // Search
         if ($request->has('search')) {
              $search = $request->search;
@@ -26,6 +26,11 @@ public function handle(Request $request,$school_username, $department_id)
         // Filter by status
         if ($request->has('status')) {
                 $query->where('section_status', $request->status);
+        }
+
+        // Filter by department_id
+        if ($request->has('department_id')) {
+            $query->where('department_id', $request->department_id);
         }
 
         // View By Id
@@ -47,7 +52,11 @@ public function handle(Request $request,$school_username, $department_id)
         $result = $query->paginate($perPage, ['*'], 'page', $page);
 
         return response()->json([
-              'data' =>$result,
+            'data' => $result->items(),
+            'total' => $result->total(),
+            'current_page' => $result->currentPage(),
+            'last_page' => $result->lastPage(),
+            'per_page' => $result->perPage(),
                   
          ]);
     }

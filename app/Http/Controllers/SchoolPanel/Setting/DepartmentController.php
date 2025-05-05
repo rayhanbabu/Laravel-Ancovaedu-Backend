@@ -36,8 +36,8 @@ class DepartmentController extends Controller
           return $this->DepartmentAdd->handle($request,$school_username);
      }
 
-     public function department(Request $request,$school_username,$faculty_id){
-           return $this->DepartmentList->handle($request,$school_username,$faculty_id);
+     public function department(Request $request,$school_username){
+           return $this->DepartmentList->handle($request,$school_username);
      }
 
       public function department_update(Request $request,$school_username, $id)
