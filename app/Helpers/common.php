@@ -10,7 +10,7 @@ use App\Models\User_role;
   }
 
     function user(){
-         $user=User::with('user_role')->find(Auth::id());
+         $user=User::with('user_role')->with('agent')->find(Auth::id());
           return $user;
      }
 

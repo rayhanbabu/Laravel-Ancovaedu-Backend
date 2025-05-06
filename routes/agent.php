@@ -3,7 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Agent\AgentController;
 
   Route::middleware('auth:sanctum')->group(function () {
-      Route::middleware('Supperadmin')->group(function () {
+      Route::middleware('SupperManager')->group(function () {
 
          
 

@@ -14,7 +14,7 @@ use App\Http\Controllers\SchoolPanel\Setting\MarkinfoController;
 
       Route::middleware('auth:sanctum')->group(function () {
 
-            Route::middleware('Supperadmin')->group(function () {
+            Route::middleware('School:{school_username}')->group(function(){ 
 
                  // religion
                  Route::get('/{school_username}/religion', [ReligionController::class, 'religion']);

@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class Supperadmin
+class SupperManagerAgent
 {
     /**
      * Handle an incoming request.
@@ -18,7 +18,7 @@ class Supperadmin
 
         $roleType = user()->user_role->role_type;
 
-        if (in_array($roleType, ['Supperadmin'])) {
+        if (in_array($roleType, ['Supperadmin','Manager','Agent'])) {
             return $next($request);
         } 
 
@@ -26,6 +26,5 @@ class Supperadmin
                 'status' => 'error',
                 'message' => 'Unauthorized'
           ], 401);
-     
     }
 }

@@ -14,8 +14,13 @@ class SchoolAdminList
 public function handle(Request $request)
     {
         $query = School::query();
+        $user_auth = user();
         $query->select('schools.*')->with('agent')->with('user:id,name,email,phone,username,profile_picture,status');
 
+        if($user_auth->user_role->role_type=='Agent'){
+            $query->where('schools.agent_user_id',$user_auth->id);
+          }
+            
         // Search
         if ($request->has('search')) {
             $search = $request->search;

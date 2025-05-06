@@ -49,4 +49,10 @@ class User extends Authenticatable
     public function user_role(){
         return $this->hasOne(User_role::class,'user_id');
     }
+
+    public function agent(){
+        return $this->hasOne(School::class,'agent_user_id');
+    }
+
+   
 }
