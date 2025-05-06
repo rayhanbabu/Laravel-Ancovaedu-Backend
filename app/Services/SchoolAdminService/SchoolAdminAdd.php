@@ -60,6 +60,7 @@ class SchoolAdminAdd
 
             $school = new School();
             $school->user_id = $user->id;
+            $school->school_username=$user->username;
             $school->eiin = $request->eiin;
             $school->bangla_name = $request->bangla_name;
             $school->english_name = $request->english_name;
