@@ -55,14 +55,10 @@ class ManagerList
 
         return response()->json([
             'data' => ManagerResource::collection($result),
-            'pagination' => [
-                'total' => $result->total(),
-                'per_page' => $result->perPage(),
-                'current_page' => $result->currentPage(),
-                'last_page' => $result->lastPage(),
-                'from' => $result->firstItem(),
-                'to' => $result->lastItem()
-            ]
+            'total' => $result->total(),
+            'per_page' => $result->perPage(),
+            'current_page' => $result->currentPage(),
+            'last_page' => $result->lastPage(),
         ]);
     }
 }

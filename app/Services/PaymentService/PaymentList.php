@@ -87,15 +87,14 @@ class PaymentList
         $result = $query->paginate($perPage, ['*'], 'page', $page);
 
         return response()->json([
-            'data' =>$result,
-            'pagination' => [
+            'data' =>$result->items(),
                 'total' => $result->total(),
                 'per_page' => $result->perPage(),
                 'current_page' => $result->currentPage(),
                 'last_page' => $result->lastPage(),
                 'from' => $result->firstItem(),
                 'to' => $result->lastItem()
-            ]
+           
         ]);
     }
 }

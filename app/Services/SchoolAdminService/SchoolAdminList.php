@@ -66,14 +66,10 @@ public function handle(Request $request)
 
         return response()->json([
             'data' => SchoolAdminResource::collection($result),
-            'pagination' => [
-                'total' => $result->total(),
-                'per_page' => $result->perPage(),
-                'current_page' => $result->currentPage(),
-                'last_page' => $result->lastPage(),
-                'from' => $result->firstItem(),
-                'to' => $result->lastItem()
-            ]
+            'total' => $result->total(),
+            'per_page' => $result->perPage(),
+            'current_page' => $result->currentPage(),
+            'last_page' => $result->lastPage(),
         ]);
     }
 }

@@ -57,15 +57,12 @@ class AgentList
         $result = $query->paginate($perPage, ['*'], 'page', $page);
 
         return response()->json([
-            'data' => AgentResource::collection($result),
-            'pagination' => [
-                'total' => $result->total(),
-                'per_page' => $result->perPage(),
-                'current_page' => $result->currentPage(),
-                'last_page' => $result->lastPage(),
-                'from' => $result->firstItem(),
-                'to' => $result->lastItem()
-            ]
+             'data' => AgentResource::collection($result),
+             'total' => $result->total(),
+             'per_page' => $result->perPage(),
+             'current_page' => $result->currentPage(),
+             'last_page' => $result->lastPage(),
+        
         ]);
     }
 }

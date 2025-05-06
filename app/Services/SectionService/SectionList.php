@@ -8,8 +8,7 @@ use Illuminate\Http\Request;
 class SectionList
 {
    
-public function handle(Request $request,$school_username)
-    
+public function handle(Request $request,$school_username)    
     {
         $query = Section::query();
         $query->where('school_username', $school_username);

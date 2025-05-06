@@ -69,8 +69,12 @@ class InvoiceList
           }
 
         return response()->json([
-            'data' =>$result,
-            'total_row_amount' => $total_row_amount,
+            'data' =>$result->items(),
+            'total' => $result->total(),
+            'per_page' => $result->perPage(),
+            'current_page' => $result->currentPage(),
+            'last_page' => $result->lastPage(),
+            'total_amount_row' => $total_row_amount,
         ]);
     }
 }

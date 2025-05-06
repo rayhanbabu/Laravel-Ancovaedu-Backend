@@ -90,14 +90,10 @@ public function handle(Request $request,$school_username)
 
         return response()->json([
             'data' => StudentResource::collection($result),
-            'pagination' => [
-                'total' => $result->total(),
-                'per_page' => $result->perPage(),
-                'current_page' => $result->currentPage(),
-                'last_page' => $result->lastPage(),
-                'from' => $result->firstItem(),
-                'to' => $result->lastItem()
-            ]
+            'total' => $result->total(),
+            'per_page' => $result->perPage(),
+            'current_page' => $result->currentPage(),
+            'last_page' => $result->lastPage(),
         ]);
     }
 }

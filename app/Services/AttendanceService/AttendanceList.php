@@ -74,15 +74,14 @@ class AttendanceList
        
 
         return response()->json([
-            'data' =>$result,
-            'pagination' => [
+            'data' =>$resource, 
                 'total' => $result->total(),
                 'per_page' => $result->perPage(),
                 'current_page' => $result->currentPage(),
                 'last_page' => $result->lastPage(),
                 'from' => $result->firstItem(),
                 'to' => $result->lastItem()
-            ]
+            
         ]);
     }
 }
