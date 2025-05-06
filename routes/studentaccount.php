@@ -5,7 +5,7 @@ use App\Http\Controllers\SchoolPanel\StudentAccount\InvoiceController;
 use App\Http\Controllers\SchoolPanel\StudentAccount\PaymentController;
 
   Route::middleware('auth:sanctum')->group(function () {
-      Route::middleware('Supperadmin')->group(function () {
+      Route::middleware('School:{school_username}')->group(function () {
 
             Route::get('/{school_username}/fee', [FeeController::class, 'fee']);
             Route::post('/{school_username}/fee-add', [FeeController::class, 'fee_add']);

@@ -5,7 +5,7 @@ use App\Http\Controllers\SchoolPanel\Employee\PayroleInfoController;
 use App\Http\Controllers\SchoolPanel\Employee\PayroleController;
 
   Route::middleware('auth:sanctum')->group(function () {
-      Route::middleware('Supperadmin')->group(function () {
+      Route::middleware('School:{school_username}')->group(function () {
 
             Route::get('/{school_username}/employee', [EmployeeController::class, 'employee']);
             Route::post('/{school_username}/employee-add', [EmployeeController::class, 'employee_add']);

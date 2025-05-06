@@ -3,7 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SchoolPanel\Student\StudentController;
 
   Route::middleware('auth:sanctum')->group(function () {
-      Route::middleware('Supperadmin')->group(function () {
+      Route::middleware('School:{school_username}')->group(function () {
 
             Route::get('/{school_username}/student', [StudentController::class, 'student']);
             Route::post('/{school_username}/student-add', [StudentController::class, 'student_add']);
