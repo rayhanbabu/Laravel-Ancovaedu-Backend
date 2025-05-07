@@ -13,9 +13,6 @@ class InvoiceGroupDelete
       DB::beginTransaction();
        try {
           // Fetch invoices with payment_status 1 or partial_payment > 0 for given school and fee
-
-
-
            $invoices = Invoice::where('school_username', $school_username)
               ->where('fee_id', $fee_id)
                ->where(function ($query) {
