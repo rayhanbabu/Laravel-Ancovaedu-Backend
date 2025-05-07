@@ -58,7 +58,7 @@ class StudentTransfer
                 ], 404);
             }
 
-
+            $countCreated = 0;
             foreach ($enrollments as $enrollment) {
                 // Check for existing enrollment in target session
                 $exists = Enroll::where([
@@ -94,13 +94,15 @@ class StudentTransfer
                     'created_by'        => $user->id,
                  ]);
 
+                 $countCreated++; // increment counter
+
               }
             }
 
             DB::commit();
 
             return response()->json([
-                'message' => 'Students transferred successfully',
+                 'message' => "$countCreated student enrolled successfully.",
             ], 200);
 
         } catch (\Exception $e) {

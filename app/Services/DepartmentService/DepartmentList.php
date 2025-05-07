@@ -12,6 +12,7 @@ public function handle(Request $request,$school_username)
     
     {
         $query = Department::query();
+        $query->with('faculty');
         $query->where('school_username', $school_username);
        
         // Search

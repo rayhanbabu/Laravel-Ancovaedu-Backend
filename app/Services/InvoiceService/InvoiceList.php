@@ -26,6 +26,7 @@ class InvoiceList
          'department_id',
          'section_id',
          'student_id',
+         'fee_id',
          'payment_status',
          'viewById' => 'id'
      ];

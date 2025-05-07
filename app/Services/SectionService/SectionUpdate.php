@@ -17,23 +17,21 @@ class SectionUpdate
 
             $user_auth =user();
             $model = Section::findOrFail($id);
-
             $validator = validator($request->all(), [
                 'section_name' => [
                     'required',
                     Rule::unique('sections', 'section_name')
                         ->ignore($id)
-                        ->where(function ($query) use ($school_username) {
+                        ->where(function ($query) use ($school_username, $request) {
                             return $query->where('school_username', $school_username)
-                                ->where('department_id', $request->department_id);
+                                         ->where('department_id', $request->department_id);
                         }),
                 ],
                 'department_id' => [
                     'required',
-                    Rule::exists('departments', 'id')
-                        ->where(function ($query) use ($school_username) {
-                            return $query->where('school_username', $school_username);
-                        }),
+                    Rule::exists('departments', 'id')->where(function ($query) use ($school_username) {
+                        return $query->where('school_username', $school_username);
+                    }),
                 ],
             ]);
             
@@ -50,9 +48,9 @@ class SectionUpdate
           $model->department_id = $request->department_id;
           $model->updated_by = $user_auth->id; 
           
-            $model->save();
+          $model->save();
 
-            DB::commit();
+          DB::commit();
 
             return response()->json([
                 'message' => 'Data updated successfully',

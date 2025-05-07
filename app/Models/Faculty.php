@@ -17,9 +17,9 @@ class Faculty extends Model
         'updated_by',
     ];
 
-    public function school()
+    public function level()
     {
-        return $this->belongsTo(School::class, 'school_username', 'username');
+        return $this->belongsTo(Level::class, 'level_id');
     }
 
 

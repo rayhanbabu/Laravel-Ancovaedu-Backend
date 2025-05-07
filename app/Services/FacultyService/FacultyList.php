@@ -11,6 +11,7 @@ class FacultyList
 public function handle(Request $request,$school_username)
     {
         $query = Faculty::query();
+        $query->with('level');
         $query->where('school_username', $school_username);
        
         // Search

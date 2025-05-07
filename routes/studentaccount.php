@@ -18,6 +18,7 @@ use App\Http\Controllers\SchoolPanel\StudentAccount\PaymentController;
             Route::post('/{school_username}/invoice-single-add', [InvoiceController::class, 'invoice_single_add']);
             Route::post('/{school_username}/invoice-custom-add', [InvoiceController::class, 'invoice_custom_add']);
             Route::delete('/{school_username}/invoice-delete/{id}', [InvoiceController::class, 'invoice_delete']);
+            Route::delete('/{school_username}/invoice-group-delete/{id}', [InvoiceController::class, 'invoice_group_delete']);
 
 
             Route::get('/{school_username}/payment', [PaymentController::class, 'payment']);
