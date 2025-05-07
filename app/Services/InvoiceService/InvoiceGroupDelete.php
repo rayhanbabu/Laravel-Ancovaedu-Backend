@@ -28,12 +28,14 @@ class InvoiceGroupDelete
             return response()->json([
                 'message' => 'Cannot delete invoice(s) with payment status 1 or partial payment',
             ], 400);
+        }else{
+            Invoice::where('school_username', $school_username)
+            ->where('fee_id', $fee_id)
+            ->delete();
         }
 
         // Delete all invoices for this school and fee
-        Invoice::where('school_username', $school_username)
-            ->where('fee_id', $fee_id)
-            ->delete();
+       
 
            DB::commit();
            return response()->json([
@@ -44,6 +46,7 @@ class InvoiceGroupDelete
              DB::rollBack();
               return response()->json([
                 'message' => 'Failed to delete invoices',
+                'data'=>$invoices,
                  'error' => $e->getMessage(),
               ], 500);
          }

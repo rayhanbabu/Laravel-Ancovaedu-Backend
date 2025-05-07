@@ -12,7 +12,6 @@ class SessionList
     {
         try {
             $query = Sessionyear::query();
-            $query->with('department');
             $query->where('school_username', $school_username);
             
             // Search - Using parameter binding for security
