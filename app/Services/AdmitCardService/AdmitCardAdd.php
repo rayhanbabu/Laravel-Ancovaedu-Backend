@@ -48,11 +48,11 @@ class AdmitCardAdd
              }
 
         
-
              $subject_ids = array_values($request->subject_id);
              $times = array_values($request->time);
              $dates = array_values($request->date);
              $ids = $request->id ?? [];
+             
              
              for ($i = 0; $i < count($subject_ids); $i++) {
                  // Check if an ID exists at this index

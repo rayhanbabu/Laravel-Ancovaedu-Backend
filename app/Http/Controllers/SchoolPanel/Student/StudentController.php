@@ -12,6 +12,9 @@ use App\Services\StudentService\StudentList;
 use App\Services\StudentService\StudentUpdate;
 use App\Services\StudentService\StudentDelete;
 use App\Services\StudentService\StudentTransfer;
+use App\Services\StudentService\StudentSubject;
+use App\Services\StudentService\StudentMark;
+
 
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\StudentImport;
@@ -25,10 +28,12 @@ class StudentController extends Controller
     protected $StudentDelete;
     protected $StudentTransfer;
     protected $StudentSubject;
+    protected $StudentMark;
 
 
     public function __construct(StudentAdd $StudentAdd, StudentList $StudentList, StudentUpdate $StudentUpdate,
-     StudentDelete $StudentDelete, StudentTransfer $StudentTransfer,StudentSubject $StudentSubject)
+     StudentDelete $StudentDelete, StudentTransfer $StudentTransfer ,StudentSubject $StudentSubject
+     ,StudentMark $StudentMark)
     {
          $this->StudentAdd = $StudentAdd;
          $this->StudentList = $StudentList;
@@ -36,6 +41,7 @@ class StudentController extends Controller
          $this->StudentDelete = $StudentDelete;
          $this->StudentTransfer = $StudentTransfer;
          $this->StudentSubject = $StudentSubject;
+         $this->StudentMark = $StudentMark;
     }
 
   
@@ -65,11 +71,17 @@ class StudentController extends Controller
            return $this->StudentTransfer->handle($request ,$school_username);
        }
 
-       public function student_subject(Request $request,$school_username)
+       public function student_subject(Request $request,$school_username,$id)
        {
-           return $this->StudentSubject->handle($request ,$school_username);
-       
+           return $this->StudentSubject->handle($request ,$school_username,$id);
        }
+
+
+       public function student_mark(Request $request,$school_username)
+       {
+           return $this->StudentMark->handle($request ,$school_username);
+       }
+
 
 
        public function student_import(Request $request,$school_username){

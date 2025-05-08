@@ -22,6 +22,7 @@ class Enroll extends Model
         'user_id',
         'roll',
         'created_by',
+        'confirm_enroll_status',
     ];
 
     public function user()

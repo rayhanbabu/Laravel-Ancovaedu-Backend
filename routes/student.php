@@ -15,7 +15,8 @@ use App\Http\Controllers\SchoolPanel\Student\StudentController;
             // english_name, bangla_name, phone, email, gender, relgion_id,roll  excel Sheet
             Route::post('/{school_username}/student-import', [StudentController::class, 'student_import']);
             Route::post('/{school_username}/student-transfer', [StudentController::class, 'student_transfer']);
-            Route::post('/{school_username}/student-subject', [StudentController::class, 'student_subject']);
+            Route::post('/{school_username}/student-subject/{id}', [StudentController::class, 'student_subject']);
+            Route::post('/{school_username}/student-mark', [StudentController::class, 'student_mark']);
 
 
 
