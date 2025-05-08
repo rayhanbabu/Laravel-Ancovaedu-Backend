@@ -23,7 +23,7 @@ class SubjectAdd
                 'faculty_id' => 'required|integer|exists:faculties,id',
                 'department_id' => 'required|integer|exists:departments,id',
                 'section_id' => 'required|integer|exists:sections,id',  
-                'religion_id' => 'integer|exists:religions,id',
+                'religion_id' => 'exists:religions,id',
                 'subject_category' => 'required',
                 'subject_type' => 'required',       
 

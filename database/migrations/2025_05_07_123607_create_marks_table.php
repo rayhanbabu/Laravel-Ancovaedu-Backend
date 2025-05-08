@@ -34,7 +34,7 @@ return new class extends Migration
             $table->unsignedBigInteger('section_id'); // Foreign Key
             $table->foreign('section_id')->references('id')->on('sections');
 
-            $table->unsignedBigInteger('eaxm_id'); // Foreign Key
+            $table->unsignedBigInteger('exam_id'); // Foreign Key
             $table->foreign('exam_id')->references('id')->on('exams');
 
             $table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade');
@@ -47,8 +47,11 @@ return new class extends Migration
             $table->string('grade'); // Description of the markinfo
 
 
-            $table->boolean('final_submited_status')->default(false);
+            $table->boolean('final_submit_status')->default(false);
             $table->foreignId('final_submited_by')->nullable()->constrained('users')->onDelete('set null');
+
+            $table->boolean('check_status')->default(false);
+            $table->foreignId('checked_by')->nullable()->constrained('users')->onDelete('set null');
 
 
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');

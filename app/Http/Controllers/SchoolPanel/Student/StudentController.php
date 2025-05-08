@@ -24,16 +24,18 @@ class StudentController extends Controller
     protected $StudentUpdate;
     protected $StudentDelete;
     protected $StudentTransfer;
+    protected $StudentSubject;
 
 
     public function __construct(StudentAdd $StudentAdd, StudentList $StudentList, StudentUpdate $StudentUpdate,
-     StudentDelete $StudentDelete, StudentTransfer $StudentTransfer)
+     StudentDelete $StudentDelete, StudentTransfer $StudentTransfer,StudentSubject $StudentSubject)
     {
          $this->StudentAdd = $StudentAdd;
          $this->StudentList = $StudentList;
          $this->StudentUpdate = $StudentUpdate;
          $this->StudentDelete = $StudentDelete;
          $this->StudentTransfer = $StudentTransfer;
+         $this->StudentSubject = $StudentSubject;
     }
 
   
@@ -63,6 +65,11 @@ class StudentController extends Controller
            return $this->StudentTransfer->handle($request ,$school_username);
        }
 
+       public function student_subject(Request $request,$school_username)
+       {
+           return $this->StudentSubject->handle($request ,$school_username);
+       
+       }
 
 
        public function student_import(Request $request,$school_username){

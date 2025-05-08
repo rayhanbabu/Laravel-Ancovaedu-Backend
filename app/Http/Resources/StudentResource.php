@@ -33,7 +33,7 @@ class StudentResource extends JsonResource
             'religion_id' => $this->student->religion_id,
             'religion_name' => $this->religion->religion_name,
 
-            'session_id' => $this->session_id,
+            'sessionyear_id' => $this->sessionyear_id,
             'sessionyear_name' => $this->sessionyear->sessionyear_name,
             'programyear_id' => $this->programyear_id,
             'programyear_name' => $this->programyear->programyear_name,
@@ -45,6 +45,13 @@ class StudentResource extends JsonResource
             'department_name' => $this->department->department_name,
             'section_id' => $this->section_id,
             'section_name' => $this->section->section_name,
+
+            'main_subject1_id' => $this->main_subject1,
+            'main_subject2_id' => $this->main_subject2,
+            'main_subject3_id' => $this->main_subject3,
+            'additional_subject_id' => $this->additional_subject,
+
+
 
             'father_name' => $this->student->father_name,
             'father_phone' => $this->student->father_phone,
