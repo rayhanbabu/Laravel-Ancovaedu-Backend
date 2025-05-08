@@ -14,7 +14,6 @@ class StudentSubject
     public function handle($request,$school_username,$id)
     {
         DB::beginTransaction();
-
         try {
              $user_auth = user();
 
