@@ -18,7 +18,7 @@ class AttendanceAdd
         DB::beginTransaction();
          try {
             $user_auth = user();
-            $username = $request->school_username;
+            $school_username = $request->school_username;
 
               $validator = validator($request->all(), [     
                  'time' => 'required',
@@ -39,7 +39,7 @@ class AttendanceAdd
                  ], 422);
              }
 
-             $enroll = Enroll::where('school_username', $username)->where('sessionyear_id', $request->sessionyear_id)
+             $enroll = Enroll::where('school_username', $school_username)->where('sessionyear_id', $request->sessionyear_id)
                 ->where('programyear_id', $request->programyear_id)->where('level_id', $request->level_id)
                 ->where('faculty_id', $request->faculty_id)->where('department_id', $request->department_id)
                 ->where('section_id', $request->section_id)->get();
@@ -50,26 +50,33 @@ class AttendanceAdd
                     ], 400);
           }
 
-        $classdate = Classdate::where('school_username', $username)->where('sessionyear_id', $request->sessionyear_id)
-            ->where('programyear_id', $request->programyear_id)->where('level_id', $request->level_id)
-            ->where('faculty_id', $request->faculty_id)->where('department_id', $request->department_id)
-            ->where('section_id', $request->section_id)->where('subject_id', $request->subject_id)
-            ->where('date', $request->date)->first();
+      
 
-            if ($classdate) {
-                return response()->json([
-                    'message' => 'Class date already exists',
-                ], 400);
-            }else{
+                    $query = Classdate::query();
+                    $query->where('school_username', $school_username)
+                        ->where('subject_id', $request->subject_id)
+                        ->where('date', $request->date)
+                        ->with('enroll')
+                        ->whereHas('enroll', function ($q) use ($request) {
+                            $q->where('sessionyear_id', $request->sessionyear_id)
+                                ->where('programyear_id', $request->programyear_id)
+                                ->where('level_id', $request->level_id)
+                                ->where('faculty_id', $request->faculty_id)
+                                ->where('department_id', $request->department_id)
+                                ->where('section_id', $request->section_id);
+                        });
+
+                $classdate = $query->exists();
+
+                if ($classdate) {
+                        return response()->json([
+                            'message' => 'Class date already exists',
+                        ], 400);
+                 }
 
                 $classdate = new CLassdate();
-                $classdate->school_username = $request->school_username;
-                $classdate->sessionyear_id = $request->sessionyear_id;
-                $classdate->programyear_id = $request->programyear_id;
-                $classdate->level_id = $request->level_id;
-                $classdate->faculty_id = $request->faculty_id;
-                $classdate->department_id = $request->department_id;
-                $classdate->section_id = $request->section_id;
+                $classdate->school_username = $school_username;
+                $classdate->enroll_id = $enroll->first()->id;
                 $classdate->subject_id = $request->subject_id;
                 $classdate->date = $request->date;
                 $classdate->time = $request->time;
@@ -78,7 +85,7 @@ class AttendanceAdd
 
                foreach ($enroll as $student) {
                     $attendance = new Attendance();
-                    $attendance->school_username = $request->school_username;
+                    $attendance->school_username = $school_username;
                     $attendance->classdate_id = $classdate->id;
                     $attendance->student_id = $student->student_id;
                     $attendance->status = 0; // Default status
@@ -86,7 +93,7 @@ class AttendanceAdd
                     $attendance->save();
                 }
 
-            }
+            
 
           
 

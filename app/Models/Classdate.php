@@ -57,4 +57,10 @@ class Classdate extends Model
     {
         return $this->belongsTo(Subject::class, 'subject_id');
     }
+
+
+     public function enroll()
+    {
+        return $this->belongsTo(Enroll::class);
+    }
 }

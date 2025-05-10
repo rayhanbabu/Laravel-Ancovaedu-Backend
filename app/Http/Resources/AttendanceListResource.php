@@ -26,24 +26,24 @@ class AttendanceListResource extends JsonResource
             'date'=> $this->classdate->date,
             'status' => $this->status,
 
-            'sessionyear_id' => $this->classdate->sessionyear_id,
-            'sessionyear_name' => $this->classdate->sessionyear->sessionyear_name ?? null,
+            'sessionyear_id' => $this->enroll->sessionyear_id,
+            'sessionyear_name' => $this->enroll->sessionyear->sessionyear_name ?? null,
            
             
-            'programyear_id' => $this->classdate->programyear_id,
-            'programyear_name' => $this->classdate->programyear->programyear_name ?? null,
+            'programyear_id' => $this->enroll->programyear_id,
+            'programyear_name' => $this->enroll->programyear->programyear_name ?? null,
 
-            'level_id' => $this->classdate->level_id,
-            'level_name' => $this->classdate->level->level_name ?? null,
+            'level_id' => $this->enroll->level_id,
+            'level_name' => $this->enroll->level->level_name ?? null,
 
-            'faculty_id' => $this->classdate->faculty_id,
-            'faculty_name' => $this->classdate->faculty->faculty_name ?? null,
+            'faculty_id' => $this->enroll->faculty_id,
+            'faculty_name' => $this->enroll->faculty->faculty_name ?? null,
 
-            'department_id' => $this->classdate->department_id,
-            'department_name' => $this->classdate->department->department_name ?? null,
+            'department_id' => $this->enroll->department_id,
+            'department_name' => $this->enroll->department->department_name ?? null,
 
-            'section_id' => $this->classdate->section_id,
-            'section_name' => $this->classdate->section->section_name ?? null,
+            'section_id' => $this->enroll->section_id,
+            'section_name' => $this->enroll->section->section_name ?? null,
 
         
 

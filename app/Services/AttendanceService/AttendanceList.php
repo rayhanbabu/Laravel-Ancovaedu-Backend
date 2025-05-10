@@ -14,42 +14,92 @@ class AttendanceList
    public function handle(Request $request,$school_username)
      {
        
-
-        
     // Search
     if ($request->has('student_id') ) {
         $student = $request->student_id;
         $query = Attendance::query();
-        $query->with('classdate','student');
-        $query->select('attendances.*')->with('classdate.sessionyear','classdate.programyear','classdate.level','classdate.faculty','classdate.department','classdate.section','classdate.subject');
+        $query->with('classdate','student','enroll');
+        $query->select('attendances.*')->with('enroll.sessionyear','enroll.programyear','enroll.level','enroll.faculty','enroll.department','enroll.section','classdate.subject');
         $query->where('school_username', $school_username);
         $query->where('student_id', $request->student_id);
 
+                $query->whereHas('enroll', function ($q) use ($request) {
+                if ($request->has('sessionyear_id')) {
+                      $q->where('sessionyear_id', $request->sessionyear_id);
+                }
 
-        $query->whereHas('classdate', function ($q) use ($request, $school_username) {
-            $q->where('sessionyear_id', $request->sessionyear_id);
-            $q->where('programyear_id', $request->programyear_id)
-                ->where('level_id', $request->level_id)->where('faculty_id', $request->faculty_id)
-                ->where('department_id', $request->department_id)->where('section_id', $request->section_id);
-        });
+                if ($request->has('programyear_id')) {
+                    $q->where('programyear_id', $request->programyear_id);
+                }
 
-    if ($request->has('subject_id')) {    
-        $query->whereHas('classdate', function ($q) use ($request) {
-            $q->where('subject_id', $request->subject_id);
-        });
-    }
+                if ($request->has('level_id')) {
+                    $q->where('level_id', $request->level_id);
+                }
+
+                if ($request->has('faculty_id')) {
+                    $q->where('faculty_id', $request->faculty_id);
+                }
+
+                if ($request->has('department_id')) {
+                    $q->where('department_id', $request->department_id);
+                }
+
+                if ($request->has('section_id')) {
+                    $q->where('section_id', $request->section_id);
+                }
+              
+            });
+
+
+      if ($request->has('subject_id')) {    
+          $query->whereHas('classdate', function ($q) use ($request) {
+              $q->where('subject_id', $request->subject_id);
+          });
+      }
      
      
     }else{
-        $query = Classdate::query();  
-      
-        $query->with('attendances.student');
-        $query->select('classdates.*')->with('sessionyear','programyear','level','faculty','department','section','subject');
-        $query->where('school_username', $school_username);
-        $query->where('sessionyear_id', $request->sessionyear_id)->where('programyear_id', $request->programyear_id)
-        ->where('level_id', $request->level_id)->where('faculty_id', $request->faculty_id)
-        ->where('department_id', $request->department_id)->where('section_id', $request->section_id)
-        ->where('subject_id', $request->subject_id)->where('date', $request->date);
+         $query = Classdate::query(); 
+         $query->with('enroll');
+         $query->with('attendances.student');
+         $query->select('classdates.*')->with('enroll.sessionyear','enroll.programyear','enroll.level','enroll.faculty','enroll.department','enroll.section','subject');
+         $query->where('school_username', $school_username);
+
+        if ($request->has('subject_id')) {
+              $query->where('subject_id', $request->subject_id);
+         }
+
+         if ($request->has('date')) {
+              $query->where('date', $request->date);
+          }
+
+
+         $query->whereHas('enroll', function ($q) use ($request) {
+                if ($request->has('sessionyear_id')) {
+                      $q->where('sessionyear_id', $request->sessionyear_id);
+                }
+
+                if ($request->has('programyear_id')) {
+                    $q->where('programyear_id', $request->programyear_id);
+                }
+
+                if ($request->has('level_id')) {
+                    $q->where('level_id', $request->level_id);
+                }
+
+                if ($request->has('faculty_id')) {
+                    $q->where('faculty_id', $request->faculty_id);
+                }
+
+                if ($request->has('department_id')) {
+                    $q->where('department_id', $request->department_id);
+                }
+
+                if ($request->has('section_id')) {
+                    $q->where('section_id', $request->section_id);
+                }
+              
+            });
 
     }
 
