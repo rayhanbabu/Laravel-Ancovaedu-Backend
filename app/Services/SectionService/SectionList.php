@@ -11,6 +11,7 @@ class SectionList
 public function handle(Request $request,$school_username)    
     {
         $query = Section::query();
+        $query->with('department');
         $query->where('school_username', $school_username);
     
         // Search

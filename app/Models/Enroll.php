@@ -10,7 +10,7 @@ class Enroll extends Model
     use HasFactory;
 
     protected $fillable = [
-  
+        'id',
         'school_username',
         'department_id',
         'level_id',
@@ -22,7 +22,11 @@ class Enroll extends Model
         'user_id',
         'roll',
         'created_by',
+        'created_type',
         'confirm_enroll_status',
+        'subject_create_status',
+        'updated_by',
+        'subject_created_by',
     ];
 
     public function user()

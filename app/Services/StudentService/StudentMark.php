@@ -47,14 +47,15 @@ class StudentMark
                 ['faculty_id', $request->faculty_id],
                 ['department_id', $request->department_id],
                 ['section_id', $request->section_id],
-                ['confirm_enroll_status', 0],
             ])->get();
-    
+
+         
             if ($enrollments->isEmpty()) {
                 return response()->json([
                     'message' => 'No unconfirmed enrollments found.',
                 ], 404);
             }
+       
     
             // Fetch all possible subjects
             $subjects = Subject::where([
@@ -65,18 +66,24 @@ class StudentMark
                 ['faculty_id', $request->faculty_id],
                 ['department_id', $request->department_id],
             ])->get();
-    
+
+            
+
             if ($subjects->isEmpty()) {
                 return response()->json([
                     'message' => 'No subjects found for the given criteria.',
                 ], 404);
             }
     
+            $marksCreated = 0;
             foreach ($enrollments as $enroll) {
                 foreach ($subjects as $subject) {
-                    // Assign Fixed subjects to all
+                   //  Assign Fixed subjects to all
                     if ($subject->subject_category === "Fixed") {
-                        $this->createMark($enroll, $subject, $request, $school_username, $user_auth);
+                        if (!Mark::where('enroll_id', $enroll->id)->where('subject_id', $subject->id)->exists()) {
+                            $this->createMark($enroll, $subject, $request, $school_username, $user_auth);
+                            $marksCreated++;
+                        }
                     }
     
                     // Assign Religion-based subjects if student's religion matches
@@ -84,46 +91,32 @@ class StudentMark
                         $subject->subject_category === "Religion" &&
                         $enroll->student->religion_id == $subject->religion_id
                     ) {
-                        $this->createMark($enroll, $subject, $request, $school_username, $user_auth);
+                        if (!Mark::where('enroll_id', $enroll->id)->where('subject_id', $subject->id)->exists()) {
+                            $this->createMark($enroll, $subject, $request, $school_username, $user_auth);
+                            $marksCreated++;
+                        }
                     }
 
 
-                    // Assign Main Subject -based subjects if student's relSubject Id igion matches
-                       if (
-                        $subject->subject_category === "Dynamic" &&
-                        $enroll->main_subject1 == $subject->id
-                    ) {
-                        $this->createMark($enroll, $subject, $request, $school_username, $user_auth);
-                    }
-
-                    // Main Subject 2
                     if (
                         $subject->subject_category === "Dynamic" &&
-                        $enroll->main_subject2 == $subject->id
+                        in_array($subject->id, [
+                            $enroll->main_subject1,
+                            $enroll->main_subject2,
+                            $enroll->main_subject3,
+                            $enroll->additional_subject
+                        ])
                     ) {
-                        $this->createMark($enroll, $subject, $request, $school_username, $user_auth);
-                    }
-
-                   // Main SUbejcet 3
-                    if (
-                        $subject->subject_category === "Dynamic" &&
-                        $enroll->main_subject3 == $subject->id
-                    ) {
-                        $this->createMark($enroll, $subject, $request, $school_username, $user_auth);
-                    }
-
-                   // Additinal Subject
-                    if (
-                        $subject->subject_category === "Dynamic" &&
-                        $enroll->additional_subject == $subject->id
-                    ) {
-                        $this->createMark($enroll, $subject, $request, $school_username, $user_auth);
+                        if (!Mark::where('enroll_id', $enroll->id)->where('subject_id', $subject->id)->exists()) {
+                            $this->createMark($enroll, $subject, $request, $school_username, $user_auth);
+                            $marksCreated++;
+                        }
                     }
 
                 }
     
                 // Confirm enrollment
-                $enroll->update(['confirm_enroll_status' => 1]);
+                $enroll->update(['subject_created_by'=>$user_auth->id]);
             }
     
             DB::commit();
@@ -132,6 +125,7 @@ class StudentMark
                 'message'                     => 'Students enrollment final submission completed.',
                 'total_enrollments_processed' => $enrollments->count(),
                 'total_subjects_assigned'     => $subjects->count(),
+                'total_marks_created'         => $marksCreated,
             ], 200);
     
         } catch (\Exception $e) {
@@ -151,15 +145,9 @@ class StudentMark
     protected function createMark($enroll, $subject, $request, $school_username, $user_auth)
     {
         Mark::create([
-            'student_id'      => $enroll->student_id,
+            'enroll_id'      => $enroll->id,
             'subject_id'      => $subject->id,
             'school_username' => $school_username,
-            'sessionyear_id'  => $request->sessionyear_id,
-            'programyear_id'  => $request->programyear_id,
-            'level_id'        => $request->level_id,
-            'faculty_id'      => $request->faculty_id,
-            'department_id'   => $request->department_id,
-            'section_id'      => $request->section_id,
             'exam_id'         => $request->exam_id,
             'created_by'      => $user_auth->id,
         ]);

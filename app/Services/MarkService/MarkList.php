@@ -7,6 +7,7 @@ use App\Models\Classdate;
 use Illuminate\Http\Request;
 use App\Http\Resources\MarkResource;
 use App\Http\Resources\MarkListResource;
+use Illuminate\Support\Facades\DB;
 
 class MarkList
 {
@@ -14,50 +15,88 @@ class MarkList
    public function handle(Request $request,$school_username)
      {
        
-
-        
-    // Search
-    if ($request->has('student_id') ) {
+        // Search
         $student = $request->student_id;
+         if($request->has('GroupBySubject') && $request->GroupBySubject==1) {
+
+            $query = Mark::query();
+            $query->join('enrolls', 'marks.enroll_id', '=', 'enrolls.id')
+                  ->where('marks.school_username', $school_username)
+                  ->where('marks.exam_id', $request->exam_id);
+
+                $query->with('subject');
+            
+            // Filter enrolls
+            $query->where('enrolls.sessionyear_id', $request->sessionyear_id)
+                  ->where('enrolls.programyear_id', $request->programyear_id)
+                  ->where('enrolls.level_id', $request->level_id)
+                  ->where('enrolls.faculty_id', $request->faculty_id)
+                  ->where('enrolls.department_id', $request->department_id);
+            
+            if ($request->has('section_id')) {
+                $query->where('enrolls.section_id', $request->section_id);
+            }
+            
+            $query->select(
+                'marks.subject_id',
+                DB::raw('COUNT(marks.id) as total_students'),
+                DB::raw('SUM(CASE WHEN marks.total > 0 THEN 1 ELSE 0 END) as total_pass'),
+                DB::raw('SUM(CASE WHEN marks.final_submit_status = 1 THEN 1 ELSE 0 END) as total_final_submit')
+            )
+            ->groupBy('marks.subject_id');
+           
+            
+            // Sorting
+            $sortField = $request->get('sortField', 'marks.subject_id');
+            $sortDirection = $request->get('sortDirection', 'asc');
+            $query->orderBy($sortField, $sortDirection);
+            
+            // Fetch all results
+            $result = $query->get();
+            
+            return response()->json([
+                'data'=>$result
+            ]);
+            
+          
+         }
+
+
+
+         die();
         $query = Mark::query();
-        $query->with('classdate','student');
-        $query->select('Marks.*')->with('classdate.sessionyear','classdate.programyear','classdate.level','classdate.faculty','classdate.department','classdate.section','classdate.subject');
-        $query->where('school_username', $school_username);
-        $query->where('student_id', $request->student_id);
+        $query->join('enrolls', 'marks.enroll_id', '=', 'enrolls.id')
+        ->with('student', 'subject'); // keep other relations
+        $query->where('marks.school_username', $school_username);
+        $query->where('exam_id', $request->exam_id);
+        $query->where('subject_id', $request->subject_id);
 
 
-        $query->whereHas('classdate', function ($q) use ($request, $school_username) {
-            $q->where('sessionyear_id', $request->sessionyear_id);
-            $q->where('programyear_id', $request->programyear_id)
-                ->where('level_id', $request->level_id)->where('faculty_id', $request->faculty_id)
-                ->where('department_id', $request->department_id)->where('section_id', $request->section_id);
-        });
-
-    if ($request->has('subject_id')) {    
-        $query->whereHas('classdate', function ($q) use ($request) {
-            $q->where('subject_id', $request->subject_id);
-        });
-    }
-     
-     
-    }else{
-        $query = Classdate::query();  
-      
-        $query->with('Marks.student');
-        $query->select('classdates.*')->with('sessionyear','programyear','level','faculty','department','section','subject');
-        $query->where('school_username', $school_username);
-        $query->where('sessionyear_id', $request->sessionyear_id)->where('programyear_id', $request->programyear_id)
-        ->where('level_id', $request->level_id)->where('faculty_id', $request->faculty_id)
-        ->where('department_id', $request->department_id)->where('section_id', $request->section_id)
-        ->where('subject_id', $request->subject_id)->where('date', $request->date);
-
-    }
-
-  
+    
+            // Filter by enrollment fields if provided
+            $query->whereHas('enroll', function ($q) use ($request) {
+            
+                $q->where('sessionyear_id', $request->sessionyear_id)
+                 ->where('programyear_id', $request->programyear_id)
+                 ->where('level_id', $request->level_id)
+                 ->where('faculty_id', $request->faculty_id)
+                 ->where('department_id', $request->department_id);
+                
+                 if ($request->has('section_id')) {
+                     $q->where('section_id', $request->section_id);
+                 }
+            });
+                
         // Sorting
         $sortField = $request->get('sortField', 'id');
         $sortDirection = $request->get('sortDirection', 'asc');
-        $query->orderBy($sortField, $sortDirection);
+        if ($sortField === 'roll') {
+            $query->orderBy('enrolls.roll', $sortDirection);
+        } else {
+            $query->orderBy($sortField, $sortDirection);
+        }
+
+        $query->select('marks.*','enrolls.roll');
 
         // Pagination
         $perPage = (int) $request->input('perPage', 10);
@@ -66,15 +105,10 @@ class MarkList
 
         // Apply pagination
         $result = $query->paginate($perPage, ['*'], 'page', $page);
-   if ($request->has('student_id') ) {
-         $resource= MarkListResource::collection($result);
-   }else{
-         $resource= MarkResource::collection($result);
-    }
-       
-
+ 
+    
         return response()->json([
-            'data' =>$resource, 
+                'data' =>$result->items(), 
                 'total' => $result->total(),
                 'per_page' => $result->perPage(),
                 'current_page' => $result->currentPage(),

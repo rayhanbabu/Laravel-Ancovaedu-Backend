@@ -42,12 +42,15 @@ return new class extends Migration
             $table->foreign('section_id')->references('id')->on('sections');
 
             $table->boolean('confirm_enroll_status')->default(true);
-         
             $table->date('confirm_enroll_date')->nullable();
 
             $table->integer('roll')->default(0);
 
             $table->enum ('created_type', ['Student', 'Enroll'])->default('Enroll');
+
+            $table->boolean('subject_create_status')->default(false);
+            $table->foreignId('subject_created_by')->nullable()->constrained('users')->onDelete('set null');
+           
 
             $table->foreignId('main_subject1')->nullable()->constrained('subjects')->onDelete('set null');
             $table->foreignId('main_subject2')->nullable()->constrained('subjects')->onDelete('set null');

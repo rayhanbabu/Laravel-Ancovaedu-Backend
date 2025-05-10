@@ -13,11 +13,8 @@ use App\Services\MarkService\MarkUpdate;
 use App\Services\MarkService\MarkSubmit;
 
 
-
-
 class MarkController extends Controller
 {
-
 
     protected $MarkList;
     protected $MarkUpdate;
@@ -27,7 +24,7 @@ class MarkController extends Controller
     public function __construct( MarkList $MarkList, MarkUpdate $MarkUpdate,
      MarkSubmit $MarkSubmit)
     {
-         $this->MarkAdd = $MarkAdd;
+     
          $this->MarkList = $MarkList;
          $this->MarkUpdate = $MarkUpdate;
          $this->MarkSubmit = $MarkSubmit;
@@ -45,9 +42,9 @@ class MarkController extends Controller
        }
    
  
-       public function mark_submit(Request $request,$school_username, $id)
+       public function mark_final_submit(Request $request,$school_username)
         {
-            return $this->MarkSubmit->handle($request ,$school_username , $id);
+            return $this->MarkSubmit->handle($request ,$school_username);
         }
 
      

@@ -46,7 +46,7 @@ class SchoolAdminUpdate
             $school->full_address = $request->full_address;
             $school->short_address = $request->short_address;
             $school->eiin = $request->eiin;
-            $school->agent_user_id = $request->agent_user_id ? $request->agent_user_id : null;
+            $school->agent_user_id = $request->agent_user_id ;
             $school->bangla_name_front_size = $request->bangla_name_front_size;
             $school->english_name_front_size = $request->english_name_front_size;
             $school->full_address_front_size = $request->full_address_front_size;

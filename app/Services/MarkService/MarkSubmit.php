@@ -9,27 +9,43 @@ use Illuminate\Support\Facades\File;
 
 class MarkSubmit
 {
-    public function handle(Request $request, $school_username, $id)
+    public function handle(Request $request, $school_username)
     {
         DB::beginTransaction();
         try {
-             $classdate = Classdate::findOrFail($id);
-               $Mark = Mark::where('classdate_id', $id)->where('status',1)->where('school_username', $school_username)->get();
-                if ($Mark->isEmpty()) {
-                    $classdate->Marks()->Submit(); // Submit all Mark records associated with the classdate
-                      $classdate->Submit();
-                }else {
-                    return response()->json([
-                        'message' => 'Mark already taken',
-                    ], 400);
-                }
 
-           
-           
+            $final_submit_status=$request->final_submit_status;
+
+            $user_auth = user();
+            $query = Mark::query();
+            $query->where('school_username', $school_username)
+                  ->where('exam_id', $request->exam_id)
+                  ->where('subject_id', $request->subject_id)
+                  ->with('enroll')
+                  ->whereHas('enroll', function ($q) use ($request) {
+                      $q->where('sessionyear_id', $request->sessionyear_id)
+                        ->where('programyear_id', $request->programyear_id)
+                        ->where('level_id', $request->level_id)
+                        ->where('faculty_id', $request->faculty_id)
+                        ->where('department_id', $request->department_id);
+    
+                      if ($request->has('section_id')) {
+                          $q->where('section_id', $request->section_id);
+                      }
+                  });
+    
+            // Perform the update directly on the query
+            $affectedRows = $query->update([
+                'final_submit_status' => $final_submit_status,
+                'final_submited_by'   => $user_auth->id,
+            ]);
+    
             DB::commit();
             return response()->json([
-                'message' => 'Agent Submitd successfully',
+                'message' => 'Final  Submitted Status successfully',
+                'affected_rows' => $affectedRows
             ], 200);
+    
         } catch (\Exception $e) {
             DB::rollback();
             return response()->json([
@@ -38,6 +54,6 @@ class MarkSubmit
             ], 500);
         }
     }
-
+    
    
 }

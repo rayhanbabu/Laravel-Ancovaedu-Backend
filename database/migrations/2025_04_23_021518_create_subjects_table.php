@@ -56,7 +56,7 @@ return new class extends Migration
             $table->integer('pass_number2')->default(0);
             $table->integer('pass_number3')->default(0);
            
-            $table->enum('subject_category', ['Fixed','Dynamic','Moral'])->default('Fixed');
+            $table->enum('subject_category', ['Fixed','Dynamic','Religion'])->default('Fixed');
 
             $table->foreignId('religion_id')->nullable()->constrained('religions')->onDelete('set null');
 

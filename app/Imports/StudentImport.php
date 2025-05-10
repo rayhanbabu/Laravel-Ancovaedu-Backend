@@ -95,7 +95,7 @@ use App\Models\Enroll;
             $enroll->department_id    = $this->department_id;
             $enroll->section_id       = $this->section_id;
             $enroll->created_by       = $this->user_id;
-            $enroll->created_type     = "Enroll";
+            $enroll->created_type     = "Student";
             $enroll->save();
     
            

@@ -12,13 +12,27 @@ public function handle(Request $request,$school_username)
     
     {
         $query = Subject::query();
-        $query->where('school_username', $school_username)
-        ->where('sessionyear_id', $request->sessionyear_id)
-        ->where('programyear_id', $request->programyear_id)
-        ->where('level_id', $request->level_id)
-        ->where('faculty_id', $request->faculty_id)
-        ->where('department_id', $request->department_id)
-        ->where('section_id', $request->section_id);
+        $query->where('school_username', $school_username);
+
+
+            // Apply filters
+       $filters = [
+        'sessionyear_id',
+        'programyear_id',
+        'level_id',
+        'faculty_id',
+        'department_id',
+        'section_id',
+        'viewById' => 'id'
+      ];
+
+   foreach ($filters as $requestKey => $dbColumn) {
+       // if $filters is associative, otherwise key = value
+       if (is_int($requestKey)) $requestKey = $dbColumn;
+       if ($request->filled($requestKey)) {
+           $query->where($dbColumn, $request->$requestKey);
+       }
+   }
 
     
         // Search

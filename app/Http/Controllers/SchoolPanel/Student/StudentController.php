@@ -14,6 +14,8 @@ use App\Services\StudentService\StudentDelete;
 use App\Services\StudentService\StudentTransfer;
 use App\Services\StudentService\StudentSubject;
 use App\Services\StudentService\StudentMark;
+use App\Services\StudentService\StudentGroupDelete;
+use App\Services\StudentService\MarkDelete;
 
 
 use Maatwebsite\Excel\Facades\Excel;
@@ -29,11 +31,13 @@ class StudentController extends Controller
     protected $StudentTransfer;
     protected $StudentSubject;
     protected $StudentMark;
+    protected $StudentGroupDelete;
+    protected $MarkDelete;
 
 
     public function __construct(StudentAdd $StudentAdd, StudentList $StudentList, StudentUpdate $StudentUpdate,
      StudentDelete $StudentDelete, StudentTransfer $StudentTransfer ,StudentSubject $StudentSubject
-     ,StudentMark $StudentMark)
+     ,StudentMark $StudentMark ,StudentGroupDelete $StudentGroupDelete,MarkDelete $MarkDelete)
     {
          $this->StudentAdd = $StudentAdd;
          $this->StudentList = $StudentList;
@@ -42,6 +46,8 @@ class StudentController extends Controller
          $this->StudentTransfer = $StudentTransfer;
          $this->StudentSubject = $StudentSubject;
          $this->StudentMark = $StudentMark;
+         $this->StudentGroupDelete = $StudentGroupDelete;
+         $this->MarkDelete = $MarkDelete;
     }
 
   
@@ -82,6 +88,17 @@ class StudentController extends Controller
            return $this->StudentMark->handle($request ,$school_username);
        }
 
+
+       public function student_group_delete(Request $request,$school_username)
+       {
+           return $this->StudentGroupDelete->handle($request ,$school_username);
+       }
+
+
+       public function mark_delete(Request $request,$school_username)
+       {
+           return $this->MarkDelete->handle($request ,$school_username);
+       }
 
 
        public function student_import(Request $request,$school_username){

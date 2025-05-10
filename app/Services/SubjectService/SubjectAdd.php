@@ -23,7 +23,8 @@ class SubjectAdd
                 'faculty_id' => 'required|integer|exists:faculties,id',
                 'department_id' => 'required|integer|exists:departments,id',
                 'section_id' => 'required|integer|exists:sections,id',  
-                'religion_id' => 'exists:religions,id',
+                'religion_id' => 'nullable|exists:religions,id',
+                'combined_subject_id' => 'nullable|exists:subjects,id',
                 'subject_category' => 'required',
                 'subject_type' => 'required',       
 
@@ -63,6 +64,8 @@ class SubjectAdd
             $model->pass_number2 = $request->pass_number2;
             $model->pass_number3 = $request->pass_number3;
             $model->combined_subject_id  = $request->combined_subject_id;
+            $model->serial = $request->serial;
+            $model->gpa_calculation = $request->gpa_calculation;
             $model->save();
 
             DB::commit();
