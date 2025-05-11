@@ -4,6 +4,7 @@ namespace App\Services\PaymentService;
 
 use App\Models\Payment;
 use App\Models\Invoice;
+use App\Models\Enroll;
 use App\Models\Paymentinvoice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -40,6 +41,25 @@ class PaymentAdd
                       'errors' => $validator->errors(),
                    ], 422);
               }
+
+
+               $enrollment = Enroll::where([
+                     ['school_username', $school_username],
+                     ['sessionyear_id', $request->sessionyear_id],
+                     ['programyear_id', $request->programyear_id],
+                     ['level_id', $request->level_id],
+                     ['faculty_id', $request->faculty_id],
+                     ['department_id', $request->department_id],
+                     ['section_id', $request->section_id],
+                     ['student_id', $request->student_id],
+                ])->first();
+
+
+                if (!$enrollment) {
+                       return response()->json([
+                             'message' => 'No students found for the given criteria',
+                       ], 400);
+                }
 
         
             $invoice_ids = $request->invoice_id;
@@ -110,15 +130,10 @@ class PaymentAdd
         
             $Payment = new Payment();
             $Payment->school_username = $request->school_username;
-            $Payment->sessionyear_id = $request->sessionyear_id;
-            $Payment->programyear_id = $request->programyear_id;
-            $Payment->level_id = $request->level_id;
-            $Payment->faculty_id = $request->faculty_id;
-            $Payment->department_id = $request->department_id;
-            $Payment->section_id = $request->section_id;
+            $Payment->enroll_id = $enrollment->id;
             $Payment->collection_type = $request->collection_type;
-            $Payment->student_id = $request->student_id;
-            $Payment->tran_id = Str::random(10);;
+            $Payment->tran_id = Str::random(10);
+            $Payment->payment_status = 1;
             $Payment->amount = $invoice_total;
             $Payment->total_amount = $total_amount;
             $Payment->gateway_charge = $gateway_charge;

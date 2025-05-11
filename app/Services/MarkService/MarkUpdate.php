@@ -39,7 +39,7 @@ class MarkUpdate
             }
     
             // Find mark record
-            $mark = Mark::with('subject', 'enroll')->find($request->id);
+            $mark = Mark::with('subject')->find($request->id);
             if (!$mark) {
                 return response()->json([
                     'message' => 'Mark not found',

@@ -16,14 +16,13 @@ class MarkList
      {
        
         // Search
-        $student = $request->student_id;
+        
          if($request->has('GroupBySubject') && $request->GroupBySubject==1) {
 
             $query = Mark::query();
             $query->join('enrolls', 'marks.enroll_id', '=', 'enrolls.id')
                   ->where('marks.school_username', $school_username)
                   ->where('marks.exam_id', $request->exam_id);
-
                 $query->with('subject');
             
             // Filter enrolls
@@ -57,34 +56,42 @@ class MarkList
             return response()->json([
                 'data'=>$result
             ]);
-            
-          
          }
 
 
-
-         die();
         $query = Mark::query();
-        $query->join('enrolls', 'marks.enroll_id', '=', 'enrolls.id')
+        $query->join('enrolls', 'marks.enroll_id', '=', 'enrolls.id')  // Ordering Roll Assingn
         ->with('student', 'subject'); // keep other relations
         $query->where('marks.school_username', $school_username);
-        $query->where('exam_id', $request->exam_id);
-        $query->where('subject_id', $request->subject_id);
+      
 
+           // Subject  Id
+         if ($request->has('subject_id')) {
+              $query->where('subject_id', $request->subject_id);
+          }
 
+            // Exam  Id
+         if ($request->has('exam_id')) {
+             $query->where('exam_id', $request->exam_id);
+          }
     
-            // Filter by enrollment fields if provided
-            $query->whereHas('enroll', function ($q) use ($request) {
-            
-                $q->where('sessionyear_id', $request->sessionyear_id)
-                 ->where('programyear_id', $request->programyear_id)
-                 ->where('level_id', $request->level_id)
-                 ->where('faculty_id', $request->faculty_id)
-                 ->where('department_id', $request->department_id);
-                
-                 if ($request->has('section_id')) {
-                     $q->where('section_id', $request->section_id);
-                 }
+              $query->whereHas('enroll', function ($q) use ($request) {
+                 $filterFields = [
+                    'sessionyear_id',
+                    'programyear_id',
+                    'level_id',
+                    'faculty_id',
+                    'department_id',
+                    'section_id',
+                    'student_id',
+                 
+                ];
+
+                foreach ($filterFields as $field) {
+                    if ($request->filled($field)) {
+                        $q->where($field, $request->$field);
+                    }
+                }
             });
                 
         // Sorting

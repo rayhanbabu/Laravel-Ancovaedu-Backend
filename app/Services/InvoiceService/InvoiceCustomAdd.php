@@ -3,6 +3,7 @@ namespace App\Services\InvoiceService;
 
 use App\Models\Invoice;
 use App\Models\Fee;
+use App\Models\Enroll;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Exception;
@@ -38,16 +39,27 @@ class InvoiceCustomAdd
                    ], 422);
                }
 
+
+               $enroll = Enroll::where('student_id', $request->student_id)
+                    ->where('school_username', $school_username)
+                    ->where('sessionyear_id', $request->sessionyear_id)
+                    ->where('programyear_id', $request->programyear_id)
+                    ->where('level_id', $request->level_id)
+                    ->where('faculty_id', $request->faculty_id)
+                    ->where('department_id', $request->department_id)
+                    ->where('section_id', $request->section_id)
+                    ->first();
+
+               if (!$enroll) {
+                  return response()->json([
+                        'message' => 'No students found for the given criteria',
+                    ], 400);
+                }    
+
+
                         $invoice = new Invoice();
                         $invoice->school_username = $school_username;
-                        $invoice->sessionyear_id = $request->sessionyear_id;
-                        $invoice->programyear_id = $request->programyear_id;
-                        $invoice->level_id = $request->level_id;
-                        $invoice->faculty_id = $request->faculty_id;
-                        $invoice->department_id = $request->department_id;
-                        $invoice->section_id = $request->section_id;
-                        $invoice->student_id = $request->student_id;
-
+                        $invoice->enroll_id = $enroll->id;
                         $invoice->fee_type = $request->fee_type;
                         $invoice->amount = $request->amount;
                         $invoice->desc = $request->desc;
@@ -59,8 +71,8 @@ class InvoiceCustomAdd
             DB::commit();
 
             return response()->json([
-                'message' => 'Data SingleAddd successfully',
-                'data' => $request->all(),
+                'message' => 'Data Single Addd successfully',
+                'data' => $invoice,
             ], 200);
 
          } catch (\Exception $e) {

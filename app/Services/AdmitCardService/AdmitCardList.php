@@ -15,6 +15,27 @@ class AdmitCardList
         $query->with('subject:id,subject_name,subject_code'); // Eager load the subject relationship
         $query->where('school_username', $school_username);
 
+
+           // Apply filters
+       $filters = [
+        'sessionyear_id',
+        'programyear_id',
+        'level_id',
+        'faculty_id',
+        'department_id',
+        'section_id',
+        'viewById' => 'id'
+      ];
+
+   foreach ($filters as $requestKey => $dbColumn) {
+       // if $filters is associative, otherwise key = value
+       if (is_int($requestKey)) $requestKey = $dbColumn;
+       if ($request->filled($requestKey)) {
+           $query->where($dbColumn, $request->$requestKey);
+       }
+   }
+
+
         
     // Search
     if ($request->has('search')) {

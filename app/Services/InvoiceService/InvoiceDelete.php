@@ -13,7 +13,7 @@ class InvoiceDelete
         DB::beginTransaction();
         try {
              $Invoice = Invoice::findOrFail($id);
-              if ($Invoice->payment_status == 1) {
+              if ($Invoice->payment_status == 1  || $Invoice->partial_payment>0) {
                   return response()->json([
                      'message' => 'Cannot delete invoice with payment status 1',
                    ], 400);
@@ -22,7 +22,7 @@ class InvoiceDelete
            
             DB::commit();
             return response()->json([
-                'message' => 'Agent deleted successfully',
+                'message' => 'Data deleted successfully',
             ], 200);
         } catch (\Exception $e) {
             DB::rollback();

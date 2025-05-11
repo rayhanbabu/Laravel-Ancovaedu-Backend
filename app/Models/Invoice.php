@@ -23,9 +23,16 @@ class Invoice extends Model
         'student_id',
     ];
 
+
+    public function enroll()
+    {
+        return $this->belongsTo(Enroll::class);
+    }
+
+
     public function student()
     {
-        return $this->belongsTo(Student::class);
+        return $this->hasOneThrough(Student::class, Enroll::class, 'id', 'id', 'enroll_id', 'student_id');
     }
     
 

@@ -3,6 +3,7 @@
 namespace App\Services\InvoiceService;
 
 use App\Models\Invoice;
+use App\Models\Enroll;
 use Illuminate\Http\Request;
 use App\Http\Resources\InvoiceResource;
 
@@ -13,31 +14,27 @@ class InvoiceList
      {
         $query = Invoice::query();  
         $query->where('school_username', $school_username);
-        $query->with('student:id,bangla_name,english_name,registration');
+        $query->with('student');
+        $query->with('enroll');
+     
 
+       $query->whereHas('enroll', function ($q) use ($request) {
+                 $filterFields = [
+                    'sessionyear_id',
+                    'programyear_id',
+                    'level_id',
+                    'faculty_id',
+                    'department_id',
+                    'section_id',
+                    'student_id'
+                ];
 
-
-          // Apply filters
-       $filters = [
-         'sessionyear_id',
-         'programyear_id',
-         'level_id',
-         'faculty_id',
-         'department_id',
-         'section_id',
-         'student_id',
-         'fee_id',
-         'payment_status',
-         'viewById' => 'id'
-     ];
-
-    foreach ($filters as $requestKey => $dbColumn) {
-        // if $filters is associative, otherwise key = value
-        if (is_int($requestKey)) $requestKey = $dbColumn;
-        if ($request->filled($requestKey)) {
-            $query->where($dbColumn, $request->$requestKey);
-        }
-    }
+                foreach ($filterFields as $field) {
+                    if ($request->filled($field)) {
+                        $q->where($field, $request->$field);
+                    }
+                }
+            });
         
     // Search
     if ($request->has('search')) {

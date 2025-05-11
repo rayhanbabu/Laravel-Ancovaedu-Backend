@@ -17,27 +17,8 @@ return new class extends Migration
             $table->string('school_username'); // Foreign Key
             $table->foreign('school_username')->references('username')->on('users');
 
-            $table->unsignedBigInteger('student_id'); // Foreign Key
-            $table->foreign('student_id')->references('id')->on('students');
-
-
-            $table->unsignedBigInteger('sessionyear_id'); // Foreign Key
-            $table->foreign('sessionyear_id')->references('id')->on('sessionyears');
-
-            $table->unsignedBigInteger('programyear_id'); // Foreign Key
-            $table->foreign('programyear_id')->references('id')->on('programyears');
-
-            $table->unsignedBigInteger('level_id'); // Foreign Key
-            $table->foreign('level_id')->references('id')->on('levels');
-
-            $table->unsignedBigInteger('faculty_id'); // Foreign Key
-            $table->foreign('faculty_id')->references('id')->on('faculties');
-
-            $table->unsignedBigInteger('department_id'); // Foreign Key
-            $table->foreign('department_id')->references('id')->on('departments');
-
-            $table->unsignedBigInteger('section_id'); // Foreign Key
-            $table->foreign('section_id')->references('id')->on('sections');
+            $table->unsignedBigInteger('enroll_id'); // Foreign Key
+            $table->foreign('enroll_id')->references('id')->on('enrolls');
 
             $table->enum('payment_type', ['cash','bank_transfer','online'])->default('cash');
 
@@ -49,8 +30,8 @@ return new class extends Migration
             $table->string('bank_tran_id')->nullable();
 
             $table->integer('amount');
-            $table->decimal('gateway_charge', 10, 2)->default(0);
-            $table->decimal('total_amount', 10, 2);
+            $table->double('gateway_charge', 10, 2)->default(0);
+            $table->double('total_amount', 10, 2);
 
             $table->date('date')->nullable();
             $table->integer('year')->nullable();

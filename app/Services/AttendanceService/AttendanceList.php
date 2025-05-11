@@ -23,32 +23,22 @@ class AttendanceList
         $query->where('school_username', $school_username);
         $query->where('student_id', $request->student_id);
 
-                $query->whereHas('enroll', function ($q) use ($request) {
-                if ($request->has('sessionyear_id')) {
-                      $q->where('sessionyear_id', $request->sessionyear_id);
-                }
+          $query->whereHas('enroll', function ($q) use ($request) {
+                    $filterFields = [
+                        'sessionyear_id',
+                        'programyear_id',
+                        'level_id',
+                        'faculty_id',
+                        'department_id',
+                        'section_id'
+                    ];
 
-                if ($request->has('programyear_id')) {
-                    $q->where('programyear_id', $request->programyear_id);
-                }
-
-                if ($request->has('level_id')) {
-                    $q->where('level_id', $request->level_id);
-                }
-
-                if ($request->has('faculty_id')) {
-                    $q->where('faculty_id', $request->faculty_id);
-                }
-
-                if ($request->has('department_id')) {
-                    $q->where('department_id', $request->department_id);
-                }
-
-                if ($request->has('section_id')) {
-                    $q->where('section_id', $request->section_id);
-                }
-              
-            });
+                    foreach ($filterFields as $field) {
+                        if ($request->filled($field)) {
+                            $q->where($field, $request->$field);
+                        }
+                    }
+                });
 
 
       if ($request->has('subject_id')) {    

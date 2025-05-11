@@ -3,6 +3,7 @@
 namespace App\Services\PaymentService;
 
 use App\Models\Payment;
+use App\Models\Enroll;
 use Illuminate\Http\Request;
 use App\Http\Resources\PaymentResource;
 
@@ -12,32 +13,45 @@ class PaymentList
      {
         $query = Payment::query();  
         $query->with('invoices');
-        $query->with('student:id,bangla_name,english_name,registration');
+        $query->with('student','enroll');
         $query->where('school_username', $school_username);
 
 
-        
-         // Apply filters
-       $filters = [
-        'sessionyear_id',
-        'programyear_id',
-        'level_id',
-        'faculty_id',
-        'department_id',
-        'section_id',
-        'student_id',
-        'payment_status',
-        'viewById' => 'id'
-    ];
+       $query->whereHas('enroll', function ($q) use ($request) {
+                 $filterFields = [
+                    'sessionyear_id',
+                    'programyear_id',
+                    'level_id',
+                    'faculty_id',
+                    'department_id',
+                    'section_id',
+                    'student_id',
+                 
+                ];
 
-   foreach ($filters as $requestKey => $dbColumn) {
-       // if $filters is associative, otherwise key = value
-       if (is_int($requestKey)) $requestKey = $dbColumn;
-       if ($request->filled($requestKey)) {
-           $query->where($dbColumn, $request->$requestKey);
-       }
-   }
+                foreach ($filterFields as $field) {
+                    if ($request->filled($field)) {
+                        $q->where($field, $request->$field);
+                    }
+                }
+            });
+
+
+              // Apply filters
+        
     
+      // View By Id
+        if ($request->has('viewById')) {
+            $query->where('id', $request->viewById);
+        }
+
+         // View By Id
+        if ($request->has('payment_status')) {
+            $query->where('payment_status', $request->payment_status);
+        }
+        
+        
+        
     // Search
     if ($request->has('search')) {
         $search = $request->search;
@@ -87,14 +101,14 @@ class PaymentList
         $result = $query->paginate($perPage, ['*'], 'page', $page);
 
         return response()->json([
-            'data' =>$result->items(),
+                'data' =>$result->items(),
                 'total' => $result->total(),
                 'per_page' => $result->perPage(),
                 'current_page' => $result->currentPage(),
                 'last_page' => $result->lastPage(),
                 'from' => $result->firstItem(),
                 'to' => $result->lastItem()
-           
-        ]);
-    }
+          ]);
+
+      }
 }
