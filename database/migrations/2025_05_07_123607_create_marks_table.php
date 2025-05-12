@@ -24,13 +24,13 @@ return new class extends Migration
 
             $table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade');
 
-            $table->double('level1_mark', 8, 2)->default(0); // Amount of the markinfo
-            $table->double('level2_mark', 8, 2)->default(0);; // Amount of the markinfo
-            $table->double('level3_mark', 8, 2)->default(0);; // Amount of the markinfo
-            $table->double('sub_total', 8, 2)->default(0);; // Amount of the markinfo
-            $table->double('total', 8, 2)->default(0);; // Amount of the markinfo
-            $table->double('gpa', 8, 2)->default(0);; // Amount of the markinfo
-            $table->string('grade')->nullable(); // Description of the markinfo
+            $table->double('level1_mark', 8, 2)->default(0);  // Amount of the markinfo
+            $table->double('level2_mark', 8, 2)->default(0);;  // Amount of the markinfo
+            $table->double('level3_mark', 8, 2)->default(0);;  // Amount of the markinfo
+            $table->double('sub_total', 8, 2)->default(0);;  // Amount of the markinfo
+            $table->double('total', 8, 2)->default(0);;  // Amount of the markinfo
+            $table->double('gpa', 8, 2)->default(0);;  // Amount of the markinfo
+            $table->string('grade')->nullable();  // Description of the markinfo
 
             $table->boolean('attendance_status')->default(true);
             $table->foreignId('attendance_by')->nullable()->constrained('users')->onDelete('set null');

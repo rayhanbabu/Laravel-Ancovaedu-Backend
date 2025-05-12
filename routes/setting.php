@@ -11,6 +11,7 @@ use App\Http\Controllers\SchoolPanel\Setting\ExamController;
 use App\Http\Controllers\SchoolPanel\Setting\SubjectController;
 use App\Http\Controllers\SchoolPanel\Setting\DesignationController;
 use App\Http\Controllers\SchoolPanel\Setting\MarkinfoController;
+use App\Http\Controllers\SchoolPanel\Setting\EmployeePermissionController;
 
       Route::middleware('auth:sanctum')->group(function () {
 
@@ -79,11 +80,18 @@ use App\Http\Controllers\SchoolPanel\Setting\MarkinfoController;
                Route::delete('/{school_username}/designation-delete/{id}', [DesignationController::class, 'designation_delete']);
 
 
-                 //marks Info
+                //marks Info
                 Route::get('/{school_username}/markinfo', [MarkinfoController::class, 'markinfo']);
                 Route::post('/{school_username}/markinfo-add', [MarkinfoController::class, 'markinfo_add']);
                 Route::post('/{school_username}/markinfo-update/{id}', [MarkinfoController::class, 'markinfo_update']);
                 Route::delete('/{school_username}/markinfo-delete/{id}', [MarkinfoController::class, 'markinfo_delete']);
+
+                //Employee  Permission 
+                Route::get('/{school_username}/permission_role', [employeePermissionController::class, 'permission_role']);
+                Route::get('/{school_username}/permission', [employeePermissionController::class, 'permission']);
+                Route::post('/{school_username}/permission-add', [employeePermissionController::class, 'permission_add']);
+                Route::post('/{school_username}/permission-update/{id}', [employeePermissionController::class, 'permission_update']);
+                Route::delete('/{school_username}/permission-delete/{id}', [employeePermissionController::class, 'permission_delete']);
 
            });
      });
