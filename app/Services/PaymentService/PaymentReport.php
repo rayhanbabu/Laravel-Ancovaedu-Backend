@@ -16,6 +16,8 @@ class PaymentReport
     {
         $query = Invoice::query();
          $query->join('enrolls', 'invoices.enroll_id', '=', 'enrolls.id');
+           $query->join('students', 'enrolls.student_id', '=', 'students.id');
+           
 
        // Apply school filter
            $query->where('invoices.school_username', $school_username);
@@ -62,6 +64,9 @@ class PaymentReport
            // Aggregation + Grouping
     $query->selectRaw("
         enrolls.student_id, 
+        MAX(students.english_name) as english_name,
+        MAX(students.bangla_name) as bangla_name,
+        MAX(enrolls.roll) as roll,
         SUM(invoices.amount) as invoice_amount, 
         SUM(invoices.waiver_amount) as waiver_amount, 
         SUM(invoices.total_amount) as net_invoice_amount, 
