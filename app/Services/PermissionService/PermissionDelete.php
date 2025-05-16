@@ -1,7 +1,7 @@
 <?php
 namespace App\Services\PermissionService;
 
-use App\Models\EmployeePermission;
+use App\Models\Employeepermission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -12,7 +12,7 @@ class PermissionDelete
     {
         DB::beginTransaction();
         try {
-             $Permission = EmployeePermission::findOrFail($id);
+             $Permission = Employeepermission::findOrFail($id);
              $Permission->delete();
            
             DB::commit();

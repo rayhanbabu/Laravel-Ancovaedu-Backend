@@ -2,7 +2,7 @@
 namespace App\Services\PermissionService;
 
 
-use App\Models\EmployeePermission;
+use App\Models\Employeepermission;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Exception;
@@ -15,7 +15,7 @@ class PermissionUpdate
         DB::beginTransaction();
         try {
             $user_auth = user();
-            $Permission = EmployeePermission::findOrFail($id);
+            $Permission = Employeepermission::findOrFail($id);
             $validator = validator($request->all(), [
                   
                  'sessionyear_id' => 'nullable|integer|exists:sessionyears,id',

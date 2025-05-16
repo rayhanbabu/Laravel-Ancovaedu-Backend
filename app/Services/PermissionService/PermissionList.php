@@ -2,7 +2,7 @@
 
 namespace App\Services\PermissionService;
 
-use App\Models\EmployeePermission;
+use App\Models\Employeepermission;
 use Illuminate\Http\Request;
 use App\Http\Resources\PermissionResource;
 
@@ -11,7 +11,7 @@ class PermissionList
    
    public function handle(Request $request,$school_username)
      {
-        $query = EmployeePermission::query();  
+        $query = Employeepermission::query();  
         $query->where('school_username', $school_username);
 
 

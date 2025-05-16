@@ -68,7 +68,7 @@ class User extends Authenticatable
        }
 
         public function permissions(){
-             return $this->hasMany(EmployeePermission::class,'employee_user_id');
+             return $this->hasMany(Employeepermission::class,'employee_user_id');
          }
 
    
