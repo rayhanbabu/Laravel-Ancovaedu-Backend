@@ -58,6 +58,10 @@ class StudentTransfer
                 ], 404);
             }
 
+
+              $enroll_group = $request->to_sessionyear_id."-".$request->to_programyear_id."-".$request->to_level_id
+                 ."-".$request->to_faculty_id."-".$request->to_department_id."-".$request->to_section_id;
+
             $countCreated = 0;
             foreach ($enrollments as $enrollment) {
                 // Check for existing enrollment in target session
@@ -90,6 +94,7 @@ class StudentTransfer
                     'faculty_id'        => $request->to_faculty_id,
                     'department_id'     => $request->to_department_id,
                     'section_id'        => $request->to_section_id,
+                    'enroll_group'      => $enroll_group,
 
                     'created_by'        => $user->id,
                  ]);

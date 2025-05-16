@@ -17,7 +17,16 @@ class Mark extends Model
         'created_by',
         'final_submit_status',
         'final_submited_by',
+        'mark_group',
     ];
+
+
+        protected $casts = [
+        'subject_id'=>'integer',
+        'enroll_id'=>'integer',
+        'exam_id'=>'integer',
+        'id'=>'integer',
+      ];
 
 
     public function enroll()

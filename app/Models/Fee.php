@@ -23,4 +23,18 @@ class Fee extends Model
         'created_by',
     ];
 
+     protected $casts = [
+        'id'=>'integer',
+        'user_id'=>'integer',
+        'sessionyear_id'=>'integer',
+        'programyear_id'=>'integer',
+        'level_id'=>'integer',
+        'faculty_id'=>'integer',
+        'department_id' => 'integer',
+        'section_id'=>'integer',
+        'student_id'=>'integer',
+        'created_by'=>'integer',
+        'updated_by'=>'integer',
+      ];
+
 }

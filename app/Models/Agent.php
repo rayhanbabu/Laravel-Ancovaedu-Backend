@@ -27,6 +27,11 @@ class Agent extends Model
         'nagad_number'
     ];
 
+       protected $casts = [
+           'id'=>'integer',
+           'user_id'=>'integer',
+        ];
+
 
 
     public function user()

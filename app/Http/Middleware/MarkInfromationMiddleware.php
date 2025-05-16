@@ -8,52 +8,63 @@ use Symfony\Component\HttpFoundation\Response;
 
 class MarkInfromationMiddleware
 {
-    /**
-     * Handle an incoming request.
-     */
+  
     public function handle(Request $request, Closure $next): Response
     {
         $school_username = $request->route('school_username');
         $roleType = user()->user_role->role_type;
 
-        // Allow Supperadmin and Manager
+       
         if (in_array($roleType, ['Supperadmin', 'Manager'])) {
             return $next($request);
         }
 
-        // Allow Agent if school matches
+       
         if ($roleType === 'Agent' && user()->agent?->school_username === $school_username) {
             return $next($request);
         }
 
-        // Allow School if username matches
+        
         if ($roleType === 'School' && user()->username === $school_username) {
             return $next($request);
         }
 
-        // Employee permissions check
+
         if ($roleType === 'Employee' && user()->employee?->school_username === $school_username) {
             $permissions = user()->permissions();
-
-            // Check for 'StudentInfromation' permission
             if ($permissions->where('permission_role', 'MarkInfromation')->exists()) {
                 return $next($request);
             }
 
-            // Check for 'StudentInfromationByGroup' with specific query parameters
-            $filters = [
-                 'sessionyear_id' => $request->query('sessionyear_id'),
-                 'programyear_id' => $request->query('programyear_id'),
-                 'level_id'       => $request->query('level_id'),
-                 'faculty_id'     => $request->query('faculty_id'),
-                 'department_id'  => $request->query('department_id'),
-                 'section_id'     => $request->query('section_id'),
-             ];
-
-            if ($permissions->where('permission_role','MarkInfromationByGroup')->where($filters)->exists()) {
-                return $next($request);
-            }
         }
+
+       if ($roleType === 'Employee' && user()->employee?->school_username === $school_username) {
+            $permissions = user()->permissions();
+
+             $filters = [
+                    'sessionyear_id' => $request->sessionyear_id,
+                    'programyear_id' => $request->programyear_id,
+                    'level_id'       => $request->level_id,
+                    'faculty_id'     => $request->faculty_id,
+                    'department_id'  => $request->department_id,
+                    'section_id'     => $request->section_id,
+                    'exam_id'         => $request->exam_id,
+                    'subject_id'     => $request->subject_id,
+                ];
+
+            $access_group = $request->query('access_group'); 
+         
+          $query = $permissions->where('permission_role', 'MarkInfromationByGroup')
+           ->where(function ($q) use ($filters, $access_group) {
+                $q->where($filters);
+
+             $q->orWhere('access_group', $access_group);
+            });
+
+              if ($query->exists()) {
+                    return $next($request);
+              }
+         }
 
         // Unauthorized
         return response()->json([

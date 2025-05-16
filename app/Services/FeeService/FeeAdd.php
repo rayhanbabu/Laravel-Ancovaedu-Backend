@@ -37,10 +37,12 @@ class FeeAdd
              }
 
         
-
+      $fee_enroll = $request->sessionyear_id."-".$request->programyear_id."-".$request->level_id
+                 ."-".$request->faculty_id."-".$request->department_id."-".$request->section_id;
         
             $fee = new Fee();
             $fee->school_username = $request->school_username;
+            $fee->fee_group = $fee_enroll;
             $fee->sessionyear_id = $request->sessionyear_id;
             $fee->programyear_id = $request->programyear_id;
             $fee->level_id = $request->level_id;

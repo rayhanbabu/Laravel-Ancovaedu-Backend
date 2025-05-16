@@ -74,10 +74,15 @@ class AttendanceAdd
                         ], 400);
                  }
 
+
+             $attendance_group = $request->sessionyear_id."-".$request->programyear_id."-".$request->level_id
+                 ."-".$request->faculty_id."-".$request->department_id."-".$request->section_id."-".$request->subject_id;
+
                 $classdate = new CLassdate();
                 $classdate->school_username = $school_username;
                 $classdate->enroll_id = $enroll->first()->id;
                 $classdate->subject_id = $request->subject_id;
+                $classdate->attendance_group = $attendance_group;
                 $classdate->date = $request->date;
                 $classdate->time = $request->time;
                 $classdate->created_by = $user_auth->id;

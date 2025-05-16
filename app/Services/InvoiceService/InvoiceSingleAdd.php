@@ -81,6 +81,8 @@ class InvoiceSingleAdd
                 $invoice = new Invoice();
                 $invoice->school_username = $school_username;
                 $invoice->enroll_id = $enroll->id;
+                $invoice->invoice_group =$enroll->sessionyear_id."-".$enroll->programyear_id."-".$enroll->level_id
+                         ."-".$enroll->faculty_id."-".$enroll->department_id."-".$enroll->section_id;
                 $invoice->fee_id = $fee_id;
                 $invoice->fee_type = $fee_list->fee_type;
                 $invoice->amount = $fee_list->amount;

@@ -17,6 +17,11 @@ class Faculty extends Model
         'updated_by',
     ];
 
+   protected $casts = [
+        'id'=>'integer',
+        'level_id'=>'integer',
+      ];
+
     public function level()
     {
         return $this->belongsTo(Level::class, 'level_id');

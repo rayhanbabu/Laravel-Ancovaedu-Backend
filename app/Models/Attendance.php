@@ -22,6 +22,12 @@ class Attendance extends Model
         'status',
     ];
 
+        protected $casts = [
+          'subject_id'=>'integer',
+          'classdate_id'=>'integer',
+          'id'=>'integer',
+         ];
+
     public function classdate()
     {
         return $this->belongsTo(Classdate::class);

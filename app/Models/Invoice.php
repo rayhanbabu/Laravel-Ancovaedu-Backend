@@ -10,6 +10,7 @@ class Invoice extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'school_username',
         'session_id',
         'programyear_id',
@@ -22,6 +23,11 @@ class Invoice extends Model
         'status',
         'student_id',
     ];
+
+
+       protected $casts = [
+        'id'=>'integer',
+      ];
 
 
     public function enroll()

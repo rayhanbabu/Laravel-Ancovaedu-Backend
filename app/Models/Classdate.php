@@ -9,6 +9,13 @@ class Classdate extends Model
 {
     use HasFactory;
 
+
+       protected $casts = [
+        'subject_id'=>'integer',
+        'enroll_id'=>'integer',
+        'id'=>'integer',
+      ];
+
      // Payment.php
      public function attendances()
     {

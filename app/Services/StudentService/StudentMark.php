@@ -37,6 +37,9 @@ class StudentMark
                     'errors'  => $validator->errors(),
                 ], 422);
             }
+
+
+      
     
             // Fetch enrollments
             $enrollments = Enroll::with('student')->where([
@@ -144,13 +147,16 @@ class StudentMark
      */
     protected function createMark($enroll, $subject, $request, $school_username, $user_auth)
     {
-        Mark::create([
-            'enroll_id'      => $enroll->id,
-            'subject_id'      => $subject->id,
-            'school_username' => $school_username,
-            'exam_id'         => $request->exam_id,
-            'created_by'      => $user_auth->id,
-        ]);
+      Mark::create([
+       'enroll_id'       => $enroll->id,
+       'subject_id'      => $subject->id,
+       'mark_group'      => $enroll->sessionyear_id."-".$enroll->programyear_id."-".$enroll->level_id
+                         ."-".$enroll->faculty_id."-".$enroll->department_id."-".$enroll->section_id."-".$request->exam_id
+                         ."-".$subject->id,
+      'school_username' => $school_username,
+      'exam_id'         => $request->exam_id,
+      'created_by'      => $user_auth->id,
+   ]);
     }
     
   

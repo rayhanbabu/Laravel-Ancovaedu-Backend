@@ -35,24 +35,39 @@ class AttendanceMiddleware
                 return $next($request);
             }
 
-            $filters = [
-                'sessionyear_id' => $request->query('sessionyear_id'),
-                'programyear_id' => $request->query('programyear_id'),
-                'level_id'       => $request->query('level_id'),
-                'faculty_id'     => $request->query('faculty_id'),
-                'department_id'  => $request->query('department_id'),
-                'section_id'     => $request->query('section_id'),
-            ];
-
-            if ($permissions->where('permission_role', 'AttendanceByGroup')->where($filters)->exists()) {
-                return $next($request);
-            }
         }
 
-        // Unauthorized
-        return response()->json([
-            'status'  => 'error',
-            'message' => 'Unauthorized',
-        ], 401);
+      if ($roleType === 'Employee' && user()->employee?->school_username === $school_username) {
+            $permissions = user()->permissions();
+
+             $filters = [
+                    'sessionyear_id' => $request->sessionyear_id,
+                    'programyear_id' => $request->programyear_id,
+                    'level_id'       => $request->level_id,
+                    'faculty_id'     => $request->faculty_id,
+                    'department_id'  => $request->department_id,
+                    'section_id'     => $request->section_id,
+                    'subject_id'     => $request->subject_id,
+                ];
+
+            $access_group = $request->query('access_group'); 
+         
+          $query = $permissions->where('permission_role', 'AttendanceByGroup')
+           ->where(function ($q) use ($filters, $access_group) {
+                $q->where($filters);
+
+             $q->orWhere('access_group', $access_group);
+            });
+
+              if ($query->exists()) {
+                    return $next($request);
+              }
+         }
+
+// Unauthorized response
+return response()->json([
+    'status'  => 'error',
+    'message' => 'Unauthorized',
+], 401);
     }
 }

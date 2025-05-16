@@ -19,6 +19,11 @@ class Payroleinfo extends Model
         'increment',
     ];
 
+      protected $casts = [
+        'employee_id'=>'integer',
+        'id'=>'integer',
+      ];
+
     public function user()
     {
         return $this->hasOneThrough(User::class, Employee::class, 'id', 'id', 'employee_id', 'user_id');

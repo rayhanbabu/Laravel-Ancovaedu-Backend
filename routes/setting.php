@@ -15,7 +15,7 @@ use App\Http\Controllers\SchoolPanel\Setting\EmployeePermissionController;
 
       Route::middleware('auth:sanctum')->group(function () {
 
-            Route::middleware('School:{school_username}')->group(function(){ 
+            Route::middleware('SettingMiddleware:{school_username}')->group(function(){ 
 
                  // religion
                  Route::get('/{school_username}/religion', [ReligionController::class, 'religion']);

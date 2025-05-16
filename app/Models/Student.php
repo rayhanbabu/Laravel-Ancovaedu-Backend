@@ -22,4 +22,10 @@ class Student extends Model
         return $this->belongsTo(User::class);
     }
 
+     protected $casts = [
+        'id' => 'integer',
+        'user_id' => 'integer',
+        'religion'=>'integer'
+      ];
+
 }

@@ -31,29 +31,40 @@ class StudentFinanceMiddleware
             return $next($request);
         }
 
-        // Employee permissions check
-        if ($roleType === 'Employee' && user()->employee?->school_username === $school_username) {
+         if ($roleType === 'Employee' && user()->employee?->school_username === $school_username) {
+            $permissions = user()->permissions();
+              if ($permissions->where('permission_role', 'StudentFinance')->exists()) {
+                 return $next($request);
+               }
+         }
+
+
+       
+    if ($roleType === 'Employee' && user()->employee?->school_username === $school_username) {
             $permissions = user()->permissions();
 
-            // Check for 'StudentInfromation' permission
-            if ($permissions->where('permission_role', 'StudentFinance')->exists()) {
-                return $next($request);
-            }
+             $filters = [
+                    'sessionyear_id' => $request->sessionyear_id,
+                    'programyear_id' => $request->programyear_id,
+                    'level_id'       => $request->level_id,
+                    'faculty_id'     => $request->faculty_id,
+                    'department_id'  => $request->department_id,
+                    'section_id'     => $request->section_id,
+                ];
 
-            // Check for 'StudentInfromationByGroup' with specific query parameters
-            $filters = [
-                'sessionyear_id' => $request->query('sessionyear_id'),
-                'programyear_id' => $request->query('programyear_id'),
-                'level_id'       => $request->query('level_id'),
-                'faculty_id'     => $request->query('faculty_id'),
-                'department_id'  => $request->query('department_id'),
-                'section_id'     => $request->query('section_id'),
-            ];
+            $access_group = $request->query('access_group'); 
+         
+          $query = $permissions->where('permission_role', 'StudentFinanceByGroup')
+         ->where(function ($q) use ($filters, $access_group) {
+                $q->where($filters);
 
-            if ($permissions->where('permission_role', 'StudentFinanceByGroup')->where($filters)->exists()) {
-                return $next($request);
-            }
-        }
+             $q->orWhere('access_group', $access_group);
+            });
+
+              if ($query->exists()) {
+                    return $next($request);
+              }
+         }
 
         // Unauthorized
         return response()->json([

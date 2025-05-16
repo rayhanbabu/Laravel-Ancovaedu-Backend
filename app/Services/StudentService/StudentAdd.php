@@ -100,6 +100,9 @@ class StudentAdd
             $student->created_by = $user_auth->id; 
             $student->save();
 
+            $enroll_group = $request->sessionyear_id."-".$request->programyear_id."-".$request->level_id
+                 ."-".$request->faculty_id."-".$request->department_id."-".$request->section_id;
+
             $enroll = new Enroll();
             $enroll->student_id = $student->id;
             $enroll->user_id = $user->id;
@@ -111,6 +114,7 @@ class StudentAdd
             $enroll->department_id = $request->department_id;
             $enroll->section_id = $request->section_id;
             $enroll->roll = $request->roll;
+            $enroll->enroll_group = $enroll_group;
             $enroll->created_by = $user_auth->id;
             $enroll->created_type = "Student";
             $enroll->save();

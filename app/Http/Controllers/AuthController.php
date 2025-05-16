@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\User_role;
+use App\Models\School;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\RateLimiter;
 
@@ -78,6 +79,20 @@ class AuthController extends Controller
                  'data' => $data
             ],200);
       }
+
+
+        public function school_profile(Request $request,$school_username)
+        {
+              $query = School::query();
+              $query->where('school_username',$school_username);
+              $query->with('user:id,name,email,phone,username,profile_picture,status');
+              $data = $query->first();
+
+                return response()->json([
+                   'status' => 'success',
+                   'data' => $data
+               ],200);
+         }
     
 
     public function logout(Request $request)

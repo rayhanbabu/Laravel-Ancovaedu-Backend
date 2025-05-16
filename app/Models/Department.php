@@ -14,4 +14,10 @@ class Department extends Model
         return $this->belongsTo(Faculty::class, 'faculty_id');
     }
 
+
+       protected $casts = [
+          'id'=>'integer',
+          'faculty_id'=>'integer',
+       ];
+
 }

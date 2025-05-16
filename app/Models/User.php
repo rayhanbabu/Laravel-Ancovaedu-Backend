@@ -25,6 +25,8 @@ class User extends Authenticatable
         'status',
     ];
 
+    
+
     /**
      * The attributes that should be hidden for serialization.
      *

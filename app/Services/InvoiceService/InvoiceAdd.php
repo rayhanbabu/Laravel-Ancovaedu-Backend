@@ -79,6 +79,8 @@ class InvoiceAdd
          foreach ($enrollments as $enrollment) {
                 $Invoice = new Invoice();
                 $Invoice->school_username = $school_username;
+                $Invoice->invoice_group=$enrollment->sessionyear_id."-".$enrollment->programyear_id."-".$enrollment->level_id
+                         ."-".$enrollment->faculty_id."-".$enrollment->department_id."-".$enrollment->section_id;
                 $Invoice->enroll_id = $enrollment->id;
                 $Invoice->fee_id = $request->fee_id;
                 $Invoice->desc = $fee->desc;

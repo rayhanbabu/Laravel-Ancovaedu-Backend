@@ -9,6 +9,10 @@ class Payment extends Model
 {
     use HasFactory;
 
+
+   protected $casts = [
+        'id'=>'integer',
+      ];
    
    public function enroll()
     {

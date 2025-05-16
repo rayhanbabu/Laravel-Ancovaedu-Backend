@@ -9,6 +9,11 @@ class Section extends Model
 {
     use HasFactory;
 
+       protected $casts = [
+        'id'=>'integer',
+      ];
+
+
     public function department()
     {
         return $this->belongsTo(Department::class, 'department_id');

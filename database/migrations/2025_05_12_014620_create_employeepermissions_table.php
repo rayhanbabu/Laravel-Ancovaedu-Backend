@@ -45,6 +45,9 @@ return new class extends Migration
             $table->unsignedBigInteger('section_id')->nullable(); // Foreign Key
             $table->foreign('section_id')->references('id')->on('sections');
 
+            $table->unsignedBigInteger('exam_id')->nullable(); // Foreign Key
+            $table->foreign('exam_id')->references('id')->on('exams');
+
 
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->foreignId('updated_by')->nullable()->constrained('users')->onDelete('set null');

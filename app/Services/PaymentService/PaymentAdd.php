@@ -131,6 +131,8 @@ class PaymentAdd
             $Payment = new Payment();
             $Payment->school_username = $request->school_username;
             $Payment->enroll_id = $enrollment->id;
+            $Payment->payment_group=$enrollment->sessionyear_id."-".$enrollment->programyear_id."-".$enrollment->level_id
+                         ."-".$enrollment->faculty_id."-".$enrollment->department_id."-".$enrollment->section_id;
             $Payment->collection_type = $request->collection_type;
             $Payment->tran_id = Str::random(10);
             $Payment->payment_status = 1;

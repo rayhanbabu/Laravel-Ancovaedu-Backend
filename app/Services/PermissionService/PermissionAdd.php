@@ -28,7 +28,8 @@ class PermissionAdd
                  'section_id' => 'nullable|integer|exists:sections,id',  
                  'subject_id' => 'nullable|integer|exists:subjects,id',    
                  'employee_user_id' => 'required|integer|exists:users,id',  
-                 'permission_role' => 'required|exists:permissions,permission',         
+                 'permission_role' => 'required|exists:permissions,permission',     
+                 'exam_id' => 'nullable|exists:exams,id',             
             ]);
 
             if($validator->fails()) {
@@ -39,6 +40,23 @@ class PermissionAdd
              }
 
         
+                   $parts = [
+                        $request->sessionyear_id,
+                        $request->programyear_id,
+                        $request->level_id,
+                        $request->faculty_id,
+                        $request->department_id,
+                        $request->section_id,
+                    ];
+
+                    
+                    if (!empty($request->exam_id)) {
+                        $parts[] = $request->exam_id;
+                    }
+
+                    if (!empty($request->subject_id)) {
+                        $parts[] = $request->subject_id;
+                    }
 
         
             $Permission = new Employeepermission();
@@ -52,6 +70,8 @@ class PermissionAdd
             $Permission->permission_role = $request->permission_role;
             $Permission->subject_id = $request->subject_id;
             $Permission->employee_user_id = $request->employee_user_id;
+            $Permission->exam_id = $request->exam_id;
+            $Permission->access_group = $access_group;
             $Permission->created_by = $user_auth->id;
             $Permission->save();
 

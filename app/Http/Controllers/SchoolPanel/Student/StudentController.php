@@ -122,6 +122,9 @@ class StudentController extends Controller
                 'file' => 'required|mimes:xlsx,xls,csv|max:2048',          
            ]);
 
+             $enroll_group = $request->sessionyear_id."-".$request->programyear_id."-".$request->level_id
+                 ."-".$request->faculty_id."-".$request->department_id."-".$request->section_id;
+
            if($validator->fails()) {
                return response()->json([
                     'message' => 'Validation failed',
@@ -129,7 +132,7 @@ class StudentController extends Controller
                 ], 422);
             }
        
-             Excel::Import(new StudentImport($school_username,$sessionyear_id,$programyear_id,$level_id,$faculty_id,$department_id,$section_id,$user_auth),request()->file('file'));
+             Excel::Import(new StudentImport($school_username,$sessionyear_id,$programyear_id,$level_id,$faculty_id,$department_id,$section_id,$user_auth,$enroll_group),request()->file('file'));
                 return response()->json([
                      'message' => 'Student imported successfully',
                ],200);
