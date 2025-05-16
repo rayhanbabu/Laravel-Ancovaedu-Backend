@@ -42,26 +42,26 @@ class PaymentReport
             });
 
 
-              // Apply filters
+           
         
     
-      // View By Id
+    
         if ($request->has('viewById')) {
             $query->where('id', $request->viewById);
         }
 
-         // View By Id
+         
         if ($request->has('payment_status')) {
             $query->where('payment_status', $request->payment_status);
         }
         
     
-        // Pagination
+       
         $perPage = (int) $request->input('perPage', 10);
         $page = (int) $request->input('page', 1);
         $perPage = ($perPage > 100) ? 100 : $perPage; // Max 100 per page
     
-           // Aggregation + Grouping
+         
     $query->selectRaw("
         enrolls.student_id, 
         MAX(students.english_name) as english_name,
