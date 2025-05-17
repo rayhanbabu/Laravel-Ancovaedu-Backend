@@ -40,7 +40,7 @@ class Subject extends Model
         'pass_number2'=>'integer',
         'pass_number3'=>'integer',
         'religion_id '=>'integer',
-        'combined_subject_id '=>'integer',
+        'combined_subject_id'=>'integer',
         'created_by'=>'integer',
         'updated_by'=>'integer',
       ];

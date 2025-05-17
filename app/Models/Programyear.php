@@ -11,7 +11,7 @@ class Programyear extends Model
 
        protected $casts = [
         'id'=>'integer',
-        'program_status'=>'integer',
+        'programyear_status'=>'integer',
         'created_by'=>'integer',
         'updated_by'=>'integer',
       ];

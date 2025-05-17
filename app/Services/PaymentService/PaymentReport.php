@@ -91,6 +91,29 @@ class PaymentReport
             ->groupBy('enrolls.student_id');
 
 
+             $results = $query->get()->map(function ($item) {
+              $item->roll = (int) $item->roll;
+              $item->student_id = (int) $item->student_id;
+              $item->english_name =$item->english_name;
+              $item->bangla_name =  $item->bangla_name;
+              $item->invoice_amount = (int) $item->invoice_amount;
+              $item->waiver_amount = (int) $item->waiver_amount;
+              $item->net_invoice_amount = (int) $item->net_invoice_amount;
+              $item->total_invoices = (int) $item->total_invoices;
+              $item->sessionyear_id = (int) $item->sessionyear_id;
+              $item->programyear_id = (int) $item->programyear_id;
+              $item->level_id = (int) $item->level_id;
+              $item->faculty_id = (int) $item->faculty_id;
+              $item->department_id = (int) $item->department_id;
+              $item->section_id = (int) $item->section_id;
+              $item->partial_payment = (int) $item->partial_payment;
+              $item->full_payment = (int) $item->full_payment;
+              $item->total_due_amount = (int) $item->total_due_amount;
+           
+            return $item;
+           });
+
+
     
         // Paginate result
         $result = $query->paginate($perPage, ['*'], 'page', $page);

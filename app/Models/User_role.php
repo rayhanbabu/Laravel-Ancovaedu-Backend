@@ -15,6 +15,13 @@ class User_role extends Model
         'created_by',
     ];
 
+      protected $casts = [
+        'id' => 'integer',
+        'user_id' => 'integer',
+        'created_by'=>'integer',
+        'updated_by'=>'integer',
+      ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
