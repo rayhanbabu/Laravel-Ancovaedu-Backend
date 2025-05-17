@@ -33,7 +33,9 @@ class Enroll extends Model
 
        protected $casts = [
         'id'=>'integer',
+        'roll'=>'integer',
         'user_id'=>'integer',
+        'religion_id'=>'integer',
         'sessionyear_id'=>'integer',
         'programyear_id'=>'integer',
         'level_id'=>'integer',
