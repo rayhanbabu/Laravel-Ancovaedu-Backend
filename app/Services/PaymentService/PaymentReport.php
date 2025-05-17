@@ -90,8 +90,10 @@ class PaymentReport
             ")
             ->groupBy('enrolls.student_id');
 
+         $paginated = $query->paginate($perPage, ['*'], 'page', $page);
 
-             $results = $query->get()->map(function ($item) {
+            $paginated->getCollection()->transform(function ($item) {
+
               $item->roll = (int) $item->roll;
               $item->student_id = (int) $item->student_id;
               $item->english_name =$item->english_name;
@@ -114,19 +116,16 @@ class PaymentReport
            });
 
 
+
     
-        // Paginate result
-        $result = $results->paginate($perPage, ['*'], 'page', $page);
-    
-        return response()->json([
-             'data' => $result->items(),
-             'total' => $result->total(),
-             'per_page' => $result->perPage(),
-             'current_page' => $result->currentPage(),
-             'last_page' => $result->lastPage(),
-             'from' => $result->firstItem(),
-             'to' => $result->lastItem()
-            
+      return response()->json([
+            'data' => $paginated->items(),
+            'total' => $paginated->total(),
+            'per_page' => $paginated->perPage(),
+            'current_page' => $paginated->currentPage(),
+           'last_page' => $paginated->lastPage(),
+           'from' => $paginated->firstItem(),
+           'to' => $paginated->lastItem()
         ]);
     }
 }
