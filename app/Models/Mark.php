@@ -26,6 +26,7 @@ class Mark extends Model
             'subject_id'=>'integer',
             'enroll_id'=>'integer',
             'exam_id'=>'integer',
+            'level2_mark'=>'integer',
             'attendance_status'=>'integer',
             'attendance_by'=>'integer',
             'final_submit_status'=>'integer',
