@@ -67,6 +67,7 @@ class PaymentReport
                 MAX(students.english_name) as english_name,
                 MAX(students.bangla_name) as bangla_name,
                 CAST(MAX(enrolls.roll) AS UNSIGNED) as roll,
+                MAX(invoices.invoice_group) as invoice_group, 
                 CAST(SUM(invoices.amount) AS UNSIGNED) as invoice_amount, 
                 CAST(SUM(invoices.waiver_amount) AS UNSIGNED) as waiver_amount, 
                 CAST(SUM(invoices.total_amount) AS UNSIGNED) as net_invoice_amount, 
