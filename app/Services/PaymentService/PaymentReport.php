@@ -110,6 +110,7 @@ class PaymentReport
               $item->section_id = (int) $item->section_id;
               $item->partial_payment = (int) $item->partial_payment;
               $item->full_payment = (int) $item->full_payment;
+              $item->total_payment = (int) $item->total_payment;
               $item->total_due_amount = (int) $item->total_due_amount;
            
             return $item;
