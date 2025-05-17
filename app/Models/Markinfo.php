@@ -20,6 +20,10 @@ class Markinfo extends Model
             'subject_id'=>'integer',
             'enroll_id'=>'integer',
             'exam_id'=>'integer',
+            'start'=>'decimal:2',
+            'end'=>'decimal:2',
+            'gpa'=>'decimal:2',
+            'gparange'=>'decimal:2',
             'created_by'=>'integer',
             'updated_by'=>'integer',
       ];

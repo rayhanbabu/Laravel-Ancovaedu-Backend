@@ -116,7 +116,7 @@ class PaymentReport
 
     
         // Paginate result
-        $result = $query->paginate($perPage, ['*'], 'page', $page);
+        $result = $results->paginate($perPage, ['*'], 'page', $page);
     
         return response()->json([
              'data' => $result->items(),
