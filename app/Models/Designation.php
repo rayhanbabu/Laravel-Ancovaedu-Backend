@@ -7,9 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Designation extends Model
 {
-    use HasFactory;
+       use HasFactory;
 
        protected $casts = [
-        'id'=>'integer',
-      ];
+          'id'=>'integer',
+          'designation_status'=>'integer',
+          'created_by'=>'integer',
+          'updated_by'=>'integer',
+       ];
 }

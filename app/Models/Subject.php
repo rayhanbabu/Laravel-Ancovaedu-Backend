@@ -22,6 +22,7 @@ class Subject extends Model
     ];
 
       protected $casts = [
+        'id' => 'integer',
         'user_id'=>'integer',
         'sessionyear_id'=>'integer',
         'programyear_id'=>'integer',
@@ -29,6 +30,17 @@ class Subject extends Model
         'faculty_id'=>'integer',
         'department_id' => 'integer',
         'section_id'=>'integer',
+        'gpa_calculation'=>'integer',
+        'serial'=>'integer',
+        'input_number1'=>'integer',
+        'input_number2'=>'integer',
+        'input_number3'=>'integer',
+        'total_number'=>'integer',
+        'pass_number1'=>'integer',
+        'pass_number2'=>'integer',
+        'pass_number3'=>'integer',
+        'religion_id '=>'integer',
+        'combined_subject_id '=>'integer',
         'created_by'=>'integer',
         'updated_by'=>'integer',
       ];

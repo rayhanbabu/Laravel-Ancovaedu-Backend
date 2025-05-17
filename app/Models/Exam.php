@@ -10,6 +10,10 @@ class Exam extends Model
     use HasFactory;
 
       protected $casts = [
-        'id'=>'integer',
+         'id'=>'integer',
+         'exam_status'=>'integer',
+         'created_by'=>'integer',
+         'updated_by'=>'integer',
+
       ];
 }

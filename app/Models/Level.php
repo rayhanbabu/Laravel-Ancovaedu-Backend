@@ -11,5 +11,8 @@ class Level extends Model
 
        protected $casts = [
         'id'=>'integer',
+        'level_status'=>'integer',
+        'created_by'=>'integer',
+        'updated_by'=>'integer',
       ];
 }

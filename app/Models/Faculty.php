@@ -17,9 +17,12 @@ class Faculty extends Model
         'updated_by',
     ];
 
-   protected $casts = [
-        'id'=>'integer',
-        'level_id'=>'integer',
+     protected $casts = [
+         'id'=>'integer',
+         'level_id'=>'integer',
+         'faculty_status'=>'integer',
+         'created_by'=>'integer',
+         'updated_by'=>'integer',
       ];
 
     public function level()

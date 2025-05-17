@@ -27,6 +27,19 @@ class Invoice extends Model
 
        protected $casts = [
         'id'=>'integer',
+        'enroll_id'=>'integer',
+        'fee_id'=>'integer',
+        'amount'=>'integer',
+        'waiver_amount'=>'integer',
+        'waiver_approved_status'=>'integer',
+        'waiver_request_by'=>'integer',
+        'waiver_approved_by'=>'integer',
+        'total_amount'=>'integer',
+        'payment_status'=>'integer',
+        'invoice_create_status'=>'integer',
+        'partial_payment'=>'integer',
+        'created_by'=>'integer',
+        'updated_by'=>'integer',
       ];
 
 

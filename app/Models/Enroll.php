@@ -33,8 +33,8 @@ class Enroll extends Model
 
        protected $casts = [
         'id'=>'integer',
-        'roll'=>'integer',
         'user_id'=>'integer',
+        'student_id'=>'integer',
         'religion_id'=>'integer',
         'sessionyear_id'=>'integer',
         'programyear_id'=>'integer',
@@ -42,7 +42,18 @@ class Enroll extends Model
         'faculty_id'=>'integer',
         'department_id' => 'integer',
         'section_id'=>'integer',
-        'student_id'=>'integer',
+        'confirm_enroll_status'=>'integer',
+        'roll'=>'integer',
+        'subject_create_status'=>'integer',
+        'subject_created_by'=>'integer',
+
+         'main_subject1'=>'integer',
+         'main_subject2'=>'integer',
+         'main_subject3'=>'integer',
+         'additional_subject'=>'integer',
+
+
+        'confirm_enroll_by'=>'integer',
         'created_by'=>'integer',
         'updated_by'=>'integer',
       ];

@@ -22,11 +22,19 @@ class Mark extends Model
 
 
         protected $casts = [
-        'subject_id'=>'integer',
-        'enroll_id'=>'integer',
-        'exam_id'=>'integer',
-        'id'=>'integer',
-      ];
+            'id'=>'integer',
+            'subject_id'=>'integer',
+            'enroll_id'=>'integer',
+            'exam_id'=>'integer',
+            'attendance_status'=>'integer',
+            'attendance_by'=>'integer',
+            'final_submit_status'=>'integer',
+            'final_submited_by'=>'integer',
+            'check_status'=>'integer',
+            'checked_by'=>'integer',
+            'created_by'=>'integer',
+            'updated_by'=>'integer',
+       ];
 
 
     public function enroll()

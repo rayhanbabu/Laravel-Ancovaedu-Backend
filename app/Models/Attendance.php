@@ -23,9 +23,12 @@ class Attendance extends Model
     ];
 
         protected $casts = [
-          'subject_id'=>'integer',
+          'student_id'=>'integer',
           'classdate_id'=>'integer',
           'id'=>'integer',
+          'status'=>'integer',
+          'created_by'=>'integer',
+          'updated_by'=>'integer',
          ];
 
     public function classdate()

@@ -12,6 +12,14 @@ class Payment extends Model
 
    protected $casts = [
         'id'=>'integer',
+        'enroll_id'=>'integer',
+        'payment_status'=>'integer',
+        'amount'=>'integer',
+        'year'=>'integer',
+        'month'=>'integer',
+        'day'=>'integer',
+        'created_by'=>'integer',
+        'updated_by'=>'integer',
       ];
    
    public function enroll()

@@ -22,6 +22,8 @@ class Payroleinfo extends Model
       protected $casts = [
         'employee_id'=>'integer',
         'id'=>'integer',
+        'created_by'=>'integer',
+        'updated_by'=>'integer',
       ];
 
     public function user()

@@ -10,8 +10,10 @@ class Permission extends Model
     use HasFactory;
 
       protected $casts = [
-        'id'=>'integer',
-      
+         'id'=>'integer',
+         'permission_status'=>'integer',
+         'created_by'=>'integer',
+         'updated_by'=>'integer',
       ];
 
 }

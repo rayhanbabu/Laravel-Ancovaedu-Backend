@@ -10,7 +10,9 @@ class Employeepermission extends Model
     use HasFactory;
 
     protected $casts = [
+        'id'=>'integer',
         'employee_user_id'=>'integer',
+        'subject_id'=>'integer',
         'sessionyear_id'=>'integer',
         'programyear_id'=>'integer',
         'level_id'=>'integer',
@@ -18,7 +20,6 @@ class Employeepermission extends Model
         'department_id' => 'integer',
         'section_id'=>'integer',
         'exam_id'=>'integer',
-        'subject_id'=>'integer',
         'created_by'=>'integer',
         'updated_by'=>'integer',
       ];

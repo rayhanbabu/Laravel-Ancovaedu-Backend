@@ -42,10 +42,12 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
+     protected $casts = [
+         'email_verified_at' => 'datetime',
+         'password' => 'hashed',
+         'status'=>'integer',
+         'opt_code'=>'integer',
+      ];
 
     public function user_role(){
          return $this->hasOne(User_role::class,'user_id');

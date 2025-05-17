@@ -25,7 +25,9 @@ class Student extends Model
      protected $casts = [
         'id' => 'integer',
         'user_id' => 'integer',
-        'religion'=>'integer'
+        'religion_id'=>'integer',
+        'created_by'=>'integer',
+        'updated_by'=>'integer',
       ];
 
 }

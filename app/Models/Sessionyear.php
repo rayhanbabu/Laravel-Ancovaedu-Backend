@@ -11,6 +11,9 @@ class Sessionyear extends Model
 
       protected $casts = [
         'id'=>'integer',
+        'sessionyear_status'=>'integer',
+        'created_by'=>'integer',
+        'updated_by'=>'integer',
       ];
 
 }

@@ -10,17 +10,22 @@ class Paymentinvoice extends Model
       use HasFactory;
 
 
-         protected $casts = [
-          'id'=>'integer',
-          'payment_id'=>'integer',
-          'invoice_id'=>'integer',
-         ];
+    
 
        protected $fillable = [
           'school_username',
           'payment_id',
           'invoice_id',
        ];
+
+
+       protected $casts = [
+          'id'=>'integer',
+          'payment_id'=>'integer',
+          'invoice_id'=>'integer',
+          'created_by'=>'integer',
+          'updated_by'=>'integer',
+        ];
 
          // Payment.php
           public function invoices() {

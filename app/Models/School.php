@@ -23,6 +23,13 @@ class School extends Model
         'short_address_front_size'
     ];
 
+
+       protected $casts = [
+          'id'=>'integer',
+          'user_id'=>'integer',
+          'agent_user_id'=>'integer',
+        ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

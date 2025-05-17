@@ -18,6 +18,9 @@ class Department extends Model
        protected $casts = [
           'id'=>'integer',
           'faculty_id'=>'integer',
+          'department_status'=>'integer',
+          'created_by'=>'integer',
+          'updated_by'=>'integer',
        ];
 
 }

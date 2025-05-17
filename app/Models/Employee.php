@@ -37,11 +37,13 @@ class Employee extends Model
 
 
      protected $casts = [
+        'id'=>'integer',
         'user_id'=>'integer',
+        'religion_id'=>'integer',
+        'designation_id'=>'integer',
         'level_id'=>'integer',
         'faculty_id'=>'integer',
         'department_id' => 'integer',
-        'section_id'=>'integer', 
         'created_by'=>'integer',
         'updated_by'=>'integer',
       ];

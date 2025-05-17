@@ -11,6 +11,10 @@ class Section extends Model
 
        protected $casts = [
         'id'=>'integer',
+        'department_id'=>'integer',
+        'section_status'=>'integer',
+        'created_by'=>'integer',
+        'updated_by'=>'integer',
       ];
 
 
