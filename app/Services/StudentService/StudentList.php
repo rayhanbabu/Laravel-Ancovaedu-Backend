@@ -35,7 +35,7 @@ public function handle(Request $request,$school_username)
         'level_id',
         'faculty_id',
         'department_id',
-        'sectionyear_id',
+        'section_id',
         'viewById' => 'id'
     ];
 
