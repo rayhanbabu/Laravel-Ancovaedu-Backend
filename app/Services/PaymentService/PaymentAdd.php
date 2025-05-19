@@ -159,7 +159,7 @@ class PaymentAdd
 
             return response()->json([
                   'message' => 'Data added successfully',
-                    'data' => $single_invoice,
+                    'data' => $Payment,
               ], 200);
 
          } catch (\Exception $e) {

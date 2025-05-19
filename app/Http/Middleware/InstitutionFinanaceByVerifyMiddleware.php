@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class InstitutionFinanaceMiddleware
+class InstitutionFinanaceByVerifyMiddleware
 {
     /**
      * Handle an incoming request.
@@ -37,7 +37,7 @@ class InstitutionFinanaceMiddleware
             $permissions = user()->permissions();
 
           
-            if ($permissions->where('permission_role', 'InstitutionFinanace')->exists()) {
+            if ($permissions->where('permission_role', 'InstitutionFinanaceByVerify')->exists()) {
                 return $next($request);
             }
 

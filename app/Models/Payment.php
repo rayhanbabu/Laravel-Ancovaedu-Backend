@@ -18,6 +18,8 @@ class Payment extends Model
         'year'=>'integer',
         'month'=>'integer',
         'day'=>'integer',
+        'gateway_charge'=>'double:2',
+        'total_amount'=>'double:2',
         'created_by'=>'integer',
         'updated_by'=>'integer',
       ];
@@ -25,6 +27,16 @@ class Payment extends Model
    public function enroll()
     {
         return $this->belongsTo(Enroll::class);
+    }
+
+     public function creator()
+    {
+        return $this->belongsTo(User::class,'created_by');
+    }
+
+       public function updater()
+    {
+        return $this->belongsTo(User::class,'updated_by');
     }
 
 

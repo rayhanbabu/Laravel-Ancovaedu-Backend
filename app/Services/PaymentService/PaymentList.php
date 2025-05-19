@@ -14,6 +14,7 @@ class PaymentList
         $query = Payment::query();  
         $query->with('invoices');
         $query->with('student','enroll');
+        $query->with(['creator:id,name,username', 'updater:id,name,username']);
         $query->where('school_username', $school_username);
 
 

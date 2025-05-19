@@ -61,6 +61,8 @@ class Kernel extends HttpKernel
         'MarkInfromationMiddleware' => \App\Http\Middleware\MarkInfromationMiddleware::class,
         'PayrollMiddleware' => \App\Http\Middleware\PayrollMiddleware::class,
         'InstitutionFinanaceMiddleware' => \App\Http\Middleware\InstitutionFinanaceMiddleware::class,
+        'InstitutionGroupMiddleware' => \App\Http\Middleware\InstitutionGroupMiddleware::class,
+        'InstitutionFinanaceByVerifyMiddleware' => \App\Http\Middleware\InstitutionFinanaceByVerifyMiddleware::class,
         'StudentFinanceMiddleware' => \App\Http\Middleware\StudentFinanceMiddleware::class,
         'SettingMiddleware' => \App\Http\Middleware\SettingMiddleware::class,
         'StudentMiddleware' => \App\Http\Middleware\StudentMiddleware::class,

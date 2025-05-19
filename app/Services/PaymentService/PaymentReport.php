@@ -19,7 +19,7 @@ class PaymentReport
            $query->join('students', 'enrolls.student_id', '=', 'students.id');
            
 
-       // Apply school filter
+          // Apply school filter
            $query->where('invoices.school_username', $school_username);
 
           $query->whereHas('enroll', function ($q) use ($request) {

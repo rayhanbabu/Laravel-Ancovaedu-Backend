@@ -58,6 +58,7 @@ class PermissionAdd
                         $parts[] = $request->subject_id;
                     }
 
+             $access_group = implode('-', $parts);
         
             $Permission = new Employeepermission();
             $Permission->school_username = $request->school_username;
