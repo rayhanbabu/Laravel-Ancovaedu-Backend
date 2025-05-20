@@ -11,9 +11,8 @@ use App\Http\Resources\PaymentReportResource;
 class PaymentReport
 { 
 
-
    public function handle(Request $request, $school_username)
-{
+  {
     $query = Invoice::query()
         ->join('enrolls', 'invoices.enroll_id', '=', 'enrolls.id')
         ->join('students', 'enrolls.student_id', '=', 'students.id')
@@ -52,38 +51,39 @@ class PaymentReport
     $perPage = min((int) $request->input('perPage', 10), 100); // Max 100
     $page = (int) $request->input('page', 1);
 
-    // Main select and grouping
-    $query->selectRaw("
-        enrolls.student_id, 
-        MAX(students.english_name) as english_name,
-        MAX(students.bangla_name) as bangla_name,
-        CAST(MAX(enrolls.roll) AS UNSIGNED) as roll,
-        MAX(invoices.invoice_group) as invoice_group, 
-        CAST(SUM(invoices.amount) AS UNSIGNED) as invoice_amount, 
-        CAST(SUM(invoices.waiver_amount) AS UNSIGNED) as waiver_amount, 
-        CAST(SUM(invoices.total_amount) AS UNSIGNED) as net_invoice_amount, 
-        COUNT(*) as total_invoices,
-        CAST(MAX(enrolls.sessionyear_id) AS UNSIGNED) as sessionyear_id, 
-        CAST(MAX(enrolls.programyear_id) AS UNSIGNED) as programyear_id,
-        CAST(MAX(enrolls.level_id) AS UNSIGNED) as level_id,
-        CAST(MAX(enrolls.faculty_id) AS UNSIGNED) as faculty_id,
-        CAST(MAX(enrolls.department_id) AS UNSIGNED) as department_id,
-        CAST(MAX(enrolls.section_id) AS UNSIGNED) as section_id,
-        CAST(SUM(invoices.partial_payment) AS UNSIGNED) as partial_payment, 
-        CAST(SUM(CASE WHEN invoices.payment_status = '1' THEN invoices.total_amount ELSE 0 END) AS UNSIGNED) as full_payment,
-        (
-            CAST(SUM(invoices.partial_payment) AS UNSIGNED) + 
-            CAST(SUM(CASE WHEN invoices.payment_status = '1' THEN invoices.total_amount ELSE 0 END) AS UNSIGNED)
-        ) as total_payment,
-        (
-            CAST(SUM(invoices.total_amount) AS UNSIGNED) - 
-            (
-                CAST(SUM(invoices.partial_payment) AS UNSIGNED) + 
-                CAST(SUM(CASE WHEN invoices.payment_status = '1' THEN invoices.total_amount ELSE 0 END) AS UNSIGNED)
-            )
-        ) as total_due_amount
-    ")
-    ->groupBy('enrolls.student_id');
+                // Main select and grouping
+            $query->selectRaw("
+                enrolls.student_id, 
+                MAX(students.english_name) as english_name,
+                MAX(students.bangla_name) as bangla_name,
+                MAX(enrolls.roll) as roll,
+                MAX(invoices.invoice_group) as invoice_group, 
+                SUM(invoices.amount) as invoice_amount, 
+                SUM(invoices.waiver_amount) as waiver_amount, 
+                SUM(invoices.total_amount) as net_invoice_amount, 
+                COUNT(*) as total_invoices,
+                MAX(enrolls.sessionyear_id) as sessionyear_id, 
+                MAX(enrolls.programyear_id) as programyear_id,
+                MAX(enrolls.level_id) as level_id,
+                MAX(enrolls.faculty_id) as faculty_id,
+                MAX(enrolls.department_id) as department_id,
+                MAX(enrolls.section_id) as section_id,
+                SUM(invoices.partial_payment) as partial_payment, 
+                SUM(CASE WHEN invoices.payment_status = '1' THEN invoices.total_amount ELSE 0 END) as full_payment,
+                (
+                    SUM(invoices.partial_payment) + 
+                    SUM(CASE WHEN invoices.payment_status = '1' THEN invoices.total_amount ELSE 0 END)
+                ) as total_payment,
+                (
+                    SUM(invoices.total_amount) - 
+                    (
+                        SUM(invoices.partial_payment) + 
+                        SUM(CASE WHEN invoices.payment_status = '1' THEN invoices.total_amount ELSE 0 END)
+                    )
+                ) as total_due_amount
+            ")
+            ->groupBy('enrolls.student_id');
+
 
     // Paginate results
     $paginated = $query->paginate($perPage, ['*'], 'page', $page);
