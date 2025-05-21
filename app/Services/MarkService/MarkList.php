@@ -60,8 +60,16 @@ class MarkList
 
 
         $query = Mark::query();
-        $query->join('enrolls', 'marks.enroll_id', '=', 'enrolls.id')  // Ordering Roll Assingn
-        ->with('student', 'subject'); // keep other relations
+        $query->join('enrolls', 'marks.enroll_id', '=', 'enrolls.id');  // Ordering Roll Assingn
+        $query->with([
+           'student', 'subject',
+           'enroll.sessionyear:id,sessionyear_name',
+           'enroll.programyear:id,programyear_name',
+           'enroll.level:id,level_name',
+           'enroll.faculty:id,faculty_name',
+           'enroll.department:id,department_name',
+           'enroll.section:id,section_name',
+        ]);// keep other relations
         $query->where('marks.school_username', $school_username);
       
 

@@ -11,14 +11,22 @@ class PaymentList
 { 
    public function handle(Request $request,$school_username)
      {
-        $query = Payment::query();  
-        $query->with('invoices');
-        $query->with('student','enroll');
-        $query->with(['creator:id,name,username', 'updater:id,name,username']);
-        $query->where('school_username', $school_username);
+          $query = Payment::query();  
+          $query->with('invoices');
+          $query->with([
+           'student',
+           'enroll.sessionyear:id,sessionyear_name',
+           'enroll.programyear:id,programyear_name',
+           'enroll.level:id,level_name',
+           'enroll.faculty:id,faculty_name',
+           'enroll.department:id,department_name',
+           'enroll.section:id,section_name',
+          ]);
+         $query->with(['creator:id,name,username', 'updater:id,name,username']);
+         $query->where('school_username', $school_username);
 
 
-       $query->whereHas('enroll', function ($q) use ($request) {
+         $query->whereHas('enroll', function ($q) use ($request) {
                  $filterFields = [
                     'sessionyear_id',
                     'programyear_id',

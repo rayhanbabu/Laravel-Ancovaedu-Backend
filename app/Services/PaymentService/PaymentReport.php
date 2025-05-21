@@ -16,7 +16,14 @@ class PaymentReport
     $query = Invoice::query()
         ->join('enrolls', 'invoices.enroll_id', '=', 'enrolls.id')
         ->join('students', 'enrolls.student_id', '=', 'students.id')
+        ->leftJoin('sessionyears', 'enrolls.sessionyear_id', '=', 'sessionyears.id')
+        ->leftJoin('programyears', 'enrolls.programyear_id', '=', 'programyears.id')
+        ->leftJoin('levels', 'enrolls.level_id', '=', 'levels.id')
+        ->leftJoin('faculties', 'enrolls.faculty_id', '=', 'faculties.id')
+        ->leftJoin('departments', 'enrolls.department_id', '=', 'departments.id')
+        ->leftJoin('sections', 'enrolls.section_id', '=', 'sections.id')
         ->where('invoices.school_username', $school_username);
+
 
     // Apply enroll filters from request
     $query->whereHas('enroll', function ($q) use ($request) {
@@ -51,7 +58,7 @@ class PaymentReport
     $perPage = min((int) $request->input('perPage', 10), 100); // Max 100
     $page = (int) $request->input('page', 1);
 
-                // Main select and grouping
+            // Main select and grouping
             $query->selectRaw("
                 enrolls.student_id, 
                 MAX(students.english_name) as english_name,
@@ -63,11 +70,17 @@ class PaymentReport
                 SUM(invoices.total_amount) as net_invoice_amount, 
                 COUNT(*) as total_invoices,
                 MAX(enrolls.sessionyear_id) as sessionyear_id, 
+                MAX(sessionyears.sessionyear_name) as sessionyear_name,
                 MAX(enrolls.programyear_id) as programyear_id,
+                MAX(programyears.programyear_name) as programyear_name,
                 MAX(enrolls.level_id) as level_id,
+                MAX(levels.level_name) as level_name,
                 MAX(enrolls.faculty_id) as faculty_id,
+                MAX(faculties.faculty_name) as faculty_name,
                 MAX(enrolls.department_id) as department_id,
+                MAX(departments.department_name) as department_name,
                 MAX(enrolls.section_id) as section_id,
+                MAX(sections.section_name) as section_name,
                 SUM(invoices.partial_payment) as partial_payment, 
                 SUM(CASE WHEN invoices.payment_status = '1' THEN invoices.total_amount ELSE 0 END) as full_payment,
                 (

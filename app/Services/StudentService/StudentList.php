@@ -23,7 +23,7 @@ public function handle(Request $request,$school_username)
             'level:id,level_name',
             'faculty:id,faculty_name',
             'department:id,department_name',
-            'section:id,section_name'
+            'section:id,section_name',
         ])->where('school_username', $school_username);
               
         $query->where('school_username', $school_username);

@@ -14,8 +14,15 @@ class InvoiceList
      {
         $query = Invoice::query();  
         $query->where('school_username', $school_username);
-        $query->with('student');
-        $query->with('enroll');
+        $query = Invoice::with([
+           'student',
+           'enroll.sessionyear:id,sessionyear_name',
+           'enroll.programyear:id,programyear_name',
+           'enroll.level:id,level_name',
+           'enroll.faculty:id,faculty_name',
+           'enroll.department:id,department_name',
+           'enroll.section:id,section_name',
+        ])->where('school_username', $school_username);
      
 
        $query->whereHas('enroll', function ($q) use ($request) {
@@ -26,7 +33,8 @@ class InvoiceList
                     'faculty_id',
                     'department_id',
                     'section_id',
-                    'student_id'
+                    'student_id',
+                    'payment_status',
                 ];
 
                 foreach ($filterFields as $field) {
