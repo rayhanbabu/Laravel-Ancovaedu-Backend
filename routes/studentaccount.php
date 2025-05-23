@@ -22,6 +22,7 @@ use App\Http\Controllers\SchoolPanel\StudentAccount\PaymentController;
 
 
             Route::get('/{school_username}/payment', [PaymentController::class, 'payment']);
+            Route::get('/{school_username}/payment-created-by', [PaymentController::class, 'payment_create_by']);
             Route::get('/{school_username}/payment-report', [PaymentController::class, 'payment_report']);
             Route::post('/{school_username}/payment-add', [PaymentController::class, 'payment_add']);
             Route::delete('/{school_username}/payment-delete/{id}', [PaymentController::class, 'payment_delete']);

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Validation\Rule;
 
+
+
 class CategoryController extends Controller
   {
      public function category_add(Request $request,$school_username)  {

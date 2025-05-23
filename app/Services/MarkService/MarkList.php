@@ -15,8 +15,6 @@ class MarkList
    public function handle(Request $request,$school_username)
      {
        
-        // Search
-        
          if($request->has('GroupBySubject') && $request->GroupBySubject==1) {
 
             $query = Mark::query();
@@ -25,7 +23,6 @@ class MarkList
                   ->where('marks.exam_id', $request->exam_id);
                 $query->with('subject');
             
-            // Filter enrolls
             $query->where('enrolls.sessionyear_id', $request->sessionyear_id)
                   ->where('enrolls.programyear_id', $request->programyear_id)
                   ->where('enrolls.level_id', $request->level_id)
@@ -45,12 +42,12 @@ class MarkList
             ->groupBy('marks.subject_id');
            
             
-            // Sorting
+         
             $sortField = $request->get('sortField', 'marks.subject_id');
             $sortDirection = $request->get('sortDirection', 'asc');
             $query->orderBy($sortField, $sortDirection);
             
-            // Fetch all results
+        
             $result = $query->get();
             
             return response()->json([
@@ -69,16 +66,16 @@ class MarkList
            'enroll.faculty:id,faculty_name',
            'enroll.department:id,department_name',
            'enroll.section:id,section_name',
-        ]);// keep other relations
+        ]);
         $query->where('marks.school_username', $school_username);
       
 
-           // Subject  Id
+       
          if ($request->has('subject_id')) {
               $query->where('subject_id', $request->subject_id);
           }
 
-            // Exam  Id
+        
          if ($request->has('exam_id')) {
              $query->where('exam_id', $request->exam_id);
           }
@@ -102,7 +99,7 @@ class MarkList
                 }
             });
                 
-        // Sorting
+      
         $sortField = $request->get('sortField', 'id');
         $sortDirection = $request->get('sortDirection', 'asc');
         if ($sortField === 'roll') {
@@ -113,12 +110,11 @@ class MarkList
 
         $query->select('marks.*','enrolls.roll');
 
-        // Pagination
+     
         $perPage = (int) $request->input('perPage', 10);
         $page = (int) $request->input('page', 1);
-        $perPage = ($perPage > 100) ? 100 : $perPage; // Max 100 per page
+     
 
-        // Apply pagination
         $result = $query->paginate($perPage, ['*'], 'page', $page);
  
     

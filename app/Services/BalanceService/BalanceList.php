@@ -18,7 +18,6 @@ class BalanceList
         $query->where('school_username', $school_username);
        
 
-        // Search
         if ($request->has('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
@@ -29,54 +28,58 @@ class BalanceList
             });
         }
 
-          // View By Id
+
         if ($request->has('status')) {
               $query->where('status', $request->status);
          }
 
-           // View By Id
+       
         if ($request->has('category_type')) {
               $query->where('category_type', $request->category_type);
          }
       
 
-        // View By Id
-        if ($request->has('viewById')) {
+     
+         if ($request->has('viewById')) {
               $query->where('id', $request->viewById);
          }
 
-  if ($request->has('year') && $request->has('month') && $request->has('day')) {
-         $year = $request->input('year');
-         $month = $request->input('month');
-         $day = $request->input('day');
+      if ($request->has('date_range') && $request->date_range == 1) {
+             $startDate = date('Y-m-d', strtotime($request->start_date));
+             $endDate = date('Y-m-d', strtotime($request->end_date));
 
-        // Filter by date
-        $query->where('date', '=', "$year-$month-$day");
+            $query->whereBetween('date', [$startDate, $endDate]);
+          }
+
+     if ($request->has('year') && $request->has('month') && $request->has('day')) {
+          $year = $request->input('year');
+          $month = $request->input('month');
+          $day = $request->input('day');
+
+       
+          $query->where('date', '=', "$year-$month-$day");
     } elseif ($request->has('year') && $request->has('month')) {
         $year = $request->input('year');
         $month = $request->input('month');
 
-        // Filter by month and year
+       
         $query->where('year', '=', $year)
               ->where('month', '=', $month);
     } elseif ($request->has('year')) {
         $year = $request->input('year');
 
-        // Filter by year
         $query->where('year', '=', $year);
     }
 
-        // Sorting
         $sortField = $request->get('sortField', 'id');
         $sortDirection = $request->get('sortDirection', 'asc');
         $query->orderBy($sortField, $sortDirection);
 
-        // Pagination
+
         $perPage = (int) $request->input('perPage', 10);
         $page = (int) $request->input('page', 1);
-        $perPage = ($perPage > 100) ? 100 : $perPage; // Max 100 per page
+       
 
-        // Apply pagination
         $result = $query->paginate($perPage, ['*'], 'page', $page);
 
         return response()->json([

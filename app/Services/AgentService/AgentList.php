@@ -43,17 +43,15 @@ class AgentList
             $query->where('id', $request->viewById);
         }
 
-        // Sorting
+       
         $sortField = $request->get('sortField', 'id');
         $sortDirection = $request->get('sortDirection', 'asc');
         $query->orderBy($sortField, $sortDirection);
 
-        // Pagination
+      
         $perPage = (int) $request->input('perPage', 10);
         $page = (int) $request->input('page', 1);
-        $perPage = ($perPage > 100) ? 100 : $perPage; // Max 100 per page
-
-        // Apply pagination
+        
         $result = $query->paginate($perPage, ['*'], 'page', $page);
 
         return response()->json([
