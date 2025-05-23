@@ -12,7 +12,17 @@ class PermissionList
    public function handle(Request $request,$school_username)
      {
         $query = Employeepermission::query();  
-        $query->where('school_username', $school_username);
+        $query->with([
+            'employee_user:id,name,email,phone,username,profile_picture,status',
+            'exam:id,exam_name',
+            'subject:id,subject_name',
+            'sessionyear:id,sessionyear_name',
+            'programyear:id,programyear_name',
+            'level:id,level_name',
+            'faculty:id,faculty_name',
+            'department:id,department_name',
+            'section:id,section_name',
+        ])->where('school_username', $school_username);
 
 
         
