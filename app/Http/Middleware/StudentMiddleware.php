@@ -71,7 +71,7 @@ class StudentMiddleware
       
         return response()->json([
             'status'  => 'error',
-            'message' => 'Unauthorized',
-        ], 401);
+            'message' => 'Forbidden: You are not authorized to perform this action.',
+         ], 403);
     }
 }

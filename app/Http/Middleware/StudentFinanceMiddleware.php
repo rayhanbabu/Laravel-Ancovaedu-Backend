@@ -66,10 +66,9 @@ class StudentFinanceMiddleware
               }
          }
 
-        // Unauthorized
         return response()->json([
-            'status'  => 'error',
-            'message' => 'Unauthorized',
-        ], 401);
+           'status'  => 'error',
+           'message' => 'Forbidden: You are not authorized to perform this action.',
+        ], 403);
     }
 }
