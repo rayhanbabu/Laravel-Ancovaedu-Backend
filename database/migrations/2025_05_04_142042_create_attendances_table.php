@@ -23,7 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('student_id'); // Foreign Key
             $table->foreign('student_id')->references('id')->on('students');
 
-            $table->string('status')->default(0); // present, absent, late, etc.
+            $table->integer('status')->default(0); // present, absent, late, etc.
 
             $table->string('remark')->nullable(); // Additional remarks
 

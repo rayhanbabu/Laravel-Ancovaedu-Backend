@@ -61,7 +61,10 @@ use App\Models\Enroll;
             $user->phone = $row[2];
             $user->email = $row[3];
             $user->password = bcrypt("Rayhan123");
-    
+            $user->status = 1; 
+            $user->first_phone = substr($row[2], 0, 3);
+            $user->last_phone = substr($row[2], 3);
+
             // Generate a username based on phone or name
             $user->username = $this->school_username . $row[2];
             $user->save();

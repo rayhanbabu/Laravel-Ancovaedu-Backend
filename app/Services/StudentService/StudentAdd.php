@@ -21,12 +21,12 @@ class StudentAdd
          try {
 
             $user_auth = user();
-            $username = $request->school_username . $request->phone;
+           
 
               $validator = validator($request->all(), [
                  'english_name' => 'required',
                  'bangla_name' => 'required',
-                 'phone' => 'required|unique:users,phone',
+                 'phone' => 'nullable|unique:users,phone',
                  'password' => 'required|regex:/^[a-zA-Z\d]*$/|min:6',
                  'profile_picture' => 'image|mimes:jpeg,png,jpg|max:600',
                  'religion_id' => 'required|integer|exists:religions,id',
@@ -47,31 +47,50 @@ class StudentAdd
                  ], 422);
              }
 
-             if($request->email){
-                $validator = validator($request->all(), [
-                   'email' => 'required|email|unique:users,email',
-                ]);
+
+
+          if($request->phone){
+                  $validator = validator($request->all(), [
+                       'phone' => 'required|unique:users,phone',
+                  ]);
                 if($validator->fails()) {
                     return response()->json([
                          'message' => 'Validation failed',
                          'errors' => $validator->errors(),
                      ], 422);
                   }
+                  $phone = $request->phone;
+             }else{
+                   $number=User::where('first_phone','011')->max('last_phone') + 1;
+                   $phone = '011'.$number;
+             }
 
-               $email = $request->email;    
-        }else{
-               $email = $request->phone."@gmail.com";
-        }
+              $username = $request->school_username . $phone;
 
-         
-            
+             if($request->email){
+                $validator = validator($request->all(), [
+                   'email' => 'required|email|unique:users,email',
+                ]);
+                if($validator->fails()) {
+                     return response()->json([
+                          'message' => 'Validation failed',
+                          'errors' => $validator->errors(),
+                      ], 422);
+                   }
+                  $email = $request->email;    
+            }else{
+                  $email = $phone."@gmail.com";
+              }
+
 
             $user = new User();
             $user->name = $request->english_name;
             $user->email = $email;
-            $user->phone = $request->phone;
+            $user->phone = $phone;
             $user->password = bcrypt($request->password);
             $user->username = $username;
+            $user->first_phone = substr($phone, 0, 3);
+            $user->last_phone = substr($phone, 3);
 
             if ($request->hasfile('profile_picture')) {
                 $user->profile_picture = $this->uploadFile($request->file('profile_picture'), 'profile_picture');
@@ -123,8 +142,9 @@ class StudentAdd
             DB::commit();
 
             return response()->json([
-                  'message' => 'Data added successfully',
-              ], 200);
+                   'message' => 'Data added successfully',
+                   'phone' => $phone,
+               ], 200);
 
          } catch (\Exception $e) {
               DB::rollback();

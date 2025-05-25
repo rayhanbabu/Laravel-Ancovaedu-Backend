@@ -20,6 +20,8 @@ return new class extends Migration
             $table->unsignedBigInteger('enroll_id'); // Foreign Key
             $table->foreign('enroll_id')->references('id')->on('enrolls');
 
+            $table->string('invoice_group');  
+
             $table->foreignId('fee_id')->nullable()->constrained('fees')->onDelete('set null');
            
             $table->string('fee_type')->nullable();

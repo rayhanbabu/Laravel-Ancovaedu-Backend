@@ -41,6 +41,8 @@ return new class extends Migration
 
             $table->timestamps();
         });
+
+        DB::statement("ALTER TABLE students AUTO_INCREMENT = 100000");
     }
 
     /**

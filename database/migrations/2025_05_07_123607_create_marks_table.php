@@ -19,6 +19,8 @@ return new class extends Migration
             $table->unsignedBigInteger('enroll_id'); // Foreign Key
             $table->foreign('enroll_id')->references('id')->on('enrolls');
 
+            $table->string('mark_group');  // Description of the markinfo
+
             $table->unsignedBigInteger('exam_id'); // Foreign Key
             $table->foreign('exam_id')->references('id')->on('exams');
 

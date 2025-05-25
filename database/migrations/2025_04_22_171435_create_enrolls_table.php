@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('school_username'); // Foreign Key
             $table->foreign('school_username')->references('username')->on('users');
 
+            $table->string('enroll_group');  
+
 
             $table->unsignedBigInteger('user_id'); // Foreign Key
             $table->foreign('user_id')->references('id')->on('users');
@@ -47,7 +49,7 @@ return new class extends Migration
 
             $table->integer('roll')->default(0);
 
-            $table->enum ('created_type', ['Student', 'Enroll'])->default('Enroll');
+            $table->enum ('created_type', ['Student','Enroll'])->default('Enroll');
 
             $table->boolean('subject_create_status')->default(false);
             $table->foreignId('subject_created_by')->nullable()->constrained('users')->onDelete('set null');

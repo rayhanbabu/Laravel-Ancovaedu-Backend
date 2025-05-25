@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('school_username'); // Foreign Key
             $table->foreign('school_username')->references('username')->on('users');
 
+            $table->string('subject_group');  
+
+            $table->integer('serial')->default(0);
           
             $table->unsignedBigInteger('sessionyear_id'); // Foreign Key
             $table->foreign('sessionyear_id')->references('id')->on('sessionyears');

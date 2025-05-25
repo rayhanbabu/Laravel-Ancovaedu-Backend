@@ -37,6 +37,9 @@ class SubjectAdd
                 ], 422);
             }
 
+               $subject_group = $request->sessionyear_id."-".$request->programyear_id."-".$request->level_id
+                 ."-".$request->faculty_id."-".$request->department_id."-".$request->section_id;
+
     
             $user_auth =user();
             $model = new Subject();
@@ -66,6 +69,7 @@ class SubjectAdd
             $model->combined_subject_id  = $request->combined_subject_id;
             $model->serial = $request->serial;
             $model->gpa_calculation = $request->gpa_calculation;
+            $model->subject_group = $subject_group;
             $model->save();
 
             DB::commit();

@@ -22,6 +22,8 @@ return new class extends Migration
 
             $table->enum('payment_type', ['cash','bank_transfer','online'])->default('cash');
 
+            $table->string('payment_group');  
+
             $table->string('tran_id')->unique();
 
             $table->string('payment_method')->nullable();

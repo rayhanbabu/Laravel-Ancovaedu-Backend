@@ -23,6 +23,13 @@ class User extends Authenticatable
         'phone',
         'password',
         'status',
+        'opt_code',
+        'profile_picture',
+        'email_verified_at',
+        'remember_token',
+        'first_phone',
+        'last_phone',
+        'username',
     ];
 
     

@@ -39,6 +39,8 @@ class MarkinfoAdd
                  ], 422);
              }
 
+                $markinfo_group = $request->sessionyear_id."-".$request->programyear_id."-".$request->level_id
+                 ."-".$request->faculty_id."-".$request->department_id;
         
 
         
@@ -56,6 +58,7 @@ class MarkinfoAdd
             $Markinfo->gparange = $request->gparange;
             $Markinfo->grade = $request->grade;
             $Markinfo->created_by = $user_auth->id;
+            $Markinfo->markinfo_group = $markinfo_group;
             $Markinfo->save();
 
 

@@ -47,6 +47,9 @@ class AdmitCardAdd
                  ], 422);
              }
 
+                $admitcard_group = $request->sessionyear_id."-".$request->programyear_id."-".$request->level_id
+                 ."-".$request->faculty_id."-".$request->department_id."-".$request->section_id;
+
         
              $subject_ids = array_values($request->subject_id);
              $times = array_values($request->time);
@@ -73,6 +76,7 @@ class AdmitCardAdd
                  $AdmitCard->faculty_id = $request->faculty_id;
                  $AdmitCard->department_id = $request->department_id;
                  $AdmitCard->section_id = $request->section_id;
+                 $AdmitCard->admitcard_group = $admitcard_group;
                  $AdmitCard->subject_id = $subject_ids[$i];
                  $AdmitCard->time = $times[$i];
                  $AdmitCard->date = $dates[$i];
