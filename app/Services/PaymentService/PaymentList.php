@@ -41,10 +41,13 @@ class PaymentList
                 foreach ($filterFields as $field) {
                     if ($request->filled($field)) {
                         $q->where($field, $request->$field);
-                    }
-                }
-            });
+                      }
+                   }
+               });
 
+         if ($request->has('payment_group')) {
+                $query->where('payment_group', $request->payment_group);
+         }
 
         if ($request->has('viewById')) {
             $query->where('id', $request->viewById);

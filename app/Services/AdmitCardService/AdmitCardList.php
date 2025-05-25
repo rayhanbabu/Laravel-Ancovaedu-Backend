@@ -36,6 +36,9 @@ class AdmitCardList
    }
 
 
+       if ($request->has('admitcard_group')) {
+                $query->where('admitcard_group', $request->admitcard_group);
+         }
         
     // Search
     if ($request->has('search')) {

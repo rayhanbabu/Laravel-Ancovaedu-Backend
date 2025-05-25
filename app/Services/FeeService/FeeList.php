@@ -35,6 +35,11 @@ class FeeList
        }
    }
 
+    // View by specific fee ID
+    if ($request->filled('fee_group')) {
+        $query->where('fee_group', $request->fee_group);
+    }
+
 
         
     // Search

@@ -43,7 +43,11 @@ class InvoiceList
                     }
                 }
             });
-    
+
+         if ($request->has('invoice_group')) {
+                $query->where('invoice_group', $request->invoice_group);
+         }
+
     if ($request->has('search')) {
         $search = $request->search;
         $query->where(function ($q) use ($search) {
