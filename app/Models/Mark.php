@@ -48,6 +48,11 @@ class Mark extends Model
         return $this->belongsTo(Enroll::class);
     }
 
+      public function exam()
+    {
+        return $this->belongsTo(Exam::class);
+    }
+
     public function subject()
     {
         return $this->belongsTo(Subject::class);

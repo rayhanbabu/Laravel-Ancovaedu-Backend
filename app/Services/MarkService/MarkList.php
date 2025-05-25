@@ -20,7 +20,8 @@ class MarkList
             $query->join('enrolls', 'marks.enroll_id', '=', 'enrolls.id')
                   ->where('marks.school_username', $school_username)
                   ->where('marks.exam_id', $request->exam_id);
-                $query->with('subject');
+                $query->with('subject','exam:id,exam_name');
+
             
             $query->where('enrolls.sessionyear_id', $request->sessionyear_id)
                   ->where('enrolls.programyear_id', $request->programyear_id)
@@ -38,6 +39,7 @@ class MarkList
                 DB::raw('SUM(CASE WHEN marks.total > 0 THEN 1 ELSE 0 END) as total_pass'),
                 DB::raw('SUM(marks.attendance_status) as total_attendance'),
                 DB::raw('MAX(marks.mark_group) as mark_group'),
+                 DB::raw('MAX(marks.exam_id) as exam_id'),
                 DB::raw('MAX(marks.updated_at) as final_submited_at'),
                 DB::raw('SUM(CASE WHEN marks.final_submit_status = 1 THEN 1 ELSE 0 END) as final_submit_status')
             )

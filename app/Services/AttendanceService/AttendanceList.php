@@ -63,6 +63,10 @@ class AttendanceList
               $query->where('date', $request->date);
           }
 
+            if ($request->has('attendance_group')) {
+                $query->where('attendance_group', $request->attendance_group);
+           }
+
 
          $query->whereHas('enroll', function ($q) use ($request) {
                 if ($request->has('sessionyear_id')) {
