@@ -37,6 +37,7 @@ class MarkList
                 DB::raw('COUNT(marks.id) as total_students'),
                 DB::raw('SUM(CASE WHEN marks.total > 0 THEN 1 ELSE 0 END) as total_pass'),
                 DB::raw('SUM(marks.attendance_status) as total_attendance'),
+                DB::raw('MAX(marks.mark_group) as mark_group'),
                 DB::raw('MAX(marks.updated_at) as final_submited_at'),
                 DB::raw('SUM(CASE WHEN marks.final_submit_status = 1 THEN 1 ELSE 0 END) as final_submit_status')
             )
