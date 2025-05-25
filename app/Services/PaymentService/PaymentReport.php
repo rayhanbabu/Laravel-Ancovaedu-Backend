@@ -82,16 +82,16 @@ class PaymentReport
                 MAX(enrolls.section_id) as section_id,
                 MAX(sections.section_name) as section_name,
                 SUM(invoices.partial_payment) as partial_payment, 
-                SUM(CASE WHEN invoices.payment_status = '1' THEN invoices.total_amount ELSE 0 END) as full_payment,
+                SUM(CASE WHEN invoices.payment_status = '1' AND invoices.partial_payment = '0' THEN invoices.total_amount ELSE 0 END) as full_payment,
                 (
                     SUM(invoices.partial_payment) + 
-                    SUM(CASE WHEN invoices.payment_status = '1' THEN invoices.total_amount ELSE 0 END)
+                    SUM(CASE WHEN invoices.payment_status = '1' AND invoices.partial_payment = '0' THEN invoices.total_amount ELSE 0 END)
                 ) as total_payment,
                 (
                     SUM(invoices.total_amount) - 
                     (
                         SUM(invoices.partial_payment) + 
-                        SUM(CASE WHEN invoices.payment_status = '1' THEN invoices.total_amount ELSE 0 END)
+                        SUM(CASE WHEN invoices.payment_status = '1' AND invoices.partial_payment = '0' THEN invoices.total_amount ELSE 0 END)
                     )
                 ) as total_due_amount
             ")

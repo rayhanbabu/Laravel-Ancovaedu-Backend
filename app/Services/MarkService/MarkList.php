@@ -75,6 +75,11 @@ class MarkList
               $query->where('subject_id', $request->subject_id);
           }
 
+          if ($request->has('mark_group')) {
+                $query->where('marks.mark_group', $request->mark_group);
+          }
+
+
         
          if ($request->has('exam_id')) {
              $query->where('exam_id', $request->exam_id);
