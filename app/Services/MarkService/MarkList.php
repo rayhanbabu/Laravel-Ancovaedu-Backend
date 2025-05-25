@@ -16,7 +16,6 @@ class MarkList
      {
        
          if($request->has('GroupBySubject') && $request->GroupBySubject==1) {
-
             $query = Mark::query();
             $query->join('enrolls', 'marks.enroll_id', '=', 'enrolls.id')
                   ->where('marks.school_username', $school_username)
@@ -37,7 +36,9 @@ class MarkList
                 'marks.subject_id',
                 DB::raw('COUNT(marks.id) as total_students'),
                 DB::raw('SUM(CASE WHEN marks.total > 0 THEN 1 ELSE 0 END) as total_pass'),
-                DB::raw('SUM(CASE WHEN marks.final_submit_status = 1 THEN 1 ELSE 0 END) as total_final_submit')
+                DB::raw('SUM(marks.attendance_status) as total_attendance'),
+                DB::raw('MAX(marks.updated_at) as final_submited_at'),
+                DB::raw('SUM(CASE WHEN marks.final_submit_status = 1 THEN 1 ELSE 0 END) as final_submit_status')
             )
             ->groupBy('marks.subject_id');
            
