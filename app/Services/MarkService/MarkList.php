@@ -15,48 +15,50 @@ class MarkList
    public function handle(Request $request,$school_username)
      {
        
-         if($request->has('GroupBySubject') && $request->GroupBySubject==1) {
-            $query = Mark::query();
-            $query->join('enrolls', 'marks.enroll_id', '=', 'enrolls.id')
-                  ->where('marks.school_username', $school_username)
-                  ->where('marks.exam_id', $request->exam_id);
-                $query->with('subject','exam:id,exam_name');
+             if($request->has('GroupBySubject') && $request->GroupBySubject==1) {
+                 $query = Mark::query();
 
-            
-            $query->where('enrolls.sessionyear_id', $request->sessionyear_id)
-                  ->where('enrolls.programyear_id', $request->programyear_id)
-                  ->where('enrolls.level_id', $request->level_id)
-                  ->where('enrolls.faculty_id', $request->faculty_id)
-                  ->where('enrolls.department_id', $request->department_id);
-            
-            if ($request->has('section_id')) {
-                $query->where('enrolls.section_id', $request->section_id);
-            }
-            
-            $query->select(
-                'marks.subject_id',
-                DB::raw('COUNT(marks.id) as total_students'),
-                DB::raw('SUM(CASE WHEN marks.total > 0 THEN 1 ELSE 0 END) as total_pass'),
-                DB::raw('SUM(marks.attendance_status) as total_attendance'),
-                DB::raw('MAX(marks.mark_group) as mark_group'),
-                 DB::raw('MAX(marks.exam_id) as exam_id'),
-                DB::raw('MAX(marks.updated_at) as final_submited_at'),
-                DB::raw('SUM(CASE WHEN marks.final_submit_status = 1 THEN 1 ELSE 0 END) as final_submit_status')
-            )
-            ->groupBy('marks.subject_id');
-           
-            
-         
-            $sortField = $request->get('sortField', 'marks.subject_id');
-            $sortDirection = $request->get('sortDirection', 'asc');
-            $query->orderBy($sortField, $sortDirection);
-            
-        
-            $result = $query->get();
-            
-            return response()->json([
-                'data'=>$result
-            ]);
+                $query->join('enrolls', 'marks.enroll_id', '=', 'enrolls.id')
+                    ->join('subjects', 'marks.subject_id', '=', 'subjects.id') // Added join for subjects
+                    ->where('marks.school_username', $school_username)
+                    ->where('marks.exam_id', $request->exam_id)
+                    ->where('enrolls.sessionyear_id', $request->sessionyear_id)
+                    ->where('enrolls.programyear_id', $request->programyear_id)
+                    ->where('enrolls.level_id', $request->level_id)
+                    ->where('enrolls.faculty_id', $request->faculty_id)
+                    ->where('enrolls.department_id', $request->department_id);
+                 $query->with('subject','exam:id,exam_name');
+
+                if ($request->has('section_id')) {
+                    $query->where('enrolls.section_id', $request->section_id);
+                }
+
+                $query->select(
+                    'marks.subject_id',
+                    DB::raw('COUNT(marks.id) as total_students'),
+                    DB::raw('SUM(CASE WHEN marks.total > 0 THEN 1 ELSE 0 END) as total_pass'),
+                    DB::raw('SUM(marks.attendance_status) as total_attendance'),
+                    DB::raw('MAX(marks.mark_group) as mark_group'),
+                    DB::raw('MAX(marks.exam_id) as exam_id'),
+                    DB::raw('MAX(marks.updated_at) as final_submited_at'),
+                    DB::raw('SUM(CASE WHEN marks.final_submit_status = 1 THEN 1 ELSE 0 END) as final_submit_status'),
+                    'subjects.serial as subject_serial' // Added this to be able to sort by
+                )
+                ->groupBy('marks.subject_id', 'subjects.serial'); // Important: include any selected non-aggregates here
+
+                // Apply sorting
+                $sortField = $request->get('sortField', 'subject_serial'); // sortField should match the alias or actual column name in select
+                $sortDirection = $request->get('sortDirection', 'asc');
+
+                $query->orderBy($sortField, $sortDirection);
+
+                // Get results
+                $result = $query->get();
+
+                return response()->json([
+                    'data' => $result
+                ]);
+
          }
 
 
@@ -107,9 +109,8 @@ class MarkList
                     }
                 }
             });
-                
-      
-        $sortField = $request->get('sortField', 'id');
+            
+        $sortField = $request->get('sortField', 'roll');
         $sortDirection = $request->get('sortDirection', 'asc');
         if ($sortField === 'roll') {
             $query->orderBy('enrolls.roll', $sortDirection);
