@@ -13,10 +13,8 @@ use App\Services\InvoiceService\InvoiceSingleAdd;
 use App\Services\InvoiceService\InvoiceDelete;
 use App\Services\InvoiceService\InvoiceCustomAdd;
 use App\Services\InvoiceService\InvoiceGroupDelete;
-
-
-
-
+use App\Services\InvoiceService\WaiverAdd;
+use App\Services\InvoiceService\WaiverStatus;
 
 
 
@@ -29,12 +27,12 @@ class InvoiceController extends Controller
     protected $InvoiceDelete;
     protected $InvoiceCustomAdd;
     protected $InvoiceGroupDelete;
-
-   
+    protected $WaiverAdd;
+    protected $WaiverStatus;
 
     public function __construct(InvoiceAdd $InvoiceAdd, InvoiceList $InvoiceList, InvoiceSingleAdd $InvoiceSingleAdd,
           InvoiceDelete $InvoiceDelete, InvoiceCustomAdd $InvoiceCustomAdd,
-          InvoiceGroupDelete $InvoiceGroupDelete)
+          InvoiceGroupDelete $InvoiceGroupDelete, WaiverAdd $WaiverAdd, WaiverStatus $WaiverStatus)
     {
          $this->InvoiceAdd = $InvoiceAdd;
          $this->InvoiceList = $InvoiceList;
@@ -42,9 +40,8 @@ class InvoiceController extends Controller
          $this->InvoiceDelete = $InvoiceDelete;
          $this->InvoiceCustomAdd = $InvoiceCustomAdd;
          $this->InvoiceGroupDelete = $InvoiceGroupDelete;
-
-
-       
+         $this->WaiverAdd = $WaiverAdd;
+         $this->WaiverStatus = $WaiverStatus;
     }
 
   
@@ -80,6 +77,15 @@ class InvoiceController extends Controller
             return $this->InvoiceGroupDelete->handle($request ,$school_username , $fee_id);
         }
 
-     
+
+           public function waiver_add(Request $request,$school_username, $id)
+       {
+           return $this->WaiverAdd->handle($request,$school_username, $id);
+       }
+
+       public function waiver_status(Request $request,$school_username, $id)
+       {
+           return $this->WaiverStatus->handle($request,$school_username, $id);
+       }
 
 }

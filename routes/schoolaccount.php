@@ -13,23 +13,19 @@ use App\Http\Controllers\SchoolPanel\SchoolAccount\BalanceController;
             Route::post('/{school_username}/category-update/{id}', [CategoryController::class, 'category_update']);
             Route::delete('/{school_username}/category-delete/{id}', [CategoryController::class, 'category_delete']);
         
-         
             Route::post('/{school_username}/balance-add', [BalanceController::class, 'balance_add']);
             Route::post('/{school_username}/balance-update/{id}', [BalanceController::class, 'balance_update']);
-            Route::delete('/{school_username}/balance-delete/{id}', [BalanceController::class, 'balance_delete']);
-        
+            Route::delete('/{school_username}/balance-delete/{id}', [BalanceController::class, 'balance_delete']);       
      });
 
 
       Route::middleware('InstitutionFinanaceByVerifyMiddleware:{school_username}')->group(function () {
-               Route::get('/{school_username}/balance-status/{id}', [BalanceController::class, 'balance_status']);
-              
+               Route::get('/{school_username}/balance-status/{id}', [BalanceController::class, 'balance_status']); 
        });
 
 
        Route::middleware('InstitutionGroupMiddleware:{school_username}')->group(function () {
-               Route::get('/{school_username}/balance', [BalanceController::class, 'balance']);
-              
+               Route::get('/{school_username}/balance', [BalanceController::class, 'balance']);    
        });
 
 

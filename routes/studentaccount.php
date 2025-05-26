@@ -20,6 +20,9 @@ use App\Http\Controllers\SchoolPanel\StudentAccount\PaymentController;
             Route::delete('/{school_username}/invoice-delete/{id}', [InvoiceController::class, 'invoice_delete']);
             Route::delete('/{school_username}/invoice-group-delete/{id}', [InvoiceController::class, 'invoice_group_delete']);
 
+            Route::post('/{school_username}/waiver-add/{id}', [InvoiceController::class, 'waiver_add']);
+            Route::get('/{school_username}/waiver-status/{id}', [InvoiceController::class, 'waiver_status']);
+
 
             Route::get('/{school_username}/payment', [PaymentController::class, 'payment']);
             Route::get('/{school_username}/payment-created-by', [PaymentController::class, 'payment_create_by']);

@@ -44,6 +44,11 @@ class InvoiceList
                 }
             });
 
+
+         if ($request->has('viewById')) {
+                $query->where('id', $request->viewById);
+           }
+
          if ($request->has('invoice_group')) {
                 $query->where('invoice_group', $request->invoice_group);
          }
