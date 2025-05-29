@@ -25,7 +25,6 @@ class StudentAdd
 
               $validator = validator($request->all(), [
                  'english_name' => 'required',
-                 'bangla_name' => 'required',
                  'phone' => 'nullable|unique:users,phone',
                  'password' => 'required|regex:/^[a-zA-Z\d]*$/|min:6',
                  'profile_picture' => 'image|mimes:jpeg,png,jpg|max:600',
