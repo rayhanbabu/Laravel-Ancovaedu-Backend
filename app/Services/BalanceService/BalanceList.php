@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Balance;
 use App\Http\Resources\BalanceResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BalanceList
 {
@@ -13,8 +14,89 @@ class BalanceList
     {
         $school_username = $request->school_username;
 
+
+
+          if($request->has('YearlyReport') && $request->YearlyReport==1) {
+                 $query = Balance::query();
+                 $query->where('school_username', $school_username);
+                 $query->where('status', 1); // Only include active balances
+                 $query->where('year', $request->year);
+                
+       
+                if ($request->has('category_type')) {
+                       $query->where('category_type', $request->category_type);
+                }
+
+                $query->select(
+                    'balances.month',
+                     DB::raw('COUNT(balances.id) as total_number'),
+                     DB::raw('SUM(balances.amount) as amount'), 
+                 )
+                ->groupBy('balances.month'); // Important: include any selected non-aggregates here
+
+                // Apply sorting
+                $sortField = $request->get('sortField', 'month'); // sortField should match the alias or actual column name in select
+                $sortDirection = $request->get('sortDirection', 'asc');
+
+                $query->orderBy($sortField, $sortDirection);
+
+                // Get results
+                $result = $query->get();
+
+                return response()->json([
+                    'data' => $result,
+                    'total_amount' => $result->sum('amount'),
+                    'category_type' => $request->category_type? $request->category_type : null,
+                    'year' => $request->year? $request->year : null,
+                   
+                ]);
+
+         }
+
+
+
+            if($request->has('MonthlyReport') && $request->MonthlyReport==1) {
+                 $query = Balance::query();
+                 $query->where('school_username', $school_username);
+                 $query->where('status', 1); // Only include active balances
+                 $query->where('year', $request->year);
+                 $query->where('month', $request->month);
+       
+                if ($request->has('category_type')) {
+                       $query->where('category_type', $request->category_type);
+                }
+
+                $query->select(
+                    'balances.day',
+                     DB::raw('COUNT(balances.id) as total_number'),
+                     DB::raw('SUM(balances.amount) as amount'), 
+                 )
+                ->groupBy('balances.day'); // Important: include any selected non-aggregates here
+
+                // Apply sorting
+                $sortField = $request->get('sortField', 'day'); // sortField should match the alias or actual column name in select
+                $sortDirection = $request->get('sortDirection', 'asc');
+
+                $query->orderBy($sortField, $sortDirection);
+
+                // Get results
+                $result = $query->get();
+
+                return response()->json([
+                    'data' => $result,
+                    'total_amount' => $result->sum('amount'),
+                    'category_type' => $request->category_type? $request->category_type : null,
+                    'year' => $request->year? $request->year : null,
+                    'month' => $request->month? $request->month : null,
+                ]);
+
+         }
+
+
+
+
         $query = Balance::query();  
-        $query->with(['creator:id,name,username' ,'updater:id,name,username' ,'verified:id,name,username']);
+        $query->with(['category:id,category_name','creator:id,name,username' ,'updater:id,name,username' ,'verified:id,name,username']);
         $query->where('school_username', $school_username);
        
 
@@ -88,6 +170,14 @@ class BalanceList
             'per_page' => $result->perPage(),
             'current_page' => $result->currentPage(),
             'last_page' => $result->lastPage(),
+            'start_date' => $request->start_date ?? null,
+            'end_date' => $request->end_date ?? null,
+            'status' => $request->status ?? null,
+            'category_type' => $request->category_type ?? null,
+            'year' => $request->year ?? null,
+            'month' => $request->month ?? null,
+            'day' => $request->day ?? null,
+            'total_amount' => $result->sum('amount'),
         ]);
     }
 }

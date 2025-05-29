@@ -15,7 +15,7 @@ public function handle(Request $request,$school_username)
         $query->where('school_username', $school_username);
 
 
-            // Apply filters
+       // Apply filters
        $filters = [
         'sessionyear_id',
         'programyear_id',

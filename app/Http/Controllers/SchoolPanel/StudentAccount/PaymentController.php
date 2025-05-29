@@ -72,21 +72,21 @@ class PaymentController extends Controller
     public function payment_create_by(Request $request, $school_username)
    {
       $data = Payment::query()
-    ->join('users', 'payments.created_by', '=', 'users.id')
-    ->join('user_roles', 'users.id', '=', 'user_roles.user_id')
-    ->where('payments.school_username', $school_username)
-    ->whereIn('user_roles.role_type', ['Employee', 'School']) 
-    ->selectRaw('
-        payments.created_by,
-        users.name as creator_name,
-        COUNT(payments.id) as total_payments
-    ')
-    ->groupBy('payments.created_by', 'users.name')  // 👈 added user_roles.role_type here too for SQL compliance
-    ->get();
+      ->join('users', 'payments.created_by', '=', 'users.id')
+      ->join('user_roles', 'users.id', '=', 'user_roles.user_id')
+      ->where('payments.school_username', $school_username)
+      ->whereIn('user_roles.role_type', ['Employee', 'School']) 
+       ->selectRaw('
+         payments.created_by,
+         users.name as creator_name,
+         COUNT(payments.id) as total_payments
+     ')
+     ->groupBy('payments.created_by', 'users.name')  
+     ->get();
 
-  return response()->json([
-      'data' => $data,
-   ], 200);
+    return response()->json([
+        'data' => $data,
+     ], 200);
 
   }
 

@@ -5,8 +5,6 @@ namespace App\Services\MarkService;
 use App\Models\Mark;
 use App\Models\Classdate;
 use Illuminate\Http\Request;
-use App\Http\Resources\MarkResource;
-use App\Http\Resources\MarkListResource;
 use Illuminate\Support\Facades\DB;
 
 class MarkList
@@ -121,7 +119,7 @@ class MarkList
         $query->select('marks.*','enrolls.roll');
 
      
-        $perPage = (int) $request->input('perPage', 10);
+        $perPage = (int) $request->input('perPage', 250);
         $page = (int) $request->input('page', 1);
      
 

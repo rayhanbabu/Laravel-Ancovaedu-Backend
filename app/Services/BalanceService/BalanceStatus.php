@@ -13,7 +13,6 @@ class BalanceStatus
 {
     try {
         $user = user();
-
         // Get the latest active balance record
         $latestBalance = Balance::where('status', 1)
             ->orderBy('updated_at', 'desc')
@@ -25,6 +24,10 @@ class BalanceStatus
         $balance = Balance::findOrFail($id);
 
         if ($balance->status == 0) {
+            $balance->date = date('Y-m-d');
+            $balance->year = date('Y');
+            $balance->month = date('m');
+            $balance->day = date('d'); 
             $balance->previous_balance = $previousBalance;
             $balance->previous_id = $previousId;
             $balance->balance = $balance->category_type === 'Credit'

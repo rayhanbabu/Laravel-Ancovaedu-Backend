@@ -6,11 +6,96 @@ use App\Models\Payment;
 use App\Models\Enroll;
 use Illuminate\Http\Request;
 use App\Http\Resources\PaymentResource;
+use Illuminate\Support\Facades\DB;
 
 class PaymentList
+
 { 
-   public function handle(Request $request,$school_username)
+    public function handle(Request $request,$school_username)
      {
+
+
+
+           if($request->has('MonthlyReport') && $request->MonthlyReport==1) {
+                 $query = Payment::query();
+                 $query->where('school_username', $school_username);
+                 $query->where('payment_status', 1); 
+                 $query->where('year', $request->year);
+                 $query->where('month', $request->month);
+       
+                 if ($request->has('payment_type')) {
+                       $query->where('payment_type', $request->payment_type);
+                 }
+
+
+                $query->select(
+                    'payments.day',
+                     DB::raw('COUNT(payments.id) as total_number'),
+                     DB::raw('SUM(payments.amount) as amount'),
+                 )
+                ->groupBy('payments.day'); // Important: include any selected non-aggregates here
+
+                // Apply sorting
+                $sortField = $request->get('sortField', 'day'); // sortField should match the alias or actual column name in select
+                $sortDirection = $request->get('sortDirection', 'asc');
+
+                $query->orderBy($sortField, $sortDirection);
+
+                // Get results
+                $result = $query->get();
+
+                return response()->json([
+                    'data' => $result,
+                    'total_amount' => $result->sum('amount'),
+                    'payment_type' => $request->payment_type? $request->payment_type : null,
+                    'year' => $request->year? $request->year : null,
+                    'month' => $request->month? $request->month : null,
+                ]);
+
+         }
+
+
+
+
+             if($request->has('YearlyReport') && $request->YearlyReport==1) {
+                 $query = Payment::query();
+                 $query->where('school_username', $school_username);
+                 $query->where('payment_status', 1); 
+                 $query->where('year', $request->year);
+              
+       
+                 if ($request->has('payment_type')) {
+                       $query->where('payment_type', $request->payment_type);
+                 }
+
+
+                $query->select(
+                    'payments.month',
+                     DB::raw('COUNT(payments.id) as total_number'),
+                     DB::raw('SUM(payments.amount) as amount'),
+                 )
+                ->groupBy('payments.month'); 
+ 
+                $sortField = $request->get('sortField', 'month'); 
+                $sortDirection = $request->get('sortDirection', 'asc');
+
+                $query->orderBy($sortField, $sortDirection);
+
+                $result = $query->get();
+
+                return response()->json([
+                    'data' => $result,
+                    'total_amount' => $result->sum('amount'),
+                    'payment_type' => $request->payment_type? $request->payment_type : null,
+                    'year' => $request->year? $request->year : null,
+                   
+                ]);
+
+         }
+
+
+
+
           $query = Payment::query();  
           $query->with('invoices');
           $query->with([
