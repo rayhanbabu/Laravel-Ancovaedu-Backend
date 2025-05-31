@@ -58,7 +58,12 @@ class InvoiceList
         $query->where(function ($q) use ($search) {
             $q->where('amount', 'like', "%$search%")
                 ->orWhere('fee_type', 'like', "%$search%")
-                ->orWhere('desc', 'like', "%$search%");
+                ->orWhere('desc', 'like', "%$search%")
+                ->orWhereHas('enroll', function ($q) use ($search) {
+                    $q->where('sessionyear_id', 'like', "%$search%")
+                     ->orWhere('student_id', 'like', "%$search%")
+                        ->orWhere('roll', 'like', "%$search%");
+                });
         });
     }
   

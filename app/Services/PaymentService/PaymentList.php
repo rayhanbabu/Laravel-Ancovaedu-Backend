@@ -163,7 +163,12 @@ class PaymentList
         $query->where(function ($q) use ($search) {
             $q->where('amount', 'like', "%$search%")
                 ->orWhere('payment_type', 'like', "%$search%")
-                ->orWhere('tran_id', 'like', "%$search%");
+                ->orWhere('tran_id', 'like', "%$search%")
+                  ->orWhereHas('enroll', function ($q) use ($search) {
+                    $q->where('sessionyear_id', 'like', "%$search%")
+                     ->orWhere('student_id', 'like', "%$search%")
+                        ->orWhere('roll', 'like', "%$search%");
+                });
         });
     }
 

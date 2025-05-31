@@ -62,6 +62,7 @@ public function handle(Request $request,$school_username)
                 })
                 ->orWhereHas('student', function ($q) use ($search) {
                     $q->where('Bangla_name', 'like', "%$search%")
+                     ->orWhere('id', 'like', "%$search%")
                         ->orWhere('english_name', 'like', "%$search%");
                 });
 
