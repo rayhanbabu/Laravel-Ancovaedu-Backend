@@ -30,6 +30,8 @@ class User extends Authenticatable
         'first_phone',
         'last_phone',
         'username',
+        'forget_reset_code',
+        'forget_reset_time',
     ];
 
     

@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Route;
     require __DIR__.'/attendance.php';
     require __DIR__.'/mark.php';
     require __DIR__.'/schoolaccount.php';
+    require __DIR__.'/website_content.php';
 
 
 
