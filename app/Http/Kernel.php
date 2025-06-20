@@ -57,6 +57,7 @@ class Kernel extends HttpKernel
 
 
     protected $middlewareAliases = [
+        'WebsiteContentMiddleware' => \App\Http\Middleware\WebsiteContentMiddleware::class,
         'AttendanceMiddleware' => \App\Http\Middleware\AttendanceMiddleware::class,
         'MarkInfromationMiddleware' => \App\Http\Middleware\MarkInfromationMiddleware::class,
         'PayrollMiddleware' => \App\Http\Middleware\PayrollMiddleware::class,
