@@ -1,12 +1,12 @@
 <?php
-namespace App\Services\GpaCategoryService;
+namespace App\Services\PageCategoryService;
 
-use App\Models\GpaCategory;
+use App\Models\PageCategory;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Exception;
 
-class GpaCategoryUpdate
+class PageCategoryUpdate
 {
     public function handle($request, $school_username, $id)
     {
@@ -14,10 +14,10 @@ class GpaCategoryUpdate
         DB::beginTransaction();
         try {
             $user_auth = user();
-            $gpaCategory = GpaCategory::findOrFail($id);
+            $PageCategory = PageCategory::findOrFail($id);
 
             $validator = validator($request->all(), [
-                  'gpa_category_name' => 'required|unique:gpacategories,gpa_category_name,' . $id . ',id,school_username,' . $school_username,
+                  'page_category_name' => 'required|unique:pagecategories,page_category_name,' . $id . ',id,school_username,' . $school_username,
                   'status' => 'boolean',
             ]);
             
@@ -29,11 +29,12 @@ class GpaCategoryUpdate
               ], 422);
           }
 
-            $gpaCategory->school_username = $school_username;
-            $gpaCategory->gpa_category_name = $request->gpa_category_name;
-            $gpaCategory->status = $request->status;
-            $gpaCategory->updated_by = $user_auth->id;
-            $gpaCategory->save();
+            $PageCategory->school_username = $school_username;
+            $PageCategory->page_category_name = $request->page_category_name;
+            $PageCategory->personal_status = $request->personal_status;
+            $PageCategory->status = $request->status;
+            $PageCategory->updated_by = $user_auth->id;
+            $PageCategory->save();
 
             DB::commit();
 

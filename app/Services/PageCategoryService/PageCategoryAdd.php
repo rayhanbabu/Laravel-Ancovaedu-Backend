@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Services\GpaCategoryService;
+namespace App\Services\PageCategoryService;
 
-use App\Models\Gpacategory;
+use App\Models\Pagecategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Exception;
 use Illuminate\Validation\Rule;
 
-class GpaCategoryAdd
+class PageCategoryAdd
 {
     public function handle(Request $request)
     {
@@ -20,7 +20,7 @@ class GpaCategoryAdd
             $username = $request->school_username;
 
               $validator = validator($request->all(), [
-                 'gpa_category_name' => 'required|unique:gpacategories,gpa_category_name,NULL,id,school_username,' . $username,
+                 'page_category_name' => 'required|unique:pagecategories,page_category_name,NULL,id,school_username,' . $username,
                  'status' => 'nullable|boolean',
               ]);
 
@@ -31,9 +31,10 @@ class GpaCategoryAdd
                  ], 422);
              }
 
-            $user = new Gpacategory();
+            $user = new Pagecategory();
             $user->school_username = $username;
-            $user->gpa_category_name = $request->gpa_category_name;
+            $user->page_category_name = $request->page_category_name;
+            $user->personal_status = $request->personal_status;
             $user->created_by = $user_auth->id;
 
             $user->save();
