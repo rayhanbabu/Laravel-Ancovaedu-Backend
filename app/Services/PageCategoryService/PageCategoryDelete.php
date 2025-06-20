@@ -1,7 +1,7 @@
 <?php
 namespace App\Services\PageCategoryService;
 
-use App\Models\PageCategory;
+use App\Models\Pagecategory;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +13,7 @@ class PageCategoryDelete
     {
         DB::beginTransaction();
         try {
-            $PageCategory = PageCategory::findOrFail($Page_category_id);
+            $PageCategory = Pagecategory::findOrFail($Page_category_id);
             $PageCategory->delete();
 
          

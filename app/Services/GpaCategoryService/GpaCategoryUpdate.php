@@ -1,7 +1,7 @@
 <?php
 namespace App\Services\GpaCategoryService;
 
-use App\Models\GpaCategory;
+use App\Models\Gpacategory;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Exception;
@@ -14,7 +14,7 @@ class GpaCategoryUpdate
         DB::beginTransaction();
         try {
             $user_auth = user();
-            $gpaCategory = GpaCategory::findOrFail($id);
+            $gpaCategory = Gpacategory::findOrFail($id);
 
             $validator = validator($request->all(), [
                   'gpa_category_name' => 'required|unique:gpacategories,gpa_category_name,' . $id . ',id,school_username,' . $school_username,

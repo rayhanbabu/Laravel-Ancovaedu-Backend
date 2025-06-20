@@ -1,7 +1,7 @@
 <?php
 namespace App\Services\GpaCategoryService;
 
-use App\Models\GpaCategory;
+use App\Models\Gpacategory;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -13,7 +13,7 @@ class GpaCategoryDelete
     {
         DB::beginTransaction();
         try {
-            $gpaCategory = GpaCategory::findOrFail($gpa_category_id);
+            $gpaCategory = Gpacategory::findOrFail($gpa_category_id);
             $gpaCategory->delete();
 
             // Delete agent and user

@@ -1,7 +1,7 @@
 <?php
 namespace App\Services\PageCategoryService;
 
-use App\Models\PageCategory;
+use App\Models\Pagecategory;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Exception;
@@ -14,7 +14,7 @@ class PageCategoryUpdate
         DB::beginTransaction();
         try {
             $user_auth = user();
-            $PageCategory = PageCategory::findOrFail($id);
+            $PageCategory = Pagecategory::findOrFail($id);
 
             $validator = validator($request->all(), [
                   'page_category_name' => 'required|unique:pagecategories,page_category_name,' . $id . ',id,school_username,' . $school_username,

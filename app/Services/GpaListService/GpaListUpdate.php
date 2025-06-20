@@ -1,7 +1,7 @@
 <?php
 namespace App\Services\GpaListService;
 
-use App\Models\GpaList;
+use App\Models\Gpalist;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Exception;
@@ -14,7 +14,7 @@ class GpaListUpdate
         DB::beginTransaction();
         try {
             $user_auth = user();
-            $gpaList = GpaList::findOrFail($id);
+            $gpaList = Gpalist::findOrFail($id);
 
             $validator = validator($request->all(), [
                   'gpa_category_id' => 'required|exists:gpacategories,id,school_username,' . $school_username,
