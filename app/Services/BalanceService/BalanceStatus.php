@@ -14,7 +14,7 @@ class BalanceStatus
     try {
         $user = user();
         // Get the latest active balance record
-        $latestBalance = Balance::where('status', 1)
+        $latestBalance = Balance::where('school_username', $school_username)->where('status', 1)
             ->orderBy('updated_at', 'desc')
             ->first();
 

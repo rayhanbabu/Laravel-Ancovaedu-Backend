@@ -15,7 +15,6 @@ class BalanceAdd
     {
         DB::beginTransaction();
         try {
-
             $user_auth = user();
             $school_username = $request->school_username;
 
@@ -24,6 +23,7 @@ class BalanceAdd
                 'category_id' => 'required|integer|exists:categories,id',
                 'amount' => 'required|integer',
                 'image' => 'image|mimes:jpeg,png,jpg,pdf|max:700',
+                'date' => 'required|date_format:Y-m-d',
             ]);
 
             if ($validator->fails()) {
@@ -33,6 +33,15 @@ class BalanceAdd
                 ], 422);
             }
 
+                $data=$request->date;
+                $date = date('Y-m-d', strtotime($data));
+                $request->merge([
+                    'date' => $date,
+                    'year' => date('Y', strtotime($date)),
+                    'month' => date('m', strtotime($date)),
+                    'day' => date('d', strtotime($date)),
+                ]);
+          
 
             $category=Category::where('school_username',$school_username)->find($request->category_id);
             $category_type=$category->category_type;
@@ -44,10 +53,10 @@ class BalanceAdd
             $model->category_id = $request->category_id;
             $model->amount = $request->amount;
             $model->category_type = $category_type;
-            $model->date = date('Y-m-d');
-            $model->year = date('Y');
-            $model->month = date('m');
-            $model->day = date('d'); 
+            $model->date = $request->date;
+            $model->year = $request->year;
+            $model->month = $request->month;
+            $model->day = $request->day;
             $model->balance = 0;
             $model->status = 0;
             $model->created_by = $user_auth->id;

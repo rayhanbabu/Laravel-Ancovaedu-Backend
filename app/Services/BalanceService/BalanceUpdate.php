@@ -22,6 +22,7 @@ class BalanceUpdate
                 'category_id' => 'required|integer|exists:categories,id',
                 'amount' => 'required|integer|min:1',
                 'image' => 'mimes:jpeg,png,jpg,pdf|max:700',
+                'date' => 'required|date_format:Y-m-d',
             ]);
 
 
@@ -38,6 +39,16 @@ class BalanceUpdate
                ], 400);
            }
 
+               $data=$request->date;
+               $date = date('Y-m-d', strtotime($data));
+               $request->merge([
+                   'date' => $date,
+                   'year' => date('Y', strtotime($date)),
+                   'month' => date('m', strtotime($date)),
+                   'day' => date('d', strtotime($date)),
+               ]);
+        
+
            $category=Category::find($request->category_id);
              $category_type=$category->category_type;
 
@@ -47,6 +58,10 @@ class BalanceUpdate
             $model->category_type = $category_type;
             $model->balance = 0;
             $model->status = 0;
+            $model->date = $request->date;
+            $model->year = $request->year;
+            $model->month = $request->month;
+            $model->day = $request->day; 
             $model->updated_by = $user_auth->id;
 
             if ($request->hasFile('image')) {
@@ -54,7 +69,6 @@ class BalanceUpdate
             }
 
             $model->save();
-          
 
             DB::commit();
 
