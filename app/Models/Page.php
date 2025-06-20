@@ -32,6 +32,6 @@ class Page extends Model
 
     public function pageCategory()
     {
-        return $this->belongsTo(PageCategory::class, 'page_category_id');
+        return $this->belongsTo(Pagecategory::class, 'page_category_id');
     }
 }
