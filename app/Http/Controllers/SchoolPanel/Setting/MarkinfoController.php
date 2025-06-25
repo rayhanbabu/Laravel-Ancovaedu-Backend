@@ -105,95 +105,118 @@ class MarkinfoController extends Controller
 
 
 
-          public function markinfo_import(Request $request, $school_username)
-          {
-            $user_auth = user();
-            $sessionyear_id = $request->input('sessionyear_id');
-            $programyear_id = $request->input('programyear_id');
-            $level_id = $request->input('level_id');
-            $faculty_id = $request->input('faculty_id');
-            $department_id = $request->input('department_id');
-            $section_id = $request->input('section_id');
+        public function markinfo_import(Request $request, $school_username)
+{
+    $user_auth = user();
+    $sessionyear_id = $request->input('sessionyear_id');
+    $programyear_id = $request->input('programyear_id');
+    $level_id = $request->input('level_id');
+    $faculty_id = $request->input('faculty_id');
+    $department_id = $request->input('department_id');
+    $section_id = $request->input('section_id');
 
-            $validator = validator($request->all(), [
-                'sessionyear_id' => 'required|integer|exists:sessionyears,id',
-                'programyear_id' => 'required|integer|exists:programyears,id',
-                'level_id' => 'required|integer|exists:levels,id',
-                'faculty_id' => 'required|integer|exists:faculties,id',
-                'department_id' => 'required|integer|exists:departments,id',
-                'section_id' => 'required|integer|exists:sections,id',
-                'file' => 'required|mimes:xlsx,xls,csv|max:2048',
-            ]);
+    $validator = validator($request->all(), [
+        'sessionyear_id' => 'required|integer|exists:sessionyears,id',
+        'programyear_id' => 'required|integer|exists:programyears,id',
+        'level_id' => 'required|integer|exists:levels,id',
+        'faculty_id' => 'required|integer|exists:faculties,id',
+        'department_id' => 'required|integer|exists:departments,id',
+        'section_id' => 'required|integer|exists:sections,id',
+        'file' => 'required|mimes:xlsx,xls,csv|max:2048',
+    ]);
 
-            if ($validator->fails()) {
-                return response()->json([
-                    'message' => 'Validation failed',
-                    'errors' => $validator->errors(),
-                ], 422);
-            }
+    if ($validator->fails()) {
+        return response()->json([
+            'message' => 'Validation failed',
+            'errors' => $validator->errors(),
+        ], 422);
+    }
 
-            $markinfo_group = "$sessionyear_id-$programyear_id-$level_id-$faculty_id-$department_id-$section_id";
+    $markinfo_group = "$sessionyear_id-$programyear_id-$level_id-$faculty_id-$department_id-$section_id";
 
-            // Check if markinfo already exists
-            $exists = Markinfo::where([
-                ['school_username', $school_username],
-                ['sessionyear_id', $sessionyear_id],
-                ['programyear_id', $programyear_id],
-                ['level_id', $level_id],
-                ['faculty_id', $faculty_id],
-                ['department_id', $department_id],
-            ])->exists();
+    // Check if markinfo already exists
+    $exists = Markinfo::where([
+        ['school_username', $school_username],
+        ['sessionyear_id', $sessionyear_id],
+        ['programyear_id', $programyear_id],
+        ['level_id', $level_id],
+        ['faculty_id', $faculty_id],
+        ['department_id', $department_id],
+    ])->exists();
 
-            if ($exists) {
-                return response()->json([
-                    'message' => 'Markinfo already exists in the target session',
-                ], 400);
-            }
+    if ($exists) {
+        return response()->json([
+            'message' => 'Markinfo already exists in the target session',
+        ], 400);
+    }
 
-            $path = $request->file('file')->getRealPath();
-            $data = Excel::toCollection(null, $path)->first();
+    $file = $request->file('file');
+    
+    // Map extensions to Excel reader types
+    $readerTypeMap = [
+        'xlsx' => \Maatwebsite\Excel\Excel::XLSX,
+        'xls'  => \Maatwebsite\Excel\Excel::XLS,
+        'csv'  => \Maatwebsite\Excel\Excel::CSV,
+    ];
+    
+    $extension = strtolower($file->getClientOriginalExtension());
+    $readerType = $readerTypeMap[$extension] ?? null;
 
-            DB::beginTransaction();
+    // Handle invalid extensions (shouldn't happen due to validation, but safe-guard)
+    if (!$readerType) {
+        return response()->json([
+            'message' => 'Unsupported file type. Valid types: xlsx, xls, csv',
+        ], 422);
+    }
 
-            try {
-                foreach ($data->skip(1) as $row) {
-                    $markinfo = new Markinfo();
-                    $markinfo->school_username = $school_username;
-                    $markinfo->sessionyear_id = $sessionyear_id;
-                    $markinfo->programyear_id = $programyear_id;
-                    $markinfo->level_id = $level_id;
-                    $markinfo->faculty_id = $faculty_id;
-                    $markinfo->department_id = $department_id;
-                    $markinfo->section_id = $section_id;
-                    $markinfo->markinfo_group = $markinfo_group;
+    DB::beginTransaction();
 
-                    $markinfo->start = $row[0] ?? null;
-                    $markinfo->end = $row[1] ?? null;
-                    $markinfo->gpa = $row[2] ?? null;
-                    $markinfo->grade = $row[3] ?? null;
-                    $markinfo->gparange = $row[4] ?? null;
+    try {
+        // Read file with explicit reader type
+        $data = Excel::toCollection(
+            null, 
+            $file->getRealPath(), 
+            null, 
+            $readerType
+        )->first();
 
-                    $markinfo->created_by = $user_auth->id;
-                    $markinfo->save();
-                }
+        foreach ($data->skip(1) as $row) {
+            $markinfo = new Markinfo();
+            $markinfo->school_username = $school_username;
+            $markinfo->sessionyear_id = $sessionyear_id;
+            $markinfo->programyear_id = $programyear_id;
+            $markinfo->level_id = $level_id;
+            $markinfo->faculty_id = $faculty_id;
+            $markinfo->department_id = $department_id;
+            $markinfo->section_id = $section_id;
+            $markinfo->markinfo_group = $markinfo_group;
 
-                DB::commit();
+            $markinfo->start = $row[0] ?? null;
+            $markinfo->end = $row[1] ?? null;
+            $markinfo->gpa = $row[2] ?? null;
+            $markinfo->grade = $row[3] ?? null;
+            $markinfo->gparange = $row[4] ?? null;
 
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'Markinfo imported successfully!'
-                ], 200);
-
-            } catch (\Exception $e) {
-                DB::rollBack();
-
-                return response()->json([
-                    'message' => 'Failed to import Markinfo',
-                    'error' => $e->getMessage(),
-                ], 500);
-            }
+            $markinfo->created_by = $user_auth->id;
+            $markinfo->save();
         }
 
+        DB::commit();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Markinfo imported successfully!'
+        ], 200);
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+
+        return response()->json([
+            'message' => 'Failed to import Markinfo',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+}
 
 
 
