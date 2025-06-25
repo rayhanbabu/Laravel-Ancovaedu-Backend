@@ -16,7 +16,7 @@ class MarkinfoAdd
         DB::beginTransaction();
          try {
             $user_auth = user();
-            $username = $request->school_username;
+            $school_username = $request->school_username;
 
               $validator = validator($request->all(), [     
                  'start' => 'required|decimal:0,2',
@@ -29,7 +29,7 @@ class MarkinfoAdd
                  'level_id' => 'required|integer|exists:levels,id',
                  'faculty_id' => 'required|integer|exists:faculties,id',
                  'department_id' => 'required|integer|exists:departments,id',
-                         
+                 'section_id' => 'required|integer|exists:sections,id',         
             ]);
 
             if($validator->fails()) {
@@ -39,11 +39,23 @@ class MarkinfoAdd
                  ], 422);
              }
 
-                $markinfo_group = $request->sessionyear_id."-".$request->programyear_id."-".$request->level_id
-                 ."-".$request->faculty_id."-".$request->department_id;
+             $markinfo_group = $request->sessionyear_id."-".$request->programyear_id."-".$request->level_id
+               ."-".$request->faculty_id."-".$request->department_id."-".$request->section_id;
         
 
-        
+                 $data = Markinfo::where([
+                        ['school_username', $school_username],
+                        ['sessionyear_id', $request->sessionyear_id],
+                        ['programyear_id', $request->programyear_id],
+                        ['level_id', $request->level_id],
+                        ['faculty_id', $request->faculty_id],
+                        ['department_id', $request->department_id],
+                    ])->get();
+
+                  
+
+          if ($data->count() == 0 || $data->first()->section_id == $request->section_id) {
+
             $Markinfo = new Markinfo();
             $Markinfo->school_username = $request->school_username;
             $Markinfo->sessionyear_id = $request->sessionyear_id;
@@ -60,7 +72,11 @@ class MarkinfoAdd
             $Markinfo->created_by = $user_auth->id;
             $Markinfo->markinfo_group = $markinfo_group;
             $Markinfo->save();
-
+           }else{
+                 return response()->json([  
+                        'message' => 'Markinfo already exists in the target session',
+                 ], 422);
+            }
 
             DB::commit();
 

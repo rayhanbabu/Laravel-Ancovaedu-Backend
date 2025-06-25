@@ -106,10 +106,12 @@ use App\Http\Controllers\SchoolPanel\Setting\EmployeePermissionController;
 
 
                 //marks Info
-             
-                Route::post('/{school_username}/markinfo-add', [MarkinfoController::class, 'markinfo_add']);
-                Route::post('/{school_username}/markinfo-update/{id}', [MarkinfoController::class, 'markinfo_update']);
-                Route::delete('/{school_username}/markinfo-delete/{id}', [MarkinfoController::class, 'markinfo_delete']);
+               Route::post('/{school_username}/markinfo-export', [MarkinfoController::class, 'markinfo_export']);
+               Route::post('/{school_username}/markinfo-import', [MarkinfoController::class, 'markinfo_import']);
+               Route::post('/{school_username}/markinfo-transfer', [MarkinfoController::class, 'markinfo_transfer']);
+               Route::post('/{school_username}/markinfo-add', [MarkinfoController::class, 'markinfo_add']);
+               Route::post('/{school_username}/markinfo-update/{id}', [MarkinfoController::class, 'markinfo_update']);
+               Route::delete('/{school_username}/markinfo-delete/{id}', [MarkinfoController::class, 'markinfo_delete']);
 
                 //Employee  Permission 
            

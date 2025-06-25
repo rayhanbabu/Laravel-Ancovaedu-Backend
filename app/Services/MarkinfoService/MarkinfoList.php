@@ -21,6 +21,7 @@ class MarkinfoList
          'level_id',
          'faculty_id',
          'department_id',
+         'section_id',
        ];
 
     foreach ($filters as $requestKey => $dbColumn) {
