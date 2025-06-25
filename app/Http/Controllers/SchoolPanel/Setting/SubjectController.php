@@ -98,7 +98,7 @@ class SubjectController extends Controller
 
 
 
-    public function subject_import(Request $request, $school_username)
+   public function subject_import(Request $request, $school_username)
 {
     $user_auth = user();
     $sessionyear_id = $request->input('sessionyear_id');
@@ -127,27 +127,52 @@ class SubjectController extends Controller
 
     $subject_group = "$sessionyear_id-$programyear_id-$level_id-$faculty_id-$department_id-$section_id";
 
+    $exists = Subject::where([
+        ['school_username', $school_username],
+        ['sessionyear_id', $request->sessionyear_id],
+        ['programyear_id', $request->programyear_id],
+        ['level_id', $request->level_id],
+        ['faculty_id', $request->faculty_id],
+        ['department_id', $request->department_id],
+    ])->exists();
 
-               $exists = Subject::where([
-                        ['school_username', $school_username],
-                        ['sessionyear_id', $request->sessionyear_id],
-                        ['programyear_id', $request->programyear_id],
-                        ['level_id', $request->level_id],
-                        ['faculty_id', $request->faculty_id],
-                        ['department_id', $request->department_id],
-                    ])->exists();
+    if ($exists) {
+        return response()->json([
+            'message' => 'Subject already exists in the target session',
+        ], 400);
+    }
 
-            if ($exists) {
-              return response()->json([
-                        'message' => 'Subject already exists in the target session',
-                 ], 400);
-            }
+    $file = $request->file('file');
+    
+    // Create extension to reader type mapping
+    $readerTypeMap = [
+        'xlsx' => \Maatwebsite\Excel\Excel::XLSX,
+        'xls'  => \Maatwebsite\Excel\Excel::XLS,
+        'csv'  => \Maatwebsite\Excel\Excel::CSV,
+    ];
+    
+    $extension = strtolower($file->getClientOriginalExtension());
+    $readerType = $readerTypeMap[$extension] ?? null;
 
-    $path = $request->file('file')->getRealPath();
-    $data = Excel::toCollection(null, $path)->first();
+    // Handle invalid extensions (shouldn't happen due to validation, but safe-guard)
+    if (!$readerType) {
+        return response()->json([
+            'message' => 'Unsupported file type. Valid types: xlsx, xls, csv',
+        ], 422);
+    }
 
-    foreach ($data->skip(1) as $row) {
-        DB::transaction(function () use ($row, $school_username, $sessionyear_id, $programyear_id, $level_id, $faculty_id, $department_id, $section_id, $subject_group, $user_auth) {
+    DB::beginTransaction();
+
+    try {
+        // Read file with explicit reader type
+        $data = Excel::toCollection(
+            null, 
+            $file->getRealPath(), 
+            null, 
+            $readerType  // Explicit reader type passed here
+        )->first();
+
+        foreach ($data->skip(1) as $row) {
             $subject = new Subject();
             $subject->school_username = $school_username;
             $subject->sessionyear_id = $sessionyear_id;
@@ -176,15 +201,24 @@ class SubjectController extends Controller
             $subject->subject_type = $row[16] ?? null;
             $subject->created_by = $user_auth->id;
             $subject->save();
-        });
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Subjects imported successfully!'
+        ], 200);
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+
+        return response()->json([
+            'message' => 'Failed to import Subjects',
+            'error' => $e->getMessage(),
+        ], 500);
     }
-
-    return response()->json([
-        'status' => 'success',
-        'message' => 'Subjects imported successfully!'
-    ], 200);
 }
-
 
 
 

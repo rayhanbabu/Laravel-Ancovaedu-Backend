@@ -105,7 +105,7 @@ class StudentController extends Controller
 
 
 
-      public function student_import(Request $request, $school_username)
+   public function student_import(Request $request, $school_username)
 {
     $user_auth = user();
     $sessionyear_id = $request->input('sessionyear_id');
@@ -133,40 +133,61 @@ class StudentController extends Controller
     }
 
     $enroll_group = "$sessionyear_id-$programyear_id-$level_id-$faculty_id-$department_id-$section_id";
+    $file = $request->file('file');
+    
+    // Create extension to reader type mapping
+    $readerTypeMap = [
+        'xlsx' => \Maatwebsite\Excel\Excel::XLSX,
+        'xls'  => \Maatwebsite\Excel\Excel::XLS,
+        'csv'  => \Maatwebsite\Excel\Excel::CSV,
+    ];
+    
+    $extension = strtolower($file->getClientOriginalExtension());
+    $readerType = $readerTypeMap[$extension] ?? null;
 
-    $path = $request->file('file')->getRealPath();
-    $data = Excel::toCollection(null, $path)->first();
-
-    // Mobile numbers from Excel (assuming column index 2)
-    $mobileNumbers = $data->skip(1)->pluck(2)->filter()->unique();
-
-    // Find duplicates in database
-    $duplicates = \App\Models\User::whereIn('phone', $mobileNumbers)->pluck('phone');
-
-    if ($duplicates->count() > 0) {
+    // Handle invalid extensions
+    if (!$readerType) {
         return response()->json([
-            'status' => 'duplicate_found',
-            'duplicates' => $duplicates
-        ],400);
+            'message' => 'Unsupported file type. Valid types: xlsx, xls, csv',
+        ], 422);
     }
 
-    // No duplicates — proceed with import
-    foreach ($data->skip(1) as $row) {
-        if (!isset($row[2]) || $duplicates->contains($row[2])) {
-            continue;
+    DB::beginTransaction();
+
+    try {
+        // Read file with explicit reader type
+        $data = Excel::toCollection(
+            null, 
+            $file->getRealPath(), 
+            null, 
+            $readerType
+        )->first();
+
+        // Mobile numbers from Excel (assuming column index 2)
+        $mobileNumbers = $data->skip(1)->pluck(2)->filter()->unique();
+
+        // Find duplicates in database
+        $duplicates = \App\Models\User::whereIn('phone', $mobileNumbers)->pluck('phone');
+
+        if ($duplicates->isNotEmpty()) {
+            DB::rollBack();
+            return response()->json([
+                'status' => 'duplicate_found',
+                'duplicates' => $duplicates
+            ], 400);
         }
 
-        DB::transaction(function () use ($row, $school_username, $sessionyear_id, $programyear_id, $level_id, $faculty_id, $department_id, $section_id, $enroll_group, $user_auth) {
-
+        // Import all students
+        foreach ($data->skip(1) as $row) {
             $user = new \App\Models\User();
-            $user->name = $row[0];
-            $user->phone = $row[2];
-            $user->email = $row[3];
+            $user->name = $row[0] ?? null;
+            $user->phone = $row[2] ?? null;
+            $user->email = $row[3] ?? null;
             $user->password = bcrypt("Rayhan12");
             $user->status = 1;
-            $user->first_phone = substr($row[2], 0, 3);
-            $user->last_phone = substr($row[2], 3);
-            $user->username = $school_username . $row[2];
+            $user->first_phone = substr($row[2] ?? '', 0, 3);
+            $user->last_phone = substr($row[2] ?? '', 3);
+            $user->username = $school_username . ($row[2] ?? '');
             $user->save();
 
             \App\Models\User_role::create([
@@ -178,17 +199,17 @@ class StudentController extends Controller
             $student = new \App\Models\Student();
             $student->user_id = $user->id;
             $student->school_username = $school_username;
-            $student->english_name = $row[0];
-            $student->bangla_name = $row[1];
-            $student->gender = $row[4];
-            $student->religion_id = $row[5];
+            $student->english_name = $row[0] ?? null;
+            $student->bangla_name = $row[1] ?? null;
+            $student->gender = $row[4] ?? null;
+            $student->religion_id = $row[5] ?? null;
             $student->created_by = $user_auth->id;
             $student->save();
 
             $enroll = new \App\Models\Enroll();
             $enroll->student_id = $student->id;
             $enroll->user_id = $user->id;
-            $enroll->roll = $row[6];
+            $enroll->roll = $row[6] ?? null;
             $enroll->school_username = $school_username;
             $enroll->sessionyear_id = $sessionyear_id;
             $enroll->programyear_id = $programyear_id;
@@ -200,15 +221,23 @@ class StudentController extends Controller
             $enroll->created_by = $user_auth->id;
             $enroll->created_type = "Enroll";
             $enroll->save();
-        });
+        }
+
+        DB::commit();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Students imported successfully!'
+        ], 200);
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json([
+            'message' => 'Failed to import Students',
+            'error' => $e->getMessage(),
+        ], 500);
     }
-
-    return response()->json([
-        'status' => 'success',
-        'message' => 'Students imported successfully!'
-    ],200);
 }
-
 
 
 
