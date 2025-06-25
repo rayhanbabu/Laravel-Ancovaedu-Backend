@@ -23,6 +23,7 @@ public function handle(Request $request,$school_username)
         'faculty_id',
         'department_id',
         'section_id',
+        'subject_group',
         'viewById' => 'id'
       ];
 

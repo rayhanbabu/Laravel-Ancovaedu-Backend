@@ -12,6 +12,7 @@ use App\Services\SubjectService\SubjectAdd;
 use App\Services\SubjectService\SubjectList;
 use App\Services\SubjectService\SubjectUpdate;
 use App\Services\SubjectService\SubjectDelete;
+use App\Services\SubjectService\SubjectTransfer;
 
 use App\Exports\SubjectExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -23,13 +24,15 @@ class SubjectController extends Controller
     protected $SubjectList;
     protected $SubjectUpdate;
     protected $SubjectDelete;
+    protected $SubjectTransfer;
 
-    public function __construct(SubjectAdd $SubjectAdd, SubjectList $SubjectList, SubjectUpdate $SubjectUpdate, SubjectDelete $SubjectDelete)
+    public function __construct(SubjectAdd $SubjectAdd, SubjectList $SubjectList, SubjectUpdate $SubjectUpdate, SubjectDelete $SubjectDelete, SubjectTransfer $SubjectTransfer)
     {
          $this->SubjectAdd = $SubjectAdd;
          $this->SubjectList = $SubjectList;
          $this->SubjectUpdate = $SubjectUpdate;
          $this->SubjectDelete = $SubjectDelete;
+         $this->SubjectTransfer = $SubjectTransfer;
     }
 
   
@@ -53,6 +56,10 @@ class SubjectController extends Controller
            return $this->SubjectDelete->handle($request ,$school_username , $id);
        }
 
+         public function subject_transfer(Request $request, $school_username)
+       {
+           return $this->SubjectTransfer->handle($request ,$school_username);
+       }
 
        public function subject_export(Request $request ,$school_username)
         {
@@ -120,6 +127,22 @@ class SubjectController extends Controller
 
     $subject_group = "$sessionyear_id-$programyear_id-$level_id-$faculty_id-$department_id-$section_id";
 
+
+               $exists = Subject::where([
+                        ['school_username', $school_username],
+                        ['sessionyear_id', $request->sessionyear_id],
+                        ['programyear_id', $request->programyear_id],
+                        ['level_id', $request->level_id],
+                        ['faculty_id', $request->faculty_id],
+                        ['department_id', $request->department_id],
+                    ])->exists();
+
+            if ($exists) {
+              return response()->json([
+                        'message' => 'Subject already exists in the target session',
+                 ], 400);
+            }
+
     $path = $request->file('file')->getRealPath();
     $data = Excel::toCollection(null, $path)->first();
 
@@ -161,6 +184,9 @@ class SubjectController extends Controller
         'message' => 'Subjects imported successfully!'
     ], 200);
 }
+
+
+
 
 
 
