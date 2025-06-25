@@ -138,7 +138,7 @@ class StudentController extends Controller
     $data = Excel::toCollection(null, $path)->first();
 
     // Mobile numbers from Excel (assuming column index 2)
-    $mobileNumbers = $data->pluck(2)->filter()->unique();
+    $mobileNumbers = $data->skip(1)->pluck(2)->filter()->unique();
 
     // Find duplicates in database
     $duplicates = \App\Models\User::whereIn('phone', $mobileNumbers)->pluck('phone');
@@ -151,7 +151,7 @@ class StudentController extends Controller
     }
 
     // No duplicates — proceed with import
-    foreach ($data as $row) {
+    foreach ($data->skip(1) as $row) {
         if (!isset($row[2]) || $duplicates->contains($row[2])) {
             continue;
         }

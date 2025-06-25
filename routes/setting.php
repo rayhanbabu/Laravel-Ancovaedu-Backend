@@ -13,7 +13,7 @@ use App\Http\Controllers\SchoolPanel\Setting\DesignationController;
 use App\Http\Controllers\SchoolPanel\Setting\MarkinfoController;
 use App\Http\Controllers\SchoolPanel\Setting\EmployeePermissionController;
 
-    Route::post('/{school_username}/subject-export', [SubjectController::class, 'subject_export']);
+   
 
       Route::middleware('auth:sanctum')->group(function () {
 
@@ -90,7 +90,8 @@ use App\Http\Controllers\SchoolPanel\Setting\EmployeePermissionController;
 
 
                   // subject 
-                 
+                  Route::post('/{school_username}/subject-export', [SubjectController::class, 'subject_export']);
+                  Route::post('/{school_username}/subject-import', [SubjectController::class, 'subject_import']);
                   Route::post('/{school_username}/subject-add', [SubjectController::class, 'subject_add']);
                   Route::post('/{school_username}/subject-update/{id}', [SubjectController::class, 'subject_update']);
                   Route::delete('/{school_username}/subject-delete/{id}', [SubjectController::class, 'subject_delete']); 
