@@ -13,6 +13,8 @@ use App\Http\Controllers\SchoolPanel\Setting\DesignationController;
 use App\Http\Controllers\SchoolPanel\Setting\MarkinfoController;
 use App\Http\Controllers\SchoolPanel\Setting\EmployeePermissionController;
 
+    Route::post('/{school_username}/subject-export', [SubjectController::class, 'subject_export']);
+
       Route::middleware('auth:sanctum')->group(function () {
 
              Route::get('/{school_username}/religion', [ReligionController::class, 'religion']);
@@ -54,19 +56,16 @@ use App\Http\Controllers\SchoolPanel\Setting\EmployeePermissionController;
                  Route::delete('/{school_username}/session-delete/{id}', [SessionyearController::class, 'session_delete']);
 
                  // programyear
-               
                  Route::post('/{school_username}/programyear-add', [ProgramyearController::class, 'programyear_add']);
                  Route::post('/{school_username}/programyear-update/{id}', [ProgramyearController::class, 'programyear_update']);
                  Route::delete('/{school_username}/programyear-delete/{id}', [ProgramyearController::class, 'programyear_delete']);
     
                  // level
-               
                  Route::post('/{school_username}/level-add', [LevelController::class, 'level_add']);
                  Route::post('/{school_username}/level-update/{id}', [LevelController::class, 'level_update']);
                  Route::delete('/{school_username}/level-delete/{id}', [LevelController::class, 'level_delete']);
 
                  // faculty
-               
                  Route::post('/{school_username}/faculty-add', [FacultyController::class, 'faculty_add']);
                  Route::post('/{school_username}/faculty-update/{id}', [FacultyController::class, 'faculty_update']);
                  Route::delete('/{school_username}/faculty-delete/{id}', [FacultyController::class, 'faculty_delete']);
@@ -91,7 +90,7 @@ use App\Http\Controllers\SchoolPanel\Setting\EmployeePermissionController;
 
 
                   // subject 
-                
+                 
                   Route::post('/{school_username}/subject-add', [SubjectController::class, 'subject_add']);
                   Route::post('/{school_username}/subject-update/{id}', [SubjectController::class, 'subject_update']);
                   Route::delete('/{school_username}/subject-delete/{id}', [SubjectController::class, 'subject_delete']); 

@@ -45,7 +45,7 @@ class StudentMiddleware
        if ($roleType === 'Employee' && user()->employee?->school_username === $school_username) {
             $permissions = user()->permissions();
 
-             $filters = [
+              $filters = [
                     'sessionyear_id' => $request->sessionyear_id,
                     'programyear_id' => $request->programyear_id,
                     'level_id'       => $request->level_id,

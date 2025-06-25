@@ -12,7 +12,7 @@ class MarkList
    
    public function handle(Request $request,$school_username)
      {
-       
+
              if($request->has('GroupBySubject') && $request->GroupBySubject==1) {
                  $query = Mark::query();
 
@@ -39,7 +39,7 @@ class MarkList
                     DB::raw('MAX(marks.mark_group) as mark_group'),
                     DB::raw('MAX(marks.exam_id) as exam_id'),
                     DB::raw('MAX(marks.updated_at) as final_submited_at'),
-                    DB::raw('SUM(CASE WHEN marks.final_submit_status = 1 THEN 1 ELSE 0 END) as final_submit_status'),
+                    DB::raw('MAX(CASE WHEN marks.final_submit_status = 1 THEN 1 ELSE 0 END) as final_submit_status'),
                     'subjects.serial as subject_serial' // Added this to be able to sort by
                 )
                 ->groupBy('marks.subject_id', 'subjects.serial'); // Important: include any selected non-aggregates here
