@@ -29,6 +29,7 @@ class Invoice extends Model
         'id'=>'integer',
         'enroll_id'=>'integer',
         'fee_id'=>'integer',
+        'feetype_id'=>'integer',
         'amount'=>'integer',
         'waiver_amount'=>'integer',
         'waiver_approved_status'=>'integer',
@@ -52,6 +53,12 @@ class Invoice extends Model
     public function student()
     {
         return $this->hasOneThrough(Student::class, Enroll::class, 'id', 'id', 'enroll_id', 'student_id');
+    }
+
+
+     public function feetype()
+    {
+        return $this->belongsTo(Feetype::class, 'feetype_id');
     }
     
 

@@ -15,7 +15,7 @@ class InvoiceList
         $query = Invoice::query();  
         $query->where('school_username', $school_username);
         $query = Invoice::with([
-           'student',
+           'student','feetype:id,feetype_name', 
            'enroll.sessionyear:id,sessionyear_name',
            'enroll.programyear:id,programyear_name',
            'enroll.level:id,level_name',
@@ -49,22 +49,27 @@ class InvoiceList
                 $query->where('id', $request->viewById);
            }
 
-         if ($request->has('invoice_group')) {
+
+           if ($request->has('feetype_id')) {
+                $query->where('feetype_id', $request->feetype_id);
+           }
+
+           if ($request->has('invoice_group')) {
                 $query->where('invoice_group', $request->invoice_group);
-         }
+           }
 
     if ($request->has('search')) {
-        $search = $request->search;
-        $query->where(function ($q) use ($search) {
-            $q->where('amount', 'like', "%$search%")
-                ->orWhere('fee_type', 'like', "%$search%")
-                ->orWhere('desc', 'like', "%$search%")
-                ->orWhereHas('enroll', function ($q) use ($search) {
-                    $q->where('sessionyear_id', 'like', "%$search%")
-                     ->orWhere('student_id', 'like', "%$search%")
-                        ->orWhere('roll', 'like', "%$search%");
-                });
-        });
+          $search = $request->search;
+          $query->where(function ($q) use ($search) {
+             $q->where('amount', 'like', "%$search%")
+                 ->orWhere('fee_type', 'like', "%$search%")
+                 ->orWhere('desc', 'like', "%$search%")
+                 ->orWhereHas('enroll', function ($q) use ($search) {
+                     $q->where('sessionyear_id', 'like', "%$search%")
+                      ->orWhere('student_id', 'like', "%$search%")
+                         ->orWhere('roll', 'like', "%$search%");
+                 });
+          });
     }
   
 

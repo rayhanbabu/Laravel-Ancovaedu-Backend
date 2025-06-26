@@ -2,6 +2,7 @@
 namespace App\Services\FeetypeService;
 
 use App\Models\Feetype;
+use App\Models\Invoice;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Exception;
@@ -15,6 +16,16 @@ class FeetypeUpdate
         try {
 
             $user_auth =user();
+            $data=Invoice::where('feetype_id', $id)
+                ->where('school_username', $school_username)
+                ->count();
+
+           if($data > 0) {
+                 return response()->json([
+                      'message' => 'This feetype is used in invoice, so you can not update it',
+                 ], 400);
+             }
+
             $model = Feetype::findOrFail($id);
 
             $validator = validator($request->all(), [

@@ -56,11 +56,13 @@ class InvoiceCustomAdd
                     ], 400);
                 }    
 
+                $invoice_group= $enroll->sessionyear_id."-".$enroll->programyear_id."-".$enroll->level_id."-".$enroll->faculty_id."-".$enroll->department_id."-".$enroll->section_id;
 
                         $invoice = new Invoice();
                         $invoice->school_username = $school_username;
                         $invoice->enroll_id = $enroll->id;
-                        $invoice->fee_type = $request->fee_type;
+                        $invoice->feetype_id = $request->feetype_id;
+                        $invoice->invoice_group = $invoice_group;
                         $invoice->amount = $request->amount;
                         $invoice->desc = $request->desc;
                         $invoice->total_amount = $request->amount;   

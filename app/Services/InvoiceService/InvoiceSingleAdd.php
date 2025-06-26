@@ -84,7 +84,7 @@ class InvoiceSingleAdd
                 $invoice->invoice_group =$enroll->sessionyear_id."-".$enroll->programyear_id."-".$enroll->level_id
                          ."-".$enroll->faculty_id."-".$enroll->department_id."-".$enroll->section_id;
                 $invoice->fee_id = $fee_id;
-                $invoice->fee_type = $fee_list->fee_type;
+                $invoice->feetype_id = $fee_list->feetype_id;
                 $invoice->amount = $fee_list->amount;
                 $invoice->desc = $fee_list->desc;
                 $invoice->total_amount = $fee_list->amount;
