@@ -37,4 +37,10 @@ class Fee extends Model
         'updated_by'=>'integer',
       ];
 
+
+  public function feetype()
+    {
+        return $this->belongsTo(Feetype::class, 'feetype_id');
+    }
+
 }

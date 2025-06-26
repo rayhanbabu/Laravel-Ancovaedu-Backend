@@ -26,7 +26,9 @@ class FeeAdd
                  'level_id' => 'required|integer|exists:levels,id',
                  'faculty_id' => 'required|integer|exists:faculties,id',
                  'department_id' => 'required|integer|exists:departments,id',
-                 'section_id' => 'required|integer|exists:sections,id',              
+                 'section_id' => 'required|integer|exists:sections,id',
+                 'feetype_id' => 'required|integer|exists:feetypes,id',
+
             ]);
 
             if($validator->fails()) {
@@ -51,7 +53,7 @@ class FeeAdd
             $fee->section_id = $request->section_id;
             $fee->desc = $request->desc;
             $fee->amount = $request->amount;
-            $fee->fee_type = $request->fee_type;
+            $fee->feetype_id = $request->feetype_id;
             $fee->created_by = $user_auth->id;
             $fee->save();
 

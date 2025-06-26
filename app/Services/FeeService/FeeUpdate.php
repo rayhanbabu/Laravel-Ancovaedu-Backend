@@ -1,7 +1,6 @@
 <?php
 namespace App\Services\FeeService;
 
-
 use App\Models\Fee;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
@@ -22,9 +21,10 @@ class FeeUpdate
                  'level_id' => 'required|integer|exists:levels,id',
                  'faculty_id' => 'required|integer|exists:faculties,id',
                  'department_id' => 'required|integer|exists:departments,id',
-                 'section_id' => 'required|integer|exists:sections,id',   
-                 'desc' => 'required', 
-                 'amount' => 'required|integer',   
+                 'section_id' => 'required|integer|exists:sections,id',  
+                 'feetype_id' => 'required|integer|exists:feetypes,id',
+                 'desc' => 'required',
+                 'amount' => 'required|integer',
             ]);
             
 
@@ -34,7 +34,7 @@ class FeeUpdate
                  'errors' => $validator->errors(),
               ], 422);
           }
-
+          
             $fee->school_username = $request->school_username;
             $fee->sessionyear_id = $request->sessionyear_id;
             $fee->programyear_id = $request->programyear_id;
@@ -44,8 +44,8 @@ class FeeUpdate
             $fee->section_id = $request->section_id;
             $fee->desc = $request->desc;
             $fee->amount = $request->amount;
-            $fee->fee_type = $request->fee_type;
-            $fee->updated_by = $user_auth->id; 
+            $fee->feetype_id = $request->feetype_id;
+            $fee->updated_by = $user_auth->id;
             $fee->save();
 
             DB::commit();

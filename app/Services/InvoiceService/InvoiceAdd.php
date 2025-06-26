@@ -31,7 +31,7 @@ class InvoiceAdd
                  ], 422);
               }
 
-             $fee=Fee::find($request->fee_id);
+             $fee=Fee::with('feetype')->find($request->fee_id);
 
 
               $enrollments = Enroll::where([
@@ -86,7 +86,7 @@ class InvoiceAdd
                 $Invoice->desc = $fee->desc;
                 $Invoice->amount = $fee->amount;
                 $Invoice->total_amount = $fee->amount;
-                $Invoice->fee_type = $fee->fee_type;
+                $Invoice->fee_type = $fee->feetype->feetype_name;
                 $Invoice->created_by = $user_auth->id;
                 $Invoice->save();       
            }

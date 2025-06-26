@@ -11,21 +11,19 @@ class FeeList
    
    public function handle(Request $request,$school_username)
      {
-        $query = Fee::query();  
-        $query->where('school_username', $school_username);
+        $query = Fee::with('feetype')->where('school_username', $school_username);
 
-
-        
-           // Apply filters
-       $filters = [
-        'sessionyear_id',
-        'programyear_id',
-        'level_id',
-        'faculty_id',
-        'department_id',
-        'section_id',
-        'viewById' => 'id'
-      ];
+        // Apply filters
+        $filters = [
+            'sessionyear_id',
+            'programyear_id',
+            'level_id',
+            'faculty_id',
+            'department_id',
+            'section_id',
+            'feetype_id',
+            'viewById' => 'id'
+        ];
 
    foreach ($filters as $requestKey => $dbColumn) {
        // if $filters is associative, otherwise key = value
@@ -39,9 +37,7 @@ class FeeList
     if ($request->filled('fee_group')) {
         $query->where('fee_group', $request->fee_group);
     }
-
-
-        
+  
     // Search
     if ($request->has('search')) {
         $search = $request->search;
@@ -69,7 +65,7 @@ class FeeList
         $result = $query->paginate($perPage, ['*'], 'page', $page);
 
         return response()->json([
-            'data' =>$result->items(),
+                'data' =>$result->items(),
                 'total' => $result->total(),
                 'per_page' => $result->perPage(),
                 'current_page' => $result->currentPage(),

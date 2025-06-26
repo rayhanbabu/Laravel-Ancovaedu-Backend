@@ -28,7 +28,7 @@ class InvoiceCustomAdd
                  'student_id' => 'required|integer|exists:students,id', 
                  'amount' => 'required|integer',
                  'desc' => 'required|string',  
-                 'fee_type' => 'required|string',                
+                 'feetype_id' => 'required|integer|exists:feetypes,id',               
             ]);
             
 

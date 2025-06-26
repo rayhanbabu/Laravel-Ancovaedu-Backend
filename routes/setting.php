@@ -12,36 +12,29 @@ use App\Http\Controllers\SchoolPanel\Setting\SubjectController;
 use App\Http\Controllers\SchoolPanel\Setting\DesignationController;
 use App\Http\Controllers\SchoolPanel\Setting\MarkinfoController;
 use App\Http\Controllers\SchoolPanel\Setting\EmployeePermissionController;
+use App\Http\Controllers\SchoolPanel\Setting\FeetypeController;
 
-   
 
       Route::middleware('auth:sanctum')->group(function () {
 
              Route::get('/{school_username}/religion', [ReligionController::class, 'religion']);
-
              Route::get('/{school_username}/sessionyear', [SessionyearController::class, 'sessionyear']);
-
              Route::get('/{school_username}/programyear', [ProgramyearController::class, 'programyear']);
-
              Route::get('/{school_username}/programyear', [ProgramyearController::class, 'programyear']);
+             Route::get('/{school_username}/level', [LevelController::class, 'level']);
+             Route::get('/{school_username}/faculty', [FacultyController::class, 'faculty']);
+             Route::get('/{school_username}/department', [DepartmentController::class, 'department']);
+             Route::get('/{school_username}/section', [SectionController::class, 'section']);
+             Route::get('/{school_username}/feetype', [FeetypeController::class, 'feetype']);
 
-            Route::get('/{school_username}/level', [LevelController::class, 'level']);
+             Route::get('/{school_username}/exam', [ExamController::class, 'exam']);
+             Route::get('/{school_username}/subject', [SubjectController::class, 'subject']);
+             Route::get('/{school_username}/designation', [DesignationController::class, 'designation']);
+             Route::get('/{school_username}/markinfo', [MarkinfoController::class, 'markinfo']);
+             Route::get('/{school_username}/permission_role', [EmployeePermissionController::class, 'permission_role']);
+             Route::get('/{school_username}/permission', [EmployeePermissionController::class, 'permission']);
 
-            Route::get('/{school_username}/faculty', [FacultyController::class, 'faculty']);
-
-            Route::get('/{school_username}/department', [DepartmentController::class, 'department']);
-
-            Route::get('/{school_username}/section', [SectionController::class, 'section']);
-
-              Route::get('/{school_username}/exam', [ExamController::class, 'exam']);
-              Route::get('/{school_username}/subject', [SubjectController::class, 'subject']);
-              Route::get('/{school_username}/designation', [DesignationController::class, 'designation']);
-              Route::get('/{school_username}/markinfo', [MarkinfoController::class, 'markinfo']);
-              Route::get('/{school_username}/permission_role', [EmployeePermissionController::class, 'permission_role']);
-              Route::get('/{school_username}/permission', [EmployeePermissionController::class, 'permission']);
-
-
-            Route::middleware('SettingMiddleware:{school_username}')->group(function(){ 
+            Route::middleware('SettingMiddleware:{school_username}')->group(function(){
 
                  // religion
                 
@@ -118,6 +111,11 @@ use App\Http\Controllers\SchoolPanel\Setting\EmployeePermissionController;
                 Route::post('/{school_username}/permission-add', [employeePermissionController::class, 'permission_add']);
                 Route::post('/{school_username}/permission-update/{id}', [employeePermissionController::class, 'permission_update']);
                 Route::delete('/{school_username}/permission-delete/{id}', [employeePermissionController::class, 'permission_delete']);
+
+               // Fee Type
+               Route::post('/{school_username}/feetype-add', [FeetypeController::class, 'feetype_add']);
+               Route::post('/{school_username}/feetype-update/{id}', [FeetypeController::class, 'feetype_update']);
+               Route::delete('/{school_username}/feetype-delete/{id}', [FeetypeController::class, 'feetype_delete']);
 
            });
      });
