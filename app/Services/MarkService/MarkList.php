@@ -3,6 +3,7 @@
 namespace App\Services\MarkService;
 
 use App\Models\Mark;
+use App\Models\User;
 use App\Models\Classdate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +17,7 @@ class MarkList
              if($request->has('GroupBySubject') && $request->GroupBySubject==1) {
                  $query = Mark::query();
 
-                $query->join('enrolls', 'marks.enroll_id', '=', 'enrolls.id')
+                 $query->join('enrolls', 'marks.enroll_id', '=', 'enrolls.id')
                     ->join('subjects', 'marks.subject_id', '=', 'subjects.id') // Added join for subjects
                     ->where('marks.school_username', $school_username)
                     ->where('marks.exam_id', $request->exam_id)
@@ -39,10 +40,10 @@ class MarkList
                     DB::raw('MAX(marks.mark_group) as mark_group'),
                     DB::raw('MAX(marks.exam_id) as exam_id'),
                     DB::raw('MAX(marks.updated_at) as final_submited_at'),
+                    DB::raw('MAX(marks.final_submited_by) as final_submited_by'),
                     DB::raw('MAX(CASE WHEN marks.final_submit_status = 1 THEN 1 ELSE 0 END) as final_submit_status'),
                     'subjects.serial as subject_serial' // Added this to be able to sort by
-                )
-                ->groupBy('marks.subject_id', 'subjects.serial'); // Important: include any selected non-aggregates here
+                )->groupBy('marks.subject_id', 'subjects.serial'); // Important: include any selected non-aggregates here
 
                 // Apply sorting
                 $sortField = $request->get('sortField', 'subject_serial'); // sortField should match the alias or actual column name in select
@@ -53,17 +54,23 @@ class MarkList
                 // Get results
                 $result = $query->get();
 
+                $userNames = User::whereIn('id', $result->pluck('final_submited_by'))->pluck('name', 'id');
+
+                $result->transform(function ($item) use ($userNames) {
+                    $item->final_submited_by_name = $userNames[$item->final_submited_by] ?? null;
+                    return $item;
+                });
+
                 return response()->json([
                     'data' => $result
                 ]);
-
          }
 
 
         $query = Mark::query();
         $query->join('enrolls', 'marks.enroll_id', '=', 'enrolls.id');  // Ordering Roll Assingn
         $query->with([
-           'student', 'subject',
+           'student','subject',
            'enroll.sessionyear:id,sessionyear_name',
            'enroll.programyear:id,programyear_name',
            'enroll.level:id,level_name',
@@ -73,8 +80,6 @@ class MarkList
         ]);
         $query->where('marks.school_username', $school_username);
       
-
-       
          if ($request->has('subject_id')) {
               $query->where('subject_id', $request->subject_id);
           }
@@ -83,8 +88,15 @@ class MarkList
                 $query->where('marks.mark_group', $request->mark_group);
           }
 
+         if ($request->has('access_group')) {
+                $query->where('marks.mark_group', $request->access_group);
+        }
 
-        
+
+        if ($request->has('final_submited_by')) {
+            $query->where('marks.final_submited_by', $request->final_submited_by);
+        }
+
          if ($request->has('exam_id')) {
              $query->where('exam_id', $request->exam_id);
           }

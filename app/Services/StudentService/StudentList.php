@@ -46,6 +46,10 @@ public function handle(Request $request,$school_username)
     }
 
 
+     if ($request->has('access_group')) {
+                $query->where('enroll_group', $request->access_group);
+        }
+
      if ($request->has('enroll_group')) {
                 $query->where('enroll_group', $request->enroll_group);
           }

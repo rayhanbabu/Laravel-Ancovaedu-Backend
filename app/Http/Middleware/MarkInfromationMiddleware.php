@@ -38,10 +38,11 @@ class MarkInfromationMiddleware
 
         }
 
-       if ($roleType === 'Employee' && user()->employee?->school_username === $school_username) {
+
+        if ($roleType === 'Employee' && user()->employee?->school_username === $school_username) {
             $permissions = user()->permissions();
 
-             $filters = [
+              $filters = [
                     'sessionyear_id' => $request->sessionyear_id,
                     'programyear_id' => $request->programyear_id,
                     'level_id'       => $request->level_id,
@@ -55,7 +56,7 @@ class MarkInfromationMiddleware
             $access_group = $request->query('access_group'); 
          
           $query = $permissions->where('permission_role', 'MarkInfromationByGroup')
-           ->where(function ($q) use ($filters, $access_group) {
+         ->where(function ($q) use ($filters, $access_group) {
                 $q->where($filters);
 
              $q->orWhere('access_group', $access_group);
@@ -65,6 +66,7 @@ class MarkInfromationMiddleware
                     return $next($request);
               }
          }
+
 
         // Unauthorized
         return response()->json([

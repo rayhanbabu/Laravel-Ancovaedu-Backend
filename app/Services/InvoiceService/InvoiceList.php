@@ -58,19 +58,23 @@ class InvoiceList
                 $query->where('invoice_group', $request->invoice_group);
            }
 
-    if ($request->has('search')) {
-          $search = $request->search;
-          $query->where(function ($q) use ($search) {
-             $q->where('amount', 'like', "%$search%")
-                 ->orWhere('fee_type', 'like', "%$search%")
-                 ->orWhere('desc', 'like', "%$search%")
-                 ->orWhereHas('enroll', function ($q) use ($search) {
-                     $q->where('sessionyear_id', 'like', "%$search%")
-                      ->orWhere('student_id', 'like', "%$search%")
-                         ->orWhere('roll', 'like', "%$search%");
-                 });
-          });
-    }
+           if ($request->has('access_group')) {
+                $query->where('invoice_group', $request->access_group);
+          }
+
+       if ($request->has('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+               $q->where('amount', 'like', "%$search%")
+                   ->orWhere('fee_type', 'like', "%$search%")
+                   ->orWhere('desc', 'like', "%$search%")
+                   ->orWhereHas('enroll', function ($q) use ($search) {
+                       $q->where('sessionyear_id', 'like', "%$search%")
+                         ->orWhere('student_id', 'like', "%$search%")
+                           ->orWhere('roll', 'like', "%$search%");
+                   });
+             });
+        }
   
 
 

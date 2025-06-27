@@ -14,7 +14,6 @@ class FeetypeUpdate
 
         DB::beginTransaction();
         try {
-
             $user_auth =user();
             $data=Invoice::where('feetype_id', $id)
                 ->where('school_username', $school_username)
