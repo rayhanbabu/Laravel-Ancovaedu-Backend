@@ -24,7 +24,7 @@ class PageAdd
                  'date'=> 'required|date',
                  'content' => 'nullable',
                  'link' => 'nullable|max:255',
-                 'image' => 'nullable|image|max:2048',
+                 'image' => 'nullable|mimes:jpeg,png,jpg,pdf|max:2048',
                  'page_category_id' => 'required|exists:pagecategories,id',
                  'status' => 'nullable|boolean',
 

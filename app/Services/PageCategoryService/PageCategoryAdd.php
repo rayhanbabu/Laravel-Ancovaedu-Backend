@@ -22,6 +22,8 @@ class PageCategoryAdd
               $validator = validator($request->all(), [
                  'page_category_name' => 'required|unique:pagecategories,page_category_name,NULL,id,school_username,' . $username,
                  'status' => 'nullable|boolean',
+                 'parent_id' => 'nullable|exists:pagecategories,id',
+                 'image' => 'nullable|mimes:jpeg,png,jpg,pdf|max:2048',
               ]);
 
             if($validator->fails()) {
@@ -34,8 +36,14 @@ class PageCategoryAdd
             $user = new Pagecategory();
             $user->school_username = $username;
             $user->page_category_name = $request->page_category_name;
+            $user->parent_id = $request->parent_id;
             $user->personal_status = $request->personal_status;
             $user->created_by = $user_auth->id;
+
+             if ($request->hasfile('image')) {
+                $user->image = $this->uploadFile($request->file('image'), 'image');
+            }
+
 
             $user->save();
 
@@ -55,6 +63,13 @@ class PageCategoryAdd
         }
     }
 
-  
 
-  }
+
+      private function uploadFile($file, $prefix)
+    {
+        $fileName = $prefix . rand() . '.' . $file->getClientOriginalExtension();
+        $file->move(public_path('uploads/admin'), $fileName);
+        return $fileName;
+    }
+
+}
