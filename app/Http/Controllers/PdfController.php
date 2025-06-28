@@ -13,9 +13,7 @@ class PdfController extends Controller
             'title' => 'Laravel 10 DOMPDF Example',
             'date'  => date('m/d/Y')
         ];
-
-        $pdf = Pdf::loadView('myPDF', $data);
-
+        $pdf = Pdf::loadView('pdf.myPDF', $data);
         return $pdf->download('sample.pdf');
     }
 }
