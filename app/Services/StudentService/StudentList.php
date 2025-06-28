@@ -20,7 +20,7 @@ public function handle(Request $request,$school_username)
             'religion',
             'sessionyear:id,sessionyear_name',
             'programyear:id,programyear_name',
-            'level:id,level_name',
+            'level:id,level_name,level_category',
             'faculty:id,faculty_name',
             'department:id,department_name',
             'section:id,section_name',
