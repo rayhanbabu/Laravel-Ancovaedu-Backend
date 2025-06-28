@@ -40,6 +40,7 @@ class StudentResource extends JsonResource
             'programyear_name' => $this->programyear->programyear_name,
             'level_id' => $this->level_id,
             'level_name' => $this->level->level_name,
+            'level_category' => $this->level->level_category,
             'faculty_id' => $this->faculty_id,
             'faculty_name' => $this->faculty->faculty_name,
             'department_id' => $this->department_id,
