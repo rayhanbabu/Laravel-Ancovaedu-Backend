@@ -17,6 +17,7 @@ class LevelAdd
         try {
             $validator = validator($request->all(), [
                 'level_name' => 'required|unique:levels,level_name,NULL,id,school_username,' . $school_username,
+                'level_category' => 'nullable|enum:Secondary,Higher',
             ]);
 
             if ($validator->fails()) {
@@ -34,6 +35,7 @@ class LevelAdd
             $model->level_status = $request->status;
             $model->created_by = $user_auth->id; 
             $model->school_username = $school_username;
+            $model->level_category = $request->level_category;
             $model->save();
 
             DB::commit();

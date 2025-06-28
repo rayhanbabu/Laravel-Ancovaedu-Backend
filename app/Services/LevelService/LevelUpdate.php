@@ -18,7 +18,8 @@ class LevelUpdate
             $model = Level::findOrFail($id);
 
             $validator = validator($request->all(), [
-                'level_name' => 'required|unique:levels,level_name,' . $id . 'NULL,id,school_username,' . $school_username,
+                'level_name' => 'required|unique:levels,level_name,' . $id . ',id,school_username,' . $school_username,
+                'level_category' => 'nullable|enum:Secondary,Higher',
             ]);
             
 
@@ -31,8 +32,9 @@ class LevelUpdate
 
           $model->level_name = $request->level_name;
           $model->level_status = $request->status;
-          $model->updated_by = $user_auth->id; 
-          
+          $model->level_category = $request->level_category;
+          $model->updated_by = $user_auth->id;
+
             $model->save();
 
             DB::commit();
