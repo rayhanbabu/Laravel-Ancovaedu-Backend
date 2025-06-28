@@ -17,7 +17,7 @@ class LevelAdd
         try {
             $validator = validator($request->all(), [
                 'level_name' => 'required|unique:levels,level_name,NULL,id,school_username,' . $school_username,
-                'level_category' => 'nullable|enum:Secondary,Higher',
+                'level_category' => 'nullable|in:Secondary,Higher',
             ]);
 
             if ($validator->fails()) {
