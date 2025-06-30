@@ -48,14 +48,14 @@ class StudentResource extends JsonResource
             'section_id' => $this->section_id,
             'section_name' => $this->section->section_name,
 
-            'main_subject1_id' => $this->main_subject1,
-            'main_subject1_name' => $this->main_subject1->subject_name?? null,
-            'main_subject2_id' => $this->main_subject2,
-            'main_subject2_name' => $this->main_subject2->subject_name?? null,
-            'main_subject3_id' => $this->main_subject3,
-            'main_subject3_name' => $this->main_subject3->subject_name?? null,
-            'additional_subject_id' => $this->additional_subject,
-            'additional_subject_name' => $this->additional_subject->subject_name?? null,
+            'main_subject1_id' => $this->mainSubject1,
+            'main_subject1_name' => $this->mainSubject1->subject_name?? null,
+            'main_subject2_id' => $this->mainSubject2,
+            'main_subject2_name' => $this->mainSubject2->subject_name?? null,
+            'main_subject3_id' => $this->mainSubject3,
+            'main_subject3_name' => $this->mainSubject3->subject_name?? null,
+            'additional_subject_id' => $this->additionalSubject,
+            'additional_subject_name' => $this->additionalSubject->subject_name?? null,
 
 
             'father_name' => $this->student->father_name,
