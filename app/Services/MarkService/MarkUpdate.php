@@ -89,14 +89,14 @@ class MarkUpdate
 
             $total=$mark->sub_total;
 
-            $mark->total=$mark->sub_total;
+            $mark->total=$total;
 
             if($mark->subject->subject_type=="Combined"){
                    $combined_subject=Mark::where('enroll_id',$mark->enroll_id)
                    ->where('exam_id',$mark->exam_id)
                    ->where('subject_id',$mark->subject->combined_subject_id)->first();
 
-                   $mark->total=$mark->sub_total+$combined_subject->sub_total;    
+                   $mark->total=$total+$combined_subject->sub_total;    
              }else{
                 $mark->total=$mark->sub_total;
              }
