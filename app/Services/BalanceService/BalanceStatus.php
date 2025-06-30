@@ -30,7 +30,7 @@ class BalanceStatus
             $balance->day = date('d'); 
             $balance->previous_balance = $previousBalance;
             $balance->previous_id = $previousId;
-            $balance->balance = $balance->category_type === 'Credit'
+            $balance->balance = $balance->category_type == 'Credit'
                 ? $previousBalance + $balance->amount
                 : $previousBalance - $balance->amount;
 
@@ -38,7 +38,7 @@ class BalanceStatus
             $balance->verified_by = $user->id;
 
         } elseif ($balance->status == 1) {
-            if ($latestBalance && $latestBalance->id === $balance->id) {
+            if ($latestBalance && $latestBalance->id == $balance->id) {
                 $balance->previous_balance = 0;
                 $balance->previous_id = null;
                 $balance->balance = 0;

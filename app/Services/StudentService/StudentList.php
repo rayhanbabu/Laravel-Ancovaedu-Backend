@@ -24,6 +24,10 @@ public function handle(Request $request,$school_username)
             'faculty:id,faculty_name',
             'department:id,department_name',
             'section:id,section_name',
+            'main_subject1:id,subject_name',
+            'main_subject2:id,subject_name',
+            'main_subject3:id,subject_name',
+            'additional_subject:id,subject_name',
         ])->where('school_username', $school_username);
               
         $query->where('school_username', $school_username);

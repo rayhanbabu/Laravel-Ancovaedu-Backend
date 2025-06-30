@@ -114,4 +114,25 @@ class Enroll extends Model
     }
 
 
+     public function main_subject1()
+    {
+        return $this->belongsTo(Subject::class, 'main_subject1');
+    }
+
+
+    public function main_subject2()
+    {
+        return $this->belongsTo(Subject::class, 'main_subject2');
+    }
+
+    public function main_subject3()
+    {
+        return $this->belongsTo(Subject::class, 'main_subject3');
+    }
+
+    public function additional_subject()
+    {
+        return $this->belongsTo(Subject::class, 'additional_subject');
+    }
+
 }

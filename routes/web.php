@@ -14,10 +14,12 @@ use App\Http\Controllers\PdfController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+     Route::get('/', function () {
+        return view('welcome');
+     });
 
-Route::get('/generate-pdf', [PdfController::class, 'generatePDF']);
-
+    Route::get('/generate-pdf', [PdfController::class, 'generatePDF']);
+    Route::get('/marksheet-pdf', [PdfController::class, 'generateMarksheetPDF']);
+    Route::get('/tabulation-pdf', [PdfController::class, 'generateTabulationPDF']);
+    Route::get('/summary-pdf', [PdfController::class, 'generateSummaryPDF']);
 

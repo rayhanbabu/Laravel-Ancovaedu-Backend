@@ -13,14 +13,13 @@ class BalanceDelete
     {
         DB::beginTransaction();
         try {
-
              $latestBalance = Balance::where('school_username', $school_username)->where('status', 1)
              ->orderBy('updated_at', 'desc')
              ->first();
           $model = Balance::findOrFail($id);
-          if ($latestBalance && $latestBalance->id === $id) {
+          if ($latestBalance && $latestBalance->id == $id) {
                $this->deleteImage($model->image);
-               // Delete agent and user
+                // Delete agent and user
                 $model->delete();
 
                DB::commit();
@@ -30,7 +29,7 @@ class BalanceDelete
 
            }else if($model->status == 0){
                  $this->deleteImage($model->image);
-                // Delete agent and user
+                  // Delete agent and user
                  $model->delete();
 
                   DB::commit();

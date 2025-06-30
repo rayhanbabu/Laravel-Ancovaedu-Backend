@@ -35,7 +35,7 @@ class MarkList
                 $query->select(
                     'marks.subject_id',
                     DB::raw('COUNT(marks.id) as total_students'),
-                    DB::raw('SUM(CASE WHEN marks.total > 0 THEN 1 ELSE 0 END) as total_pass'),
+                    DB::raw('SUM(CASE WHEN marks.gpa > 0 THEN 1 ELSE 0 END) as total_pass'),
                     DB::raw('SUM(marks.attendance_status) as total_attendance'),
                     DB::raw('MAX(marks.mark_group) as mark_group'),
                     DB::raw('MAX(marks.exam_id) as exam_id'),

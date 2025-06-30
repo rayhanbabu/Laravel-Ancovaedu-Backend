@@ -40,6 +40,10 @@ class Mark extends Model
             'checked_by'=>'integer',
             'created_by'=>'integer',
             'updated_by'=>'integer',
+            'total_subject'=>'integer',
+            'total_pass'=>'integer',
+            'total_attendance'=>'integer',
+            'merit_position'=>'integer',
        ];
 
 

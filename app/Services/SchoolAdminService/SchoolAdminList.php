@@ -20,6 +20,12 @@ public function handle(Request $request)
         if($user_auth->user_role->role_type=='Agent'){
             $query->where('schools.agent_user_id',$user_auth->id);
           }
+
+         if($user_auth->user_role->role_type=='Manager' || $user_auth->user_role->role_type=='Supperadmin'){
+                if ($request->has('agent_user_id')) {
+                    $query->where('agent_user_id', $request->agent_user_id);
+               }
+          }
             
         // Search
         if ($request->has('search')) {
